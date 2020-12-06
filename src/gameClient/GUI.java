@@ -1,4 +1,4 @@
-package gameClient.util;
+package gameClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,14 +18,15 @@ public class GUI extends JFrame implements ActionListener{
     private static String UserName;
     private static int scenario;
 
+
     public static void main(String[] args) {
         frame = new JFrame("MyTest");
         frame.setVisible(true);
-        frame.setResizable(true);
+        //frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
         panel.setLayout(null);
-        frame.setSize(100, 100);
+        frame.setSize(350, 350);
         frame.add(panel);
         User_Name_Label = new JLabel("ID");
         User_Name_Label.setBounds(10, 20, 80, 25);
@@ -47,7 +48,7 @@ public class GUI extends JFrame implements ActionListener{
     }
     public void paint(Graphics g)
     {
-        image=frame.createImage(100,100);
+        image=frame.createImage(350,350);
         g=image.getGraphics();
         paintComponents(g);
         g.drawImage(image,0,0,frame);
@@ -74,4 +75,11 @@ public class GUI extends JFrame implements ActionListener{
             g.drawString("Invalid game number", 40, 140);
         }
 }
+//    public void playMusic() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+//        File musicPath =new File("C:/Users/עדן שקורי/IdeaProjects/OOP_EX2/src/gameClient/pokemon_song.wav");
+//        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+//        Clip clip=AudioSystem.getClip();
+//        clip.open(audioInput);
+//        clip.start();
+//    }
 }
