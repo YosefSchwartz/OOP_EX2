@@ -11,6 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class example extends JFrame{
+    public static void main(String[] args) {
+        example e=new example();
+        e.setVisible(true);
+    }
 private int h=200;
 private int w=400;
 private Graphics gra;
