@@ -125,14 +125,14 @@ public class GameFrame extends JFrame implements ActionListener {
             Iterator<edge_data> itr = gg.getE(n.getKey()).iterator();
             while(itr.hasNext()) {
                 edge_data e = itr.next();
-                g.setColor(Color.gray);
+                g.setColor(Color.black);
                 drawEdge(e, g);
             }
         }
         Iterator<node_data> iter1 = gg.getV().iterator();
         while(iter1.hasNext()) {
             node_data n = iter1.next();
-            g.setColor(Color.orange);
+            g.setColor(new Color(221,183, 63 ));
             drawNode(n,5,g);
         }
     }
@@ -153,9 +153,9 @@ public class GameFrame extends JFrame implements ActionListener {
                     geo_location fp = this._w2f.world2frame(c);
                     pokemon=new ImageIcon("src//gameClient//files//pokemonBall.png");
                     Image pokemon1 = pokemon.getImage();
-                    Image pokemon2 = pokemon1.getScaledInstance(2*r, 2*r,Image.SCALE_DEFAULT);
+                    Image pokemon2 = pokemon1.getScaledInstance(4*r, 4*r,Image.SCALE_DEFAULT);
                     pokemon=new ImageIcon(pokemon2);
-                    pokemon.paintIcon(this, g, (int)fp.x()-r,(int)fp.y()-r);
+                    pokemon.paintIcon(this, g, (int)fp.x()-2*r,(int)fp.y()-2*r);
                 }
             }
         }
@@ -175,9 +175,9 @@ public class GameFrame extends JFrame implements ActionListener {
 
                 agent=new ImageIcon("src//gameClient//files//pikachu.png");
                 Image agent1 = agent.getImage();
-                Image agent2 = agent1.getScaledInstance(8*r, 10*r,Image.SCALE_DEFAULT);
+                Image agent2 = agent1.getScaledInstance(10*r, 12*r,Image.SCALE_DEFAULT);
                 agent=new ImageIcon(agent2);
-                agent.paintIcon(this, g, (int)fp.x()-4*r,(int)fp.y()-5*r);
+                agent.paintIcon(this, g, (int)fp.x()-4*r,(int)fp.y()-6*r);
             }
         }
     }
@@ -185,6 +185,7 @@ public class GameFrame extends JFrame implements ActionListener {
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
         g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
+        g.setColor(Color.BLACK);
         g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
     }
     private void drawEdge(edge_data e, Graphics g) {
