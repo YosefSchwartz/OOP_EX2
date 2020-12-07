@@ -45,8 +45,8 @@ public class GameFrame extends JFrame implements ActionListener {
     }
 
     private void updateFrame() {
-        Range rx = new Range(20,this.getWidth()-20);
-        Range ry = new Range(this.getHeight()-10,150);
+        Range rx = new Range(50,this.getWidth()-50);
+        Range ry = new Range(this.getHeight()-50,100);
         Range2D frame = new Range2D(rx,ry);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = Arena.w2f(g,frame);
@@ -110,6 +110,7 @@ public class GameFrame extends JFrame implements ActionListener {
         drawInfo(buffer_graphics);
         g.drawImage(buffer_image, 0, 0, this);
         }
+
     private void drawInfo(Graphics g) {
         java.util.List<String> str = _ar.get_info();
         String dt = "none";
@@ -133,7 +134,8 @@ public class GameFrame extends JFrame implements ActionListener {
         while(iter1.hasNext()) {
             node_data n = iter1.next();
             g.setColor(new Color(221,183, 63 ));
-            drawNode(n,5,g);
+            drawNode(n,14,g);
+
         }
     }
     private void drawPokemons(Graphics g) {
@@ -186,7 +188,7 @@ public class GameFrame extends JFrame implements ActionListener {
         geo_location fp = this._w2f.world2frame(pos);
         g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
         g.setColor(Color.BLACK);
-        g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4*r);
+        g.drawString(""+n.getKey(), (int)fp.x()-3, (int)fp.y()+3);
     }
     private void drawEdge(edge_data e, Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
