@@ -7,22 +7,29 @@ import api.game_service;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class Ex2_Client implements Runnable{
-	private static MyFrame _win;
+public class Ex2_Client_Final_Game implements Runnable{
+	private static GameFrame _win;
 	private static Arena _ar;
+	int[] loginRes=new int[3];
 	public static void main(String[] a) {
-		Thread client = new Thread(new Ex2_Client());
+		Thread client = new Thread(new Ex2_Client_Final_Game());
 		client.start();
 	}
 	
 	@Override
 	public void run() {
-		int scenario_num = 1;
+		_win = new GameFrame("test Ex2");
+		_win.setSize(1000, 700);
+		//loginRes=_win.login();
+		System.out.println("first: "+loginRes[0]+", second: "+loginRes[1]);
+		//int scenario_num = loginRes[1];
+		int scenario_num=1;
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 	//	int id = 999;
 	//	game.login(id);
@@ -30,9 +37,11 @@ public class Ex2_Client implements Runnable{
 		String pks = game.getPokemons();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		init(game);
-		
+		//System.out.println("staaaaaaaaaaaaaaaart");
 		game.startGame();
 		_win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
+		_win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		int ind=0;
 		long dt=100;
 		
@@ -105,8 +114,8 @@ public class Ex2_Client implements Runnable{
 		_ar = new Arena();
 		_ar.setGraph(gg);
 		_ar.setPokemons(Arena.json2Pokemons(fs));
-		_win = new MyFrame("test Ex2");
-		_win.setSize(1000, 700);
+//		_win = new GameFrame("test Ex2");
+//		_win.setSize(1000, 700);
 		_win.update(_ar);
 
 

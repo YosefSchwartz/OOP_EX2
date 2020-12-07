@@ -10,14 +10,14 @@ public class GUI extends JFrame implements ActionListener{
     private static JLabel User_Name_Label;
     private static JLabel scenario_Label;
     private static JTextField scenarioText;
-    private static JFrame frame;
     private static JPanel panel;
     private static JButton button;
-    private static Image image;
-    private static Graphics g;
     private static String UserName;
     private static int scenario;
 
+    private static JFrame frame;
+    private static Image image;
+    private static Graphics g;
 
     public static void main(String[] args) {
         frame = new JFrame("MyTest");

@@ -23,6 +23,7 @@ import java.util.List;
 public class MyFrame extends JFrame{
 	private int _ind;
 	private Arena _ar;
+	private ImageIcon pokemon;
 	private gameClient.util.Range2Range _w2f;
 	MyFrame(String a) {
 		super(a);
@@ -44,7 +45,7 @@ public class MyFrame extends JFrame{
 		int w = this.getWidth();
 		int h = this.getHeight();
 		g.clearRect(0, 0, w, h);
-	//	updateFrame();
+		//updateFrame();
 		drawPokemons(g);
 		drawGraph(g);
 		drawAgants(g);
@@ -57,7 +58,6 @@ public class MyFrame extends JFrame{
 		for(int i=0;i<str.size();i++) {
 			g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
 		}
-		
 	}
 	private void drawGraph(Graphics g) {
 		directed_weighted_graph gg = _ar.getGraph();

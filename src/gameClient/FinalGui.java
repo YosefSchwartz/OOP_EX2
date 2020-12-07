@@ -22,12 +22,12 @@ public class FinalGui extends JFrame {
     private static JLabel User_Name_Label;
 
     FinalGui(){
-        initGuy();
+        initGui();
     }
 
-    private void initGuy()
+    private void initGui()
     {
-        this.setSize(w, h);
+        this.setSize(w,h);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         panel=new JPanel();
