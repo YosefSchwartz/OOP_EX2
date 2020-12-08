@@ -7,10 +7,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class FinalGui extends JFrame {
-    public static void main(String[] args) {
-        FinalGui e=new FinalGui();
-        e.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        FinalGui e=new FinalGui();
+//        e.setVisible(true);
+//    }
     private int h=360;
     private int w=728;
     private ImageIcon pokemon;
@@ -34,15 +34,15 @@ public class FinalGui extends JFrame {
         label1=new JLabel();
         panel.setLayout(null);
         this.add(panel);
-        try {
-            playMusic();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            playMusic();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedAudioFileException e) {
+//            e.printStackTrace();
+//        } catch (LineUnavailableException e) {
+//            e.printStackTrace();
+//        }
 //        User_Name_Label = new JLabel("ID");
 //        User_Name_Label.setBounds(10, 20, 80, 25);
 //        UseNameText = new JTextField(20);
@@ -61,7 +61,7 @@ public class FinalGui extends JFrame {
     public void paintComponents(Graphics g)
     {
         super.paintComponents(g);
-        pokemon=new ImageIcon("C://Users//עדן שקורי//IdeaProjects//OOP_EX2//src//gameClient//ash.jpg");
+        pokemon=new ImageIcon("C://Users//עדן שקורי//IdeaProjects//OOP_EX2//src//gameClient//files//ash.jpg");
         Image pokemon1 = pokemon.getImage();
         Image pokemon2 = pokemon1.getScaledInstance(w, h,Image.SCALE_DEFAULT);
         pokemon=new ImageIcon(pokemon2);

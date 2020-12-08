@@ -11,13 +11,11 @@ import gameClient.util.Range2D;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
-public class GameFrame extends JFrame implements ActionListener {
+public class GameFrame extends JFrame {
     private BufferedImage bi;
     private Insets insets;
     private int _ind;
@@ -52,47 +50,45 @@ public class GameFrame extends JFrame implements ActionListener {
         _w2f = Arena.w2f(g,frame);
     }
 
-    public int[] login() {
-        panel = new JPanel();
-        panel.setLayout(null);
-        this.add(panel);
-        ID_Label = new JLabel("ID");
-        ID_Label.setBounds(10, 20, 80, 25);
-        ID_Text = new JTextField(20);
-        ID_Text.setBounds(150, 20, 165, 25);
-        gameNumber_Label = new JLabel("Game number");
-        gameNumber_Label.setBounds(10, 50, 80, 25);
-        gameNumber_Text = new JTextField(2);
-        gameNumber_Text.setBounds(150, 50, 165, 25);
-        panel.add(gameNumber_Label);
-        panel.add(ID_Label);
-        panel.add(ID_Text);
-        panel.add(gameNumber_Text);
-        button = new JButton("login");
-        button.setBounds(50, 110, 80, 25);
-        panel.add(button);
-        button.addActionListener(this);
-        int[] loginArr={ID, gameNumber, mark};
-        //int[] loginArr={333, 11};
-        return loginArr;
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    if(e.getSource()==button) {
-        try {
-            ID = Integer.parseInt(ID_Text.getText());
-            gameNumber = Integer.parseInt(gameNumber_Text.getText());
-            System.out.println("ID: " + ID);
-            System.out.println("game number: " + gameNumber);
-            mark=1;
-            //this.remove(panel);
-        } catch (Exception P) {
-            System.out.println("ERROR in the details");
-        }
-    }
-    }
-
-
+//    public int[] login() {
+//        panel = new JPanel();
+//        panel.setLayout(null);
+//        this.add(panel);
+//        ID_Label = new JLabel("ID");
+//        ID_Label.setBounds(10, 20, 80, 25);
+//        ID_Text = new JTextField(20);
+//        ID_Text.setBounds(150, 20, 165, 25);
+//        gameNumber_Label = new JLabel("Game number");
+//        gameNumber_Label.setBounds(10, 50, 80, 25);
+//        gameNumber_Text = new JTextField(2);
+//        gameNumber_Text.setBounds(150, 50, 165, 25);
+//        panel.add(gameNumber_Label);
+//        panel.add(ID_Label);
+//        panel.add(ID_Text);
+//        panel.add(gameNumber_Text);
+//        button = new JButton("login");
+//        button.setBounds(50, 110, 80, 25);
+//        panel.add(button);
+//        button.addActionListener(this);
+//        int[] loginArr={ID, gameNumber, mark};
+//        //int[] loginArr={333, 11};
+//        return loginArr;
+//    }
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//    if(e.getSource()==button) {
+//        try {
+//            ID = Integer.parseInt(ID_Text.getText());
+//            gameNumber = Integer.parseInt(gameNumber_Text.getText());
+//            System.out.println("ID: " + ID);
+//            System.out.println("game number: " + gameNumber);
+//            mark=1;
+//            //this.remove(panel);
+//        } catch (Exception P) {
+//            System.out.println("ERROR in the details");
+//        }
+//    }
+//    }
         public void paint(Graphics g) {
         int w = this.getWidth();
         int h = this.getHeight();

@@ -5,24 +5,31 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GUI extends JFrame implements ActionListener{
+public class GUI extends JFrame implements ActionListener, Runnable{
     private static JTextField UseNameText;
     private static JLabel User_Name_Label;
     private static JLabel scenario_Label;
     private static JTextField scenarioText;
     private static JPanel panel;
     private static JButton button;
-    private static String UserName;
-    private static int scenario;
+    private static int UserName;
+    public static int scenario;
 
-    private static JFrame frame;
+    public static JFrame frame;
     private static Image image;
     private static Graphics g;
+    private int[] ans;
 
     public static void main(String[] args) {
+       // GUI gg=new GUI();
+    }
+    public GUI() {
+    }
+    public void init() throws InterruptedException {
+        ans=new int[2];
         frame = new JFrame("MyTest");
         frame.setVisible(true);
-        //frame.setResizable(true);
+        frame.validate();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JPanel();
         panel.setLayout(null);
@@ -43,38 +50,41 @@ public class GUI extends JFrame implements ActionListener{
         button = new JButton("login");
         button.setBounds(50, 110, 80, 25);
         panel.add(button);
-        button.addActionListener(new GUI());
-
-    }
-    public void paint(Graphics g)
-    {
-        image=frame.createImage(350,350);
-        g=image.getGraphics();
-        paintComponents(g);
-        g.drawImage(image,0,0,frame);
+        button.addActionListener(this);
+            this.wait();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        UserName = UseNameText.getText();
-        scenario = Integer.parseInt(scenarioText.getText());
-        System.out.println("user name: " + UserName);
-        System.out.println("scenario: " + scenario);
-
+       try {
+            UserName = Integer.parseInt(UseNameText.getText());
+            scenario = Integer.parseInt(scenarioText.getText());
+            System.out.println("user name: " + UserName);
+            System.out.println("scenario: " + scenario);
+            if(scenario>=0 && scenario<24)
+            {
+//               GameFrame _win = new GameFrame("test Ex2");
+//               _win.setSize(1000, 700);
+                frame.setVisible(false);
+            this.notify();
+            }
+        }
+        catch (Exception p)
+        {
+            System.out.println("ERROR");
+            System.out.println(p.getCause());
+        }
     }
 
-    public void paintComponents(Graphics g) {
-        if (scenario >= 0 && scenario < 24) {
-            g.setColor(Color.BLUE);
-            Font font = new Font("BN Loco", Font.PLAIN, 30);
-            g.setFont(font);
-            g.drawString("Login success", 40, 140);
-        } else {
-            g.setColor(Color.red);
-            Font font = new Font("BN Loco", Font.BOLD, 30);
-            g.setFont(font);
-            g.drawString("Invalid game number", 40, 140);
+    @Override
+    public void run() {
+        try {
+            init();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-}
+    }
+
+
 //    public void playMusic() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 //        File musicPath =new File("C:/Users/עדן שקורי/IdeaProjects/OOP_EX2/src/gameClient/pokemon_song.wav");
 //        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
