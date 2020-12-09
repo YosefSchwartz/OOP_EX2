@@ -208,6 +208,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 //Declare Json object - node
                 JSONObject node = new JSONObject();
                 //Insert the data to this object
+
                 node.put("pos", n.getLocation().x() + "," + n.getLocation().y() + "," + n.getLocation().z());
                 node.put("id", n.getKey());
                 //Insert this object to nodes array

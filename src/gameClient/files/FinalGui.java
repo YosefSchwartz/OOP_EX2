@@ -1,4 +1,4 @@
-package gameClient;
+package gameClient.files;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -7,14 +7,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class FinalGui extends JFrame {
-//    public static void main(String[] args) {
-//        FinalGui e=new FinalGui();
-//        e.setVisible(true);
-//    }
+    public static void main(String[] args) {
+        FinalGui e=new FinalGui();
+        e.setVisible(true);
+    }
     private int h=360;
     private int w=728;
     private ImageIcon pokemon;
     private JLabel label1;
+    private JButton unMute;
     private JPanel panel;
     private Graphics gra;
     private Image im;
@@ -27,13 +28,18 @@ public class FinalGui extends JFrame {
 
     private void initGui()
     {
+        Icon UM = new ImageIcon("C://Users//עדן שקורי//IdeaProjects//OOP_EX2//src//gameClient//files//unmute.jpg");
+        unMute = new JButton(UM);
+        unMute.setVisible(true);
+        unMute.setBounds(0, 0, 400, 350);
         this.setSize(w,h);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         panel=new JPanel();
-        label1=new JLabel();
+        //label1=new JLabel();
         panel.setLayout(null);
         this.add(panel);
+        panel.add(unMute);
 //        try {
 //            playMusic();
 //        } catch (IOException e) {

@@ -7,31 +7,34 @@ import api.game_service;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-public class Ex2_Client_Final_Game22 implements Runnable{
-	private static GUI login;
+public class Ex2{
+	public static Object set;
+	private static LoginFrame login;
 	private static Arena _ar;
 	private static GameFrame _win;
-	public static void main(String[] a) throws InterruptedException {
-		login=new GUI();
-		Thread log=new Thread(login);
-		Thread client = new Thread(new Ex2_Client_Final_Game22());
-		log.start();
-		log.join();
-		client.start();
-
+	private static int scenario_num;
+	private static int ID;
+	public static void main(String[] a) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		login=new LoginFrame();
+		login.setVisible(true);
+//		Ex2 ex2=new Ex2();
+//		ex2.setScenario_num(5);
+//		ex2.run();
+//		Thread client = new Thread(new Ex2());
+//		client.start();
 	}
-	
-	@Override
-	public void run() {
-		int scenario_num = login.scenario;
-//		System.out.println("p: "+scenario_num);
-		//int scenario_num=1;
+
+	public static void run() {
+		//scenario_num=1;
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 	//	int id = 999;
 	//	game.login(id);
@@ -39,12 +42,12 @@ public class Ex2_Client_Final_Game22 implements Runnable{
 		String pks = game.getPokemons();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		init(game);
-		//System.out.println("staaaaaaaaaaaaaaaart");
 		game.startGame();
 		int ind=0;
 		long dt=100;
-		
+
 		while(game.isRunning()) {
+			System.out.println("---- "+game.getAgents());
 			moveAgants(game, gg);
 			try {
 				if(ind%1==0) {_win.repaint();}
@@ -60,11 +63,8 @@ public class Ex2_Client_Final_Game22 implements Runnable{
 		System.out.println(res);
 		System.exit(0);
 	}
-	public void RestartGame(int ID, int GameNumber)
-	{
 
-	}
-	/** 
+	/**
 	 * Moves each of the agents along the edge,
 	 * in case the agent is on a node the next destination (next edge) is chosen (randomly).
 	 * @param game
@@ -110,7 +110,7 @@ public class Ex2_Client_Final_Game22 implements Runnable{
 		return ans;
 	}
 
-	private void init(game_service game) {
+	private static void init(game_service game) {
 		String g = game.getGraph();
 		String fs = game.getPokemons();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
@@ -123,8 +123,6 @@ public class Ex2_Client_Final_Game22 implements Runnable{
 		_win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		_win.setSize(1000, 700);
 		_win.update(_ar);
-
-
 		_win.show();
 		String info = game.toString();
 		JSONObject line;
@@ -142,10 +140,17 @@ public class Ex2_Client_Final_Game22 implements Runnable{
 				CL_Pokemon c = cl_fs.get(ind);
 				int nn = c.get_edge().getDest();
 				if(c.getType()<0 ) {nn = c.get_edge().getSrc();}
-				
+
 				game.addAgent(nn);
 			}
 		}
 		catch (JSONException e) {e.printStackTrace();}
 	}
+	public static void setScenario_num(int scenario){
+		scenario_num=scenario;
+	}
+	public static void setID(int id){
+		ID=id;
+	}
+
 }
