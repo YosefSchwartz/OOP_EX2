@@ -1,13 +1,9 @@
 package gameClient.Yosef;
 
-import api.NodeData;
-import api.dw_graph_algorithms;
-import api.geo_location;
-import api.node_data;
+import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Queue;
 
 public class Agent {
@@ -60,6 +56,18 @@ public class Agent {
 
 
 
+    }
+    private double TimetoPok(Pokemon p, directed_weighted_graph gg) {
+        double ratio = p.getEL().getRatio();
+        double w = p.getEL().getEdge().getWeight();
+        double agentSpeed = speed;
+        double TotalSpeed = w / agentSpeed;
+        node_data edgeSrc = gg.getNode(p.getEL().getEdge().getSrc());
+        node_data edgeDest = gg.getNode(p.getEL().getEdge().getDest());
+        double edgeLength = edgeSrc.getLocation().distance(edgeDest.getLocation());
+        double destToPok = edgeLength * ratio;
+        double timetopok = destToPok / TotalSpeed;
+        return timetopok;
     }
 
     public int getId() {

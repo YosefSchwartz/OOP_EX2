@@ -97,7 +97,6 @@ public class EX2 {
             }
         }
     }
-
     private static boolean isOnEdge(Pokemon p, edge_data e) {
         int srcID = e.getSrc();
         int destID = e.getDest();
@@ -136,5 +135,4 @@ public class EX2 {
 //
 //     return 0;
 // }
-
 }
