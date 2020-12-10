@@ -6,10 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EX2 {
+public class EX2{
     private static final double EPS = 0.0001;
     static int sumPokemons;
     static boolean logged_in;
@@ -20,7 +21,7 @@ public class EX2 {
     static List<Agent> agentList = new LinkedList<>();
     static String path;
 
-    public static void main(String[] args) throws JSONException {
+    public static void main(String[] args) throws JSONException, InterruptedException {
         int level_number = 0;
         game_service game = Game_Server_Ex2.getServer(level_number);
         getGameData(game);
@@ -42,39 +43,55 @@ public class EX2 {
 
         createAgentsList(game);
         for (Agent a : agentList) {
-            a.findClosestPokemon(graphAL, pokemonList);
-            game.chooseNextEdge(a.getId(), a.getNextDest());
+            Pokemon closestPokemon = a.findClosestPokemon(graphAL, pokemonList);
+            game.chooseNextEdge(a.getId(), closestPokemon.getDest());
         }
 
         game.startGame();
         int i = 1;
 
-
+        double min = Double.MAX_VALUE;
         while (game.isRunning()) {
 
             for (Pokemon p : pokemonList) {
+                if (p.getAgent().getSrc() == p.getSrc()) {
+                    Agent a = p.getAgent();
+                    double time = a.TimetoPok(p,graphDS);
+                    if(time<min)
+                        min = time;
+                }
                 if (p.getAgent().getPos().distance(p.getPos()) < EPS) {
                     System.out.println("I EAT POKEMON");
                     game.move();
                 }
             }
-            //TODO insert ratio principle
 
             for (int j = 0; j < agentList.size(); j++) {
                 Agent a = agentList.get(j);
+                if(a.getDest()!=-1) {
+                    double time = a.timeNodeToNode(a.getSrc(), a.getDest(), graphDS);
+                    if (time < min)
+                        min = time;
+                }
+                //TODO -1
+                if(a.getDest()!=-1){
                 if (a.getPos().distance(graphDS.getNode(a.getDest()).getLocation()) < (EPS)) {
-                    System.out.println("i came to node: "+ a.getDest());
+                    System.out.println("i came to node: " + a.getDest());
                     int dest = a.getNextDest();
-                    System.out.println("THE NEXT DESTINATION IS: " +dest);
+                    System.out.println("THE NEXT DESTINATION IS: " + dest);
                     if (dest != -1) {
                         game.chooseNextEdge(a.getId(), dest);
                     } else {
                         insertNewPokemons(game.getPokemons());
-                        a.findClosestPokemon(graphAL, pokemonList);
-                        game.chooseNextEdge(a.getId(),a.getDest());
+                        Pokemon p = a.findClosestPokemon(graphAL, pokemonList);
+                        game.chooseNextEdge(a.getId(), a.getDest());
                         game.move();
                     }
                     System.out.println(i + ") " + "Agent " + a.getId() + ") " + "move to node: " + a.getDest());
+                }
+
+                    Thread.sleep((long) min);
+                    game.move();
                     i++;
                 }
             }
@@ -122,10 +139,10 @@ public class EX2 {
         JSONArray pokemonArr = pokemons.getJSONArray("Pokemons");
         for (int i = 0; i < pokemonArr.length(); i++) {
             Pokemon pok = new Pokemon(pokemonArr.getJSONObject(i).getJSONObject("Pokemon"));
-            edgeData e=(edgeData) (graphDS.getEdge(pok.src, pok.dest));
-            edgeData.edgeLocation edgeLocation=new edgeData.edgeLocation(pok.getPos(),e);
-            pok.setEL(edgeLocation);
             getSrcAndDest(pok);
+            edgeData e=(edgeData) (graphDS.getEdge(pok.src, pok.dest));
+            edgeData.edgeLocation edgelocation=  new edgeData.edgeLocation(pok.getPos(),e);
+            pok.setEL(edgelocation);
             newP.add(pok);
         }
         pokemonList = newP;

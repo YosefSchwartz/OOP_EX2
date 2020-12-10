@@ -59,7 +59,7 @@ public class Agent {
      * @param ga
      * @param poks
      */
-    public void findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
+    public Pokemon findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
         Pokemon closestPok = null;
         double dist = Double.MAX_VALUE;
 
@@ -82,8 +82,18 @@ public class Agent {
         }
         myPath.add(closestPok.getDest());
 //        dest= myPath.peek();
+        return closestPok;
     }
-    private double TimetoPok(Pokemon p, directed_weighted_graph gg) {
+    public double timeNodeToNode(int srcID, int destID, directed_weighted_graph g){
+        node_data src = g.getNode(srcID);
+        node_data dest = g.getNode(destID);
+        double w = g.getEdge(srcID,destID).getWeight();
+        double distance = src.getLocation().distance(dest.getLocation());
+        double totalSpeed = w/speed;
+        return distance/totalSpeed;
+    }
+
+    public double TimetoPok(Pokemon p, directed_weighted_graph gg) {
         double ratio = p.getEL().getRatio();
         double w = p.getEL().getEdge().getWeight();
         double agentSpeed = speed;
