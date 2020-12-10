@@ -4,9 +4,12 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class Agent {
+
     private int id;
     private double value;
     private int src;
@@ -14,7 +17,8 @@ public class Agent {
     private double speed;
     private geo_location pos;
 
-    Queue<node_data> myPath = null;
+    Queue<Integer> myPath = new LinkedList<>();
+
 
 
     public Agent(int id,double value, int src, int dest, double speed, geo_location pos){
@@ -43,19 +47,41 @@ public class Agent {
 
     public void updateDest(int num){
         if(myPath.peek()!=null)
-            this.dest = myPath.poll().getKey();
+            this.dest = myPath.poll();
         else
             this.dest = -1;
     }
 
+    /**
+     * serach for closest pokemon for this agents,
+     * and remove this pokemon from pokemon list
+     *
+     * @param ga
+     * @param poks
+     */
+    public void findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
+        Pokemon closestPok = null;
+        double dist = Double.MAX_VALUE;
 
-    public void findClosestPokemon (dw_graph_algorithms ga, Pokemon pok){
-        int destPlus = pok.getDest();
-        int dest = pok.getSrc();
+        for(Pokemon p:poks) {
+            if(p.agent == null) {
+                if (ga.shortestPathDist(src, p.getSrc()) < dist) {
+                    closestPok = p;
+                    dist = ga.shortestPathDist(src, p.getSrc());
+                }
+            }
+            //TODO need check if null pointer exist
+//            else
+//                return;
+        }
+        closestPok.setAgent(this);
 
-
-
-
+        List<node_data> shortestPath = ga.shortestPath(src,closestPok.getSrc());
+        for(int i = 0;i<shortestPath.size();i++) {
+            myPath.add(shortestPath.get(i).getKey());
+        }
+        myPath.add(closestPok.getDest());
+//        dest= myPath.peek();
     }
     private double TimetoPok(Pokemon p, directed_weighted_graph gg) {
         double ratio = p.getEL().getRatio();
@@ -118,11 +144,25 @@ public class Agent {
         this.pos = pos;
     }
 
-    public Queue<node_data> getMyPath() {
+    public Queue<Integer> getMyPath() {
         return myPath;
     }
 
-    public void setMyPath(Queue<node_data> myPath) {
+    public void setMyPath(Queue<Integer> myPath) {
         this.myPath = myPath;
+    }
+
+    public boolean hasNext() {
+        return (this.myPath.peek() != null);
+    }
+
+    public int getNextDest() {
+        this.src = dest;
+        if(myPath.peek()!=null)
+            dest = myPath.poll();
+        else
+            dest = -1;
+
+        return dest;
     }
 }

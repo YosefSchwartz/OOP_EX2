@@ -7,14 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Pokemon {
-    static int count = 0;
     private double value;
     private int type;
-    private int id;
     private geo_location pos;
     int src;
     int dest;
     private edgeData.edgeLocation EL;
+    Agent agent;
 
     public Pokemon(double value, int type, geo_location pos)
     {
@@ -75,7 +74,6 @@ public class Pokemon {
 
     //Create pokemon from JSON Object
     public Pokemon(JSONObject pokObj) throws JSONException {
-        this.id = count;
         this.value=pokObj.getDouble("value");
         this.type= pokObj.getInt("type");
         String pos = pokObj.getString("pos");
@@ -85,8 +83,16 @@ public class Pokemon {
             geoL[j] = Double.parseDouble(locST[j]);
         geo_location location = new NodeData.geoLocation(geoL[0], geoL[1], geoL[2]);
         this.pos=location;
+        agent=null;
     }
 
 
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
+
+    public Agent getAgent(){
+        return agent;
+    }
 }
 

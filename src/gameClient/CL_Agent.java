@@ -122,7 +122,8 @@ public class CL_Agent {
 		public int getNextNode() {
 			int ans = -2;
 			if(this._curr_edge==null) {
-				ans = -1;}
+				ans = -1;
+			}
 			else {
 				ans = this._curr_edge.getDest();
 			}
@@ -142,6 +143,7 @@ public class CL_Agent {
 		public void set_curr_fruit(CL_Pokemon curr_fruit) {
 			this._curr_fruit = curr_fruit;
 		}
+
 		public void set_SDT(long ddtt) {
 			long ddt = ddtt;
 			if(this._curr_edge!=null) {
@@ -154,7 +156,7 @@ public class CL_Agent {
 					 dist = _curr_fruit.getLocation().distance(this._pos);
 				}
 				double norm = dist/de;
-				double dt = w*norm / this.getSpeed(); 
+				double dt = w*norm / this.getSpeed();
 				ddt = (long)(1000.0*dt);
 			}
 			this.set_sg_dt(ddt);

@@ -40,12 +40,12 @@ public class SimpleGameClient {
 		while(game.isRunning()) {
 			long t = game.timeToEnd();
 			String lg = game.move();
-//			System.out.println("--------------------------");
 //			System.out.println(lg);
+//			break;
 			List<CL_Agent> log = Arena.getAgents(lg, gg);
 			for(int a=0;a< log.size();a++) {
 				CL_Agent r = log.get(a);
-				int dest = r.getNextNode();
+				int dest = r.getNextNode();//****
 				int src = r.getSrcNode();
 				int id = r.getID();
 				if(dest==-1) {
