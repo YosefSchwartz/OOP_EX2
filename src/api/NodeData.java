@@ -91,7 +91,7 @@ public class NodeData implements node_data, Comparable<Object> {
         {
             x=other.x();
             y=other.y();
-            z=other.y();
+            z=other.z();
         }
         public geoLocation(double x, double y, double z)
         {
@@ -116,7 +116,14 @@ public class NodeData implements node_data, Comparable<Object> {
 
         @Override
         public double distance(geo_location g) {
-            return Math.sqrt(Math.pow((this.x - g.x()), 2) + Math.pow((this.y - g.y()), 2) + Math.pow(this.z - g.z(), 2));
+            double dx = this.x() - g.x();
+            double dy = this.y() - g.y();
+            double dz = this.z() - g.z();
+            double t = (dx*dx+dy*dy+dz*dz);
+            return Math.sqrt(t);
+        }
+        public String toString(){
+            return x+","+y+","+z;
         }
     }
 }

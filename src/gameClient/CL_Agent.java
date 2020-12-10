@@ -59,7 +59,10 @@ public class CL_Agent {
 			}
 		}
 		//@Override
-		public int getSrcNode() {return this._curr_node.getKey();}
+		public int getSrcNode() {
+			return this._curr_node.getKey();
+		}
+
 		public String toJSON() {
 			int d = this.getNextNode();
 			String ans = "{\"Agent\":{"

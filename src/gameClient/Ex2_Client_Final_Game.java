@@ -16,7 +16,11 @@ import java.util.List;
 public class Ex2_Client_Final_Game implements Runnable{
 	private static GameFrame _win;
 	private static Arena _ar;
-	int[] loginRes=new int[3];
+	private static int[] loginRes=new int[3];
+
+
+
+
 	public static void main(String[] a) {
 		Thread client = new Thread(new Ex2_Client_Final_Game());
 		client.start();
@@ -28,8 +32,8 @@ public class Ex2_Client_Final_Game implements Runnable{
 		_win.setSize(1000, 700);
 		//loginRes=_win.login();
 		System.out.println("first: "+loginRes[0]+", second: "+loginRes[1]);
-		//int scenario_num = loginRes[1];
-		int scenario_num=1;
+		int scenario_num = loginRes[1];
+		//int scenario_num=1;
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 	//	int id = 999;
 	//	game.login(id);
