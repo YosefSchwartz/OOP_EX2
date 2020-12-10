@@ -42,7 +42,7 @@ public class DWGraph_DS implements directed_weighted_graph {
     public void connect(int src, int dest, double w) {
         if (!(graph.containsKey(src)) || !(graph.containsKey(dest)) || getEdge(src, dest) != null)
             return;
-        edge_data e = new edgeData(src, dest, w);
+        edge_data e = new edgeData(getNode(src), getNode(dest), w);
         edges.get(src).put(dest, e);
         edgeNum++;
         MC++;
@@ -116,83 +116,6 @@ public class DWGraph_DS implements directed_weighted_graph {
             s += "\n";
         }
         return s;
-    }
-//    public String toString(){
-//        String g="";
-//        for ( node_data n: getV())
-//            g+=n+ ", edges: "+ getE(n.getKey())+"\n";
-//        return g;
-//    }
-
-    private static class edgeData implements edge_data {
-        int src;
-        int dest;
-        double weight;
-        String info;
-        int tag;
-
-        public edgeData(int src, int dest, double weight) {
-            this.src = src;
-            this.dest = dest;
-            this.weight = weight;
-            info = null;
-            tag = 0;
-        }
-
-        @Override
-        public int getSrc() {
-            return src;
-        }
-
-        @Override
-        public int getDest() {
-            return dest;
-        }
-
-        @Override
-        public double getWeight() {
-            return weight;
-        }
-
-        @Override
-        public String getInfo() {
-            return info;
-        }
-
-        @Override
-        public void setInfo(String s) {
-            this.info = s;
-        }
-
-        @Override
-        public int getTag() {
-            return tag;
-        }
-
-        @Override
-        public void setTag(int t) {
-            this.tag = t;
-        }
-    }
-
-    private static class edgeLocation implements edge_location {
-        edgeData edge;
-        double ratio;
-
-        public edgeLocation() {
-            edge = null;
-            ratio = 0;
-        }
-
-        @Override
-        public edge_data getEdge() {
-            return edge;
-        }
-
-        @Override
-        public double getRatio() {
-            return ratio;
-        }
     }
 
 }
