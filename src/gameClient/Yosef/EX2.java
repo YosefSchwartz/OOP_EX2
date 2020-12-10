@@ -2,10 +2,10 @@ package gameClient.Yosef;
 
 import Server.Game_Server_Ex2;
 import api.*;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -130,6 +130,11 @@ public class EX2 {
 //        if(type>0 && src>dest) {return false;}
 //        return isOnEdge(p,src, dest, g);
 //    }
-
+// private double TimeToPok(Pokemon pok, Agent agent)
+// {
+//     double AgentSpeed =agent ;
+//
+//     return 0;
+// }
 
 }

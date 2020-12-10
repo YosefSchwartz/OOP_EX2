@@ -21,9 +21,6 @@ public class Agent {
     Queue<node_data> myPath = null;
 
 
-
-
-
     public Agent(int id,double value, int src, int dest, double speed, geo_location pos){
         this.id = id;
         this.value=value;

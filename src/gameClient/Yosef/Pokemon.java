@@ -1,8 +1,8 @@
 package gameClient.Yosef;
 
 import api.NodeData;
+import api.edgeData;
 import api.geo_location;
-import api.node_data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,12 +14,14 @@ public class Pokemon {
     private geo_location pos;
     int src;
     int dest;
+    private edgeData.edgeLocation EL;
 
     public Pokemon(double value, int type, geo_location pos)
     {
         this.value=value;
         this.type=type;
         this.pos=pos;
+        this.EL=null;
     }
 
     public double getValue() {
@@ -61,6 +63,15 @@ public class Pokemon {
     public void setDest(int dest) {
         this.dest = dest;
     }
+    public void setEL(edgeData.edgeLocation el)
+    {
+        EL=el;
+    }
+    public edgeData.edgeLocation getEL()
+    {
+        return EL;
+    }
+
 
     //Create pokemon from JSON Object
     public Pokemon(JSONObject pokObj) throws JSONException {
