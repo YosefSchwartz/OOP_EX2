@@ -122,6 +122,9 @@ public class EX2 {
         JSONArray pokemonArr = pokemons.getJSONArray("Pokemons");
         for (int i = 0; i < pokemonArr.length(); i++) {
             Pokemon pok = new Pokemon(pokemonArr.getJSONObject(i).getJSONObject("Pokemon"));
+            edgeData e=(edgeData) (graphDS.getEdge(pok.src, pok.dest));
+            edgeData.edgeLocation edgeLocation=new edgeData.edgeLocation(pok.getPos(),e);
+            pok.setEL(edgeLocation);
             getSrcAndDest(pok);
             newP.add(pok);
         }

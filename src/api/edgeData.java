@@ -59,7 +59,7 @@ public class edgeData implements edge_data {
             return dest;
         }
 
-    public class edgeLocation implements edge_location {
+    public static class edgeLocation implements edge_location {
         geo_location point;
         edgeData edge;
         double ratio;
