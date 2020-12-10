@@ -4,6 +4,7 @@ import api.directed_weighted_graph;
 import api.edge_data;
 import api.game_service;
 import api.node_data;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -21,22 +22,26 @@ public class SimpleGameClient {
 	}
 	public static void test1() {
 
-		game_service game = Game_Server_Ex2.getServer(2); // you have [0,23] games
+		game_service game = Game_Server_Ex2.getServer(22); // you have [0,23] games
 		String g = game.getGraph();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		//game.login(12345);  // please use your ID only as a key. uncomment this will upload your results to the server
-		node_data nn = gg.getNode(10);
+		node_data nn = gg.getNode(2);
 		String info = game.toString();
 		System.out.println(info);
 		System.out.println(g);
 		System.out.println(game.getPokemons());
 		int src_node = 0;  // arbitrary node, you should start at one of the fruits
 		game.addAgent(src_node);
+		game.addAgent(src_node);
+		game.addAgent(0);
 		game.startGame();
 		int i=0;
 		while(game.isRunning()) {
 			long t = game.timeToEnd();
 			String lg = game.move();
+//			System.out.println("--------------------------");
+//			System.out.println(lg);
 			List<CL_Agent> log = Arena.getAgents(lg, gg);
 			for(int a=0;a< log.size();a++) {
 				CL_Agent r = log.get(a);

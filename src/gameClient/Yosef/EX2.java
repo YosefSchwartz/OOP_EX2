@@ -17,6 +17,7 @@ public class EX2 {
     static dw_graph_algorithms graphAL = new DWGraph_Algo();
     static directed_weighted_graph graphDS;
     static List<Pokemon> pokemonList = new LinkedList<>();
+    static List<Agent> agentList = new LinkedList<>();
     static String path;
 
     public static void main(String[] args) throws JSONException {
@@ -25,12 +26,9 @@ public class EX2 {
         getGameData(game);
         graphAL.load(path);
         graphDS = graphAL.getGraph();
-        System.out.println(graphDS.edgeSize());
         System.out.println(game);
-
         updatePokemonList(game);
-
-
+        createAgentsList(game);
 
         //Locate the agents near to the pokemons
         for(int i=0;i<sumAgents;i++){
@@ -38,6 +36,15 @@ public class EX2 {
                 game.addAgent(pokemonList.get(i).getSrc());
             else
                 game.addAgent(graphDS.getV().stream().findFirst().get().getKey());
+        }
+        System.out.println(game.getAgents());
+
+        //game.startGame();
+        while(game.isRunning()) {
+            for(Agent ag:agentList)
+            {
+
+            }
         }
 
 
@@ -47,6 +54,15 @@ public class EX2 {
         System.out.println(game.getAgents());
         System.out.println(game.getPokemons());
 
+    }
+
+    private static void createAgentsList(game_service game) throws JSONException {
+        JSONObject agents = new JSONObject(game.getAgents());
+        JSONArray agentsArr = agents.getJSONArray("Agents");
+        for(int i =0;i>agentsArr.length();i++) {
+            Agent ag = new Agent(agentsArr.getJSONObject(i).getJSONObject("Agent"));
+            agentList.add(ag);
+        }
     }
 
     private static void getGameData(game_service game) throws JSONException {
@@ -62,12 +78,10 @@ public class EX2 {
         List<Pokemon> newP = new LinkedList<>();
         JSONObject pokemons = new JSONObject(game.getPokemons());
         JSONArray pokemonArr = pokemons.getJSONArray("Pokemons");
-        for(int i = 0;i<pokemonArr.length();i++)
-        {
+        for(int i = 0;i<pokemonArr.length();i++) {
             Pokemon pok = new Pokemon(pokemonArr.getJSONObject(i).getJSONObject("Pokemon"));
             getSrcAndDest(pok);
             newP.add(pok);
-
         }
         pokemonList = newP;
     }

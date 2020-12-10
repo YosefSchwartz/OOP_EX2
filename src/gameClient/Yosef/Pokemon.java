@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Pokemon {
+    static int count = 0;
     private double value;
     private int type;
+    private int id;
     private geo_location pos;
     int src;
     int dest;
@@ -62,6 +64,7 @@ public class Pokemon {
 
     //Create pokemon from JSON Object
     public Pokemon(JSONObject pokObj) throws JSONException {
+        this.id = count;
         this.value=pokObj.getDouble("value");
         this.type= pokObj.getInt("type");
         String pos = pokObj.getString("pos");
