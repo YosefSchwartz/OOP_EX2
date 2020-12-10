@@ -167,13 +167,12 @@ public class LoginFrame extends JFrame implements ActionListener {
                 ID = Integer.parseInt(ID_Text.getText());
                 GameNumber = GameOpt.getSelectedIndex();
                     // clip.stop();
-                    Ex2 ex2=new Ex2();
                     JOptionPane.showMessageDialog(this, "Let's start the game");
-                    System.out.println("Mark: "+ Mark);
                     this.dispose();
-//                ex2.setID(ID);
-//                ex2.setScenario_num(GameNumber);
-//                ex2.run();
+                    Ex2.getEx2().setID(ID);
+                    Ex2.getEx2().setScenario_num(GameNumber);
+                    //Ex2.ex2.run();
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Invalid ID\nPlease enter again");
                 System.out.println("ERROR, enter again");
@@ -185,15 +184,16 @@ public class LoginFrame extends JFrame implements ActionListener {
             if((countMark%2)!=0) Mark=1;
             else Mark=0;
         }
-//        if(e.getSource()==unMute) {
-//            unMute.setVisible(false);
-//            Mute.setVisible(true);
-//        }
-//        if(e.getSource()==Mute) {
-//            unMute.setVisible(true);
-//            Mute.setVisible(false);
-//        }
+        if(e.getSource()==unMute) {
+            unMute.setVisible(false);
+            Mute.setVisible(true);
+        }
+        if(e.getSource()==Mute) {
+            unMute.setVisible(true);
+            Mute.setVisible(false);
+        }
     }
+
 
     public void playMusic() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         File musicPath = new File("C:/Users/עדן שקורי/IdeaProjects/OOP_EX2/src/gameClient/files/pokemon_song.wav");

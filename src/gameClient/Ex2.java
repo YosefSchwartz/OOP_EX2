@@ -23,9 +23,18 @@ public class Ex2{
 	private static GameFrame _win;
 	private static int scenario_num;
 	private static int ID;
+	public static Ex2 ex2;
 	public static void main(String[] a) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		login=new LoginFrame();
 		login.setVisible(true);
+        while (ID==0)
+		{
+			System.out.println("");
+		}
+		ex2.run();
+//		ex2.setID(ID);
+//		ex2.setScenario_num(2);
+
 //		Ex2 ex2=new Ex2();
 //		ex2.setScenario_num(5);
 //		ex2.run();
@@ -35,6 +44,7 @@ public class Ex2{
 
 	public static void run() {
 		//scenario_num=1;
+		System.out.println("game number: "+ scenario_num);
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
 	//	int id = 999;
 	//	game.login(id);
@@ -152,5 +162,7 @@ public class Ex2{
 	public static void setID(int id){
 		ID=id;
 	}
-
+	public static Ex2 getEx2() {
+		return ex2;
+	}
 }
