@@ -24,12 +24,14 @@ public class Ex2{
 	private static int scenario_num;
 	private static int ID;
 	public static Ex2 ex2;
+	static int numeee;
+
 	public static void main(String[] a) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		login=new LoginFrame();
 		login.setVisible(true);
-        while (ID==0)
-		{
-			System.out.println("");
+        while (ID==0) {
+//        	numeee = 0;
+			System.out.print("");
 		}
 		ex2.run();
 //		ex2.setID(ID);

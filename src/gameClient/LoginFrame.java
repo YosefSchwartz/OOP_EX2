@@ -59,7 +59,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         setButtons();
         setPanel();
         this.add(panel);
-       // playMusic();
+//        playMusic();
     }
 
     public void paint(Graphics g) {
@@ -91,7 +91,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         GameNumber_Label.setFont(f1);
         GameNumber_Label.setBounds(175, 120, 200, 20);
         String[] s={"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-                "14", "15", "16", "17", "18", "19", "10", "21", "22", "23", "24"};
+                "14", "15", "16", "17", "18", "19", "10", "21", "22", "23"};
         GameOpt=new JComboBox(s);
         GameOpt.setBackground(Color.white);
         GameOpt.setFont(f2);
@@ -120,7 +120,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 //      SaveGrade.setBackground();
 
         //Mute
-//        ImageIcon M = new ImageIcon("C://Users//עדן שקורי//IdeaProjects//OOP_EX2//src//gameClient//files//mute.jpg");
+//        ImageIcon M = new ImageIcon("src//gameClient//files//mute.jpg");
 //        try {
 //            Mute = new JButton(M);
 //            Mute.setBounds(195, 220, 10, 10);
@@ -130,7 +130,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 //        Mute.addActionListener(this);
 
         //unMute
-//        Image UM = new ImageIcon(("C://Users//עדן שקורי//IdeaProjects//OOP_EX2//src//gameClient//files//unmute.jpg")).getImage();
+//        Image UM = new ImageIcon(("src//gameClient//files//unmute.jpg")).getImage();
 //        unMute = new JButton("");
 //        unMute.setIcon(new ImageIcon(UM));
 //        unMute.setVisible(true);
@@ -153,7 +153,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        pokemon = new ImageIcon("C://Users//עדן שקורי//IdeaProjects//OOP_EX2//src//gameClient//files//ash.jpg");
+        pokemon = new ImageIcon("src//gameClient//files//ash.jpg");
         Image pokemon1 = pokemon.getImage();
         Image pokemon2 = pokemon1.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT);
         pokemon = new ImageIcon(pokemon2);
@@ -196,7 +196,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 
     public void playMusic() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        File musicPath = new File("C:/Users/עדן שקורי/IdeaProjects/OOP_EX2/src/gameClient/files/pokemon_song.wav");
+        File musicPath = new File("src/gameClient/files/pokemon_song.wav");
         AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
         clip = AudioSystem.getClip();
         clip.open(audioInput);
