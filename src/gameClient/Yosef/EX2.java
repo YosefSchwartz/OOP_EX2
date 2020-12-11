@@ -20,6 +20,7 @@ public class EX2{
     static List<Pokemon> pokemonList = new LinkedList<>();
     static List<Agent> agentList = new LinkedList<>();
     static String path;
+    static JSONArray moveData;
 
     public static void main(String[] args) throws JSONException, InterruptedException {
         int level_number = 0;
@@ -44,58 +45,164 @@ public class EX2{
         createAgentsList(game);
         for (Agent a : agentList) {
             Pokemon closestPokemon = a.findClosestPokemon(graphAL, pokemonList);
-            game.chooseNextEdge(a.getId(), closestPokemon.getDest());
+            a.setPokemon(closestPokemon);
+            a.setDest(a.getPokemon().getDest());
+            game.chooseNextEdge(a.getId(),a.getDest());
         }
 
         game.startGame();
         int i = 1;
-
-        double min = Double.MAX_VALUE;
+        long min = Long.MAX_VALUE;
         while (game.isRunning()) {
+            //TODO eden
+            /*
+            in this line, we have 1 agents and his src is 9 and destination is 8, i do just
+            while(isRunning()) and move() and print his position' i see this position is constant!
 
-            for (Pokemon p : pokemonList) {
-                if (p.getAgent().getSrc() == p.getSrc()) {
-                    Agent a = p.getAgent();
-                    double time = a.TimetoPok(p,graphDS);
-                    if(time<min)
-                        min = time;
-                }
-                if (p.getAgent().getPos().distance(p.getPos()) < EPS) {
-                    System.out.println("I EAT POKEMON");
-                    game.move();
-                }
-            }
+            print:
+            35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
+35.19597880064568,32.10154696638656,0.0
 
-            for (int j = 0; j < agentList.size(); j++) {
-                Agent a = agentList.get(j);
-                if(a.getDest()!=-1) {
-                    double time = a.timeNodeToNode(a.getSrc(), a.getDest(), graphDS);
-                    if (time < min)
-                        min = time;
-                }
-                //TODO -1
-                if(a.getDest()!=-1){
-                if (a.getPos().distance(graphDS.getNode(a.getDest()).getLocation()) < (EPS)) {
-                    System.out.println("i came to node: " + a.getDest());
-                    int dest = a.getNextDest();
-                    System.out.println("THE NEXT DESTINATION IS: " + dest);
-                    if (dest != -1) {
-                        game.chooseNextEdge(a.getId(), dest);
-                    } else {
-                        insertNewPokemons(game.getPokemons());
-                        Pokemon p = a.findClosestPokemon(graphAL, pokemonList);
-                        game.chooseNextEdge(a.getId(), a.getDest());
-                        game.move();
-                    }
-                    System.out.println(i + ") " + "Agent " + a.getId() + ") " + "move to node: " + a.getDest());
-                }
+             */
+            game.move();
+            for(Agent a:agentList)
+                System.out.println(a.getPos());
+//
+////            if(i==1)
+////            {
+//            //System.out.println(game.getGraph());
+//            moveData = update(game.move());
+////            }
+//            insertNewPokemons(game.getPokemons());
+////            updateDestinations();
+//            for(int j =0;j<moveData.length();j++) {
+//                JSONObject o = moveData.getJSONObject(j);
+//                Agent a = getAgentFromMove(o);
+//                System.out.println(a.getPos());
+//
+//                if(a.getPos().distance(a.getPokemon().getPos())<EPS) {
+//                    //Thread.sleep(10);
+//                    a.findClosestPokemon(graphAL,pokemonList);
+//                }
+//                if(a.getPos().distance(graphDS.getNode(a.getDest()).getLocation())<EPS){
+//                    a.getNextDest();
+//                    game.chooseNextEdge(a.getId(),a.getDest());
+//                    System.out.println(i+") Agent #"+a.getId()+" move to node: "+a.getDest());
+//                }
+//
+//                if(a.getSrc() == a.getPokemon().getSrc()) {
+//                   long timeToPokemon = (long) a.TimetoPok(a.getPokemon(),graphDS);
+//                   if(timeToPokemon<min)
+//                       min=timeToPokemon;
+//               } else {
+//                   long timeToNextNode =(long) a.timeNodeToNode(a.getSrc(),a.getDest(),graphDS);
+//                   if(timeToNextNode<min)
+//                       min=timeToNextNode;
+//               }
+//            }
 
-                    Thread.sleep((long) min);
-                    game.move();
+            //Thread.sleep(min);
+
+
+//
+//
+//            for (Pokemon p : pokemonList) {
+//                if (p.getAgent().getSrc() == p.getSrc()) {
+//                    Agent a = p.getAgent();
+//                    double time = a.TimetoPok(p,graphDS);
+//                    if(time<min)
+//                        min = time;
+//                }
+//                if (p.getAgent().getPos().distance(p.getPos()) < EPS) {
+//                    System.out.println("I EAT POKEMON");
+//                    game.move();
+//                }
+//            }
+//
+//            for (int j = 0; j < agentList.size(); j++) {
+//                Agent a = agentList.get(j);
+//                if(a.getDest()!=-1) {
+//                    double time = a.timeNodeToNode(a.getSrc(), a.getDest(), graphDS);
+//                    if (time < min)
+//                        min = time;
+//                }
+//                //TODO -1
+//                if(a.getDest()!=-1){
+//                if (a.getPos().distance(graphDS.getNode(a.getDest()).getLocation()) < (EPS)) {
+//                    System.out.println("i came to node: " + a.getDest());
+//                    int dest = a.getNextDest();
+//                    System.out.println("THE NEXT DESTINATION IS: " + dest);
+//                    if (dest != -1) {
+//                        game.chooseNextEdge(a.getId(), dest);
+//                    } else {
+//                        insertNewPokemons(game.getPokemons());
+//                        Pokemon p = a.findClosestPokemon(graphAL, pokemonList);
+//                        game.chooseNextEdge(a.getId(), a.getDest());
+//                        game.move();
+//                    }
+//                    System.out.println(i + ") " + "Agent " + a.getId() + ") " + "move to node: " + a.getDest());
+//                }
+//
+//                    Thread.sleep((long) min);
+//                    game.move();
                     i++;
                 }
             }
+
+    private static void updateDestinations() {
+        for(Agent a:agentList){
+            if(a.getDest()==-1)
+                a.getNextDest();
         }
+    }
+//        }
+//    }
+
+    private static Agent getAgentFromMove(JSONObject o) throws JSONException {
+        JSONObject obj = o.getJSONObject("Agent");
+        ActiveAgent a = new ActiveAgent(obj);
+        for(Agent ag:agentList)
+            if (ag.getId() == a.getId()) {
+                ag.setPos(a.getPos());
+                return ag;
+            }
+            return null;
+        }
+
+    private static JSONArray update(String s) throws JSONException {
+        JSONObject obj = new JSONObject(s);
+        JSONArray moveData = obj.getJSONArray("Agents");
+        return moveData;
+//        ActiveAgent a = new ActiveAgent(s);
+//        for(Agent ag:agentList)
+//            if(ag.getId()==a.getId())
+//                return ag;
     }
 
     private static void insertNewPokemons(String pokemons) throws JSONException {

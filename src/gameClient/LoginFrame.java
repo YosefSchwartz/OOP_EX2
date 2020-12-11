@@ -59,7 +59,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         setButtons();
         setPanel();
         this.add(panel);
-//        playMusic();
+        playMusic();
     }
 
     public void paint(Graphics g) {

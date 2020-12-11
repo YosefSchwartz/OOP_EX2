@@ -16,6 +16,7 @@ public class Agent {
     private int dest;
     private double speed;
     private geo_location pos;
+    Pokemon pokemon;
 
     Queue<Integer> myPath = new LinkedList<>();
 
@@ -28,6 +29,14 @@ public class Agent {
         this.dest=dest;
         this.speed=speed;
         this.pos=pos;
+    }
+
+    public Pokemon getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(Pokemon pokemon) {
+        this.pokemon = pokemon;
     }
 
     public Agent(JSONObject agObj)throws JSONException {
@@ -43,6 +52,7 @@ public class Agent {
                 geoL[j] = Double.parseDouble(locST[j]);
             geo_location location = new NodeData.geoLocation(geoL[0], geoL[1], geoL[2]);
             this.pos=location;
+            pokemon = null;
     }
 
     public void updateDest(int num){
@@ -166,13 +176,12 @@ public class Agent {
         return (this.myPath.peek() != null);
     }
 
-    public int getNextDest() {
+    public void getNextDest() {
+        if(dest == -1)
         this.src = dest;
         if(myPath.peek()!=null)
             dest = myPath.poll();
         else
             dest = -1;
-
-        return dest;
     }
 }
