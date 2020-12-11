@@ -10,7 +10,7 @@ import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EX2{
+public class EX2 {
     private static final double EPS = 0.0001;
     static int sumPokemons;
     static boolean logged_in;
@@ -47,7 +47,7 @@ public class EX2{
             Pokemon closestPokemon = a.findClosestPokemon(graphAL, pokemonList);
             a.setPokemon(closestPokemon);
             a.setDest(a.getPokemon().getDest());
-            game.chooseNextEdge(a.getId(),a.getDest());
+            game.chooseNextEdge(a.getId(), a.getDest());
         }
 
         game.startGame();
@@ -90,8 +90,9 @@ public class EX2{
 35.19597880064568,32.10154696638656,0.0
 
              */
-            game.move();
-            for(Agent a:agentList)
+            String s = game.move();
+            regfreshLocation(s);
+            for (Agent a : agentList) {
                 System.out.println(a.getPos());
 //
 ////            if(i==1)
@@ -127,7 +128,7 @@ public class EX2{
 //               }
 //            }
 
-            //Thread.sleep(min);
+                //Thread.sleep(min);
 
 
 //
@@ -171,13 +172,14 @@ public class EX2{
 //
 //                    Thread.sleep((long) min);
 //                    game.move();
-                    i++;
-                }
+                i++;
             }
+        }
+    }
 
     private static void updateDestinations() {
-        for(Agent a:agentList){
-            if(a.getDest()==-1)
+        for (Agent a : agentList) {
+            if (a.getDest() == -1)
                 a.getNextDest();
         }
     }
@@ -187,13 +189,13 @@ public class EX2{
     private static Agent getAgentFromMove(JSONObject o) throws JSONException {
         JSONObject obj = o.getJSONObject("Agent");
         ActiveAgent a = new ActiveAgent(obj);
-        for(Agent ag:agentList)
+        for (Agent ag : agentList)
             if (ag.getId() == a.getId()) {
                 ag.setPos(a.getPos());
                 return ag;
             }
-            return null;
-        }
+        return null;
+    }
 
     private static JSONArray update(String s) throws JSONException {
         JSONObject obj = new JSONObject(s);
@@ -247,8 +249,8 @@ public class EX2{
         for (int i = 0; i < pokemonArr.length(); i++) {
             Pokemon pok = new Pokemon(pokemonArr.getJSONObject(i).getJSONObject("Pokemon"));
             getSrcAndDest(pok);
-            edgeData e=(edgeData) (graphDS.getEdge(pok.src, pok.dest));
-            edgeData.edgeLocation edgelocation=  new edgeData.edgeLocation(pok.getPos(),e);
+            edgeData e = (edgeData) (graphDS.getEdge(pok.src, pok.dest));
+            edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(pok.getPos(), e);
             pok.setEL(edgelocation);
             newP.add(pok);
         }
@@ -266,11 +268,16 @@ public class EX2{
             }
         }
     }
+
     private static boolean isOnEdge(Pokemon p, edge_data e) {
         int srcID = e.getSrc();
         int destID = e.getDest();
-        if(p.getType()<0 && destID>srcID) { return false;}
-        if(p.getType()>0 && srcID>destID) { return false;}
+        if (p.getType() < 0 && destID > srcID) {
+            return false;
+        }
+        if (p.getType() > 0 && srcID > destID) {
+            return false;
+        }
 
         geo_location srcPos = graphDS.getNode(srcID).getLocation();
         geo_location destPos = graphDS.getNode(destID).getLocation();
@@ -301,4 +308,17 @@ public class EX2{
 //    }
 
 
+
+
+    private static void regfreshLocation(String s) throws JSONException {
+        JSONObject obj = new JSONObject(s);
+        JSONArray moveData = obj.getJSONArray("Agents");
+        for (int i = 0; i < moveData.length(); i++) {
+            JSONObject agent = moveData.getJSONObject(i).getJSONObject("Agent");
+            ActiveAgent a = new ActiveAgent(agent);
+            for (Agent ag : agentList)
+                if (ag.getId() == a.getId())
+                    ag.setPos(a.getPos());
+        }
+    }
 }
