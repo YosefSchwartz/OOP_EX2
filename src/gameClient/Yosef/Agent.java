@@ -72,32 +72,33 @@ public class Agent {
     public Pokemon findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
         Pokemon closestPok = null;
         double dist = Double.MAX_VALUE;
-
+       // System.out.println("pokemon list: "+poks);
         for(Pokemon p:poks) {
             if(p.agent == null) {
-                if (ga.shortestPathDist(src, p.getSrc()) < dist) {
+                   double shortestPath=ga.shortestPathDist(src, p.getSrc());
+                if (shortestPath< dist) {
                     closestPok = p;
-                    dist = ga.shortestPathDist(src, p.getSrc());
+                    dist = shortestPath;
                 }
             }
-            //TODO need check if null pointer exist
-//            else
-//                return;
         }
         closestPok.setAgent(this);
+        this.setPokemon(closestPok);
+        return closestPok;
+    }
 
-        List<node_data> shortestPath = ga.shortestPath(src,closestPok.getSrc());
+    public void setPath(dw_graph_algorithms ga){
+        List<node_data> shortestPath = ga.shortestPath(src,pokemon.getSrc());
         for(int i = 0;i<shortestPath.size();i++) {
             myPath.add(shortestPath.get(i).getKey());
         }
-        myPath.add(closestPok.getDest());
-//        dest= myPath.peek();
-        return closestPok;
+        myPath.add(pokemon.getDest());
     }
-    public double timeNodeToNode(int srcID, int destID, directed_weighted_graph g){
-        node_data src = g.getNode(srcID);
-        node_data dest = g.getNode(destID);
-        double w = g.getEdge(srcID,destID).getWeight();
+
+    public double timeNodeToNode(directed_weighted_graph g){
+        node_data src = g.getNode(this.src);
+        node_data dest = g.getNode(this.dest);
+        double w = g.getEdge(this.src,this.dest).getWeight();
         double distance = src.getLocation().distance(dest.getLocation());
         double totalSpeed = w/speed;
         return distance/totalSpeed;
@@ -138,6 +139,7 @@ public class Agent {
 
     public void setSrc(int src) {
         this.src = src;
+      //  System.out.println("*src: "+src);
     }
 
     public int getDest() {
@@ -146,6 +148,7 @@ public class Agent {
 
     public void setDest(int dest) {
         this.dest = dest;
+        //System.out.println("*dest: "+dest);
     }
 
     public double getSpeed() {
@@ -175,13 +178,23 @@ public class Agent {
     public boolean hasNext() {
         return (this.myPath.peek() != null);
     }
+    public String toString()
+    {
+        return "id: "+id+", value: "+value+", src: "+src+", dest: "+dest+", speed: "+
+                speed+", pos: "+pos+", pokemon: "+pokemon;
+    }
 
-    public void getNextDest() {
-        if(dest == -1)
-        this.src = dest;
-        if(myPath.peek()!=null)
-            dest = myPath.poll();
-        else
-            dest = -1;
+//    public void getNextDest() {
+//        if(dest == -1)
+//        this.src = dest;
+//        if(myPath.peek()!=null)
+//            dest = myPath.poll();
+//        else
+//            dest = -1;
+//    }
+
+    public int getNextDest() {
+            setDest(myPath.poll());
+            return dest;
     }
 }

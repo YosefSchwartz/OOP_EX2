@@ -27,6 +27,7 @@ public class Arena {
 	private List<CL_Agent> _agents;
 	private List<CL_Pokemon> _pokemons;
 	private List<String> _info;
+	private double TimeToEnd;
 	private static Point3D MIN = new Point3D(0, 100,0);
 	private static Point3D MAX = new Point3D(0, 100,0);
 

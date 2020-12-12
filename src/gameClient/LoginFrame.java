@@ -1,6 +1,8 @@
 package gameClient;
 
 
+import gameClient.Yosef.EX22;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -165,15 +167,16 @@ public class LoginFrame extends JFrame implements ActionListener {
         if ((e.getSource())==LoginButton) {
             try {
                 ID = Integer.parseInt(ID_Text.getText());
+                System.out.println("ID: "+ID);
                 GameNumber = GameOpt.getSelectedIndex();
+                System.out.println("game number: "+GameNumber);
+                JOptionPane.showMessageDialog(this, "Let's start the game");
+                run();
                     // clip.stop();
-                    JOptionPane.showMessageDialog(this, "Let's start the game");
-                    this.dispose();
-                    Ex2.getEx2().setID(ID);
-                    Ex2.getEx2().setScenario_num(GameNumber);
-                    //Ex2.ex2.run();
+                //EX22.ex2.run();
 
             } catch (Exception ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Invalid ID\nPlease enter again");
                 System.out.println("ERROR, enter again");
             }
@@ -203,11 +206,12 @@ public class LoginFrame extends JFrame implements ActionListener {
         clip.start();
     }
 
-    public int getGameNumber() {
-        return GameNumber;
-    }
-
-    public int getID() {
-        return ID;
+    public void run() {
+     EX22 ex2=new EX22();
+     ex2.setID(ID);
+     ex2.setGameNumber(GameNumber);
+     this.dispose();
+     Thread Game = new Thread(ex2);
+     Game.start();
     }
 }

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Ex2_Client_Final_Game implements Runnable{
-	private static GameFrame _win;
+	private static MyFrame _win;
 	private static Arena _ar;
 	private static int[] loginRes=new int[3];
 
@@ -28,7 +28,7 @@ public class Ex2_Client_Final_Game implements Runnable{
 	
 	@Override
 	public void run() {
-		_win = new GameFrame("test Ex2");
+		_win = new MyFrame("test Ex2");
 		_win.setSize(1000, 700);
 		//loginRes=_win.login();
 		System.out.println("first: "+loginRes[0]+", second: "+loginRes[1]);

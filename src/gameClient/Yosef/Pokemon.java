@@ -3,6 +3,7 @@ package gameClient.Yosef;
 import api.NodeData;
 import api.edgeData;
 import api.geo_location;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ public class Pokemon {
         this.type=type;
         this.pos=pos;
         this.EL=null;
+        agent=null;
     }
 
     public double getValue() {
@@ -86,13 +88,32 @@ public class Pokemon {
         agent=null;
     }
 
-
+    public static boolean has_been_eaten(String poksInTheGame, Pokemon pok) throws JSONException {
+        JSONObject newPokemonsObj = new JSONObject(poksInTheGame);
+        JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
+        boolean ans = false;
+        for (int i = 0; i < pokemonsArr.length(); i++) {
+            Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
+            if (pok.getPos().distance(newPok.getPos()) < 0.0001) {
+                ans = true;
+            }
+        }
+        return ans;
+    }
     public void setAgent(Agent agent) {
         this.agent = agent;
     }
 
     public Agent getAgent(){
         return agent;
+    }
+    public String toString()
+    {
+      String s= "<value: "+value+", type: "+type+", src: "+src+", dest: "+dest+" my agent: ";
+      if (agent!=null)
+          return s+agent.getId()+" src: ("+agent.getSrc()+", "+agent.getDest()+") >";
+      else
+          return s+"non>";
     }
 }
 

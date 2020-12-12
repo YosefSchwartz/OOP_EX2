@@ -5,6 +5,8 @@ import api.directed_weighted_graph;
 import api.edge_data;
 import api.geo_location;
 import api.node_data;
+import gameClient.Yosef.Agent;
+import gameClient.Yosef.Pokemon;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -16,29 +18,35 @@ import java.util.List;
 
 public class GameFrame extends JFrame {
     private int _ind;
-    private Arena _ar;
+    private GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
+    private JLabel TimeToEnd;
     private gameClient.util.Range2Range _w2f;
 
 
-    GameFrame(String a) {
+    public GameFrame(String a) {
         super(a);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        TimeToEnd = new JLabel();
+        TimeToEnd.setVisible(true);
+        this.add(TimeToEnd);
+        TimeToEnd.setText("Time to end: ");
+
         int _ind = 0;
     }
-    public void update(Arena ar) {
+    public void update(GameData ar) {
         this._ar = ar;
         updateFrame();
     }
-
     private void updateFrame() {
         Range rx = new Range(50,this.getWidth()-50);
         Range ry = new Range(this.getHeight()-50,100);
         Range2D frame = new Range2D(rx,ry);
+        TimeToEnd.setBounds(50, 100,50, 25);
         directed_weighted_graph g = _ar.getGraph();
-        _w2f = Arena.w2f(g,frame);
+        _w2f = GameData.w2f(g,frame);
     }
 
         public void paint(Graphics g) {
@@ -86,17 +94,18 @@ public class GameFrame extends JFrame {
         }
     }
     private void drawPokemons(Graphics g) {
-        java.util.List<CL_Pokemon> fs = _ar.getPokemons();
+        List<Pokemon> fs = _ar.getPokemons();
         if(fs!=null) {
-            Iterator<CL_Pokemon> itr = fs.iterator();
+            Iterator<Pokemon> itr = fs.iterator();
 
             while(itr.hasNext()) {
 
-                CL_Pokemon f = itr.next();
-                Point3D c = f.getLocation();
+                Pokemon p = itr.next();
+                double x=p.getPos().x(), y=p.getPos().y(), z=p.getPos().z();
+                Point3D c = new Point3D(x,y,z);
                 int r=10;
                 g.setColor(Color.green);
-                if(f.getType()<0) {g.setColor(Color.orange);}
+                if(p.getType()<0) {g.setColor(Color.orange);}
                 if(c!=null) {
 
                     geo_location fp = this._w2f.world2frame(c);
@@ -110,12 +119,12 @@ public class GameFrame extends JFrame {
         }
     }
     private void drawAgants(Graphics g) {
-        List<CL_Agent> rs = _ar.getAgents();
+        List<Agent> rs = _ar.getAgents();
         //	Iterator<OOP_Point3D> itr = rs.iterator();
         g.setColor(Color.red);
         int i=0;
         while(rs!=null && i<rs.size()) {
-            geo_location c = rs.get(i).getLocation();
+            geo_location c = rs.get(i).getPos();
             int r=8;
             i++;
             if(c!=null) {

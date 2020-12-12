@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.xml.crypto.dom.DOMCryptoContext;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -154,7 +153,7 @@ public class EX2 {
 //                        min = time;
 //                }
 //                //TODO -1
-//                if(a.getDest()!=-1){
+//                if(a.ge tDest()!=-1){
 //                if (a.getPos().distance(graphDS.getNode(a.getDest()).getLocation()) < (EPS)) {
 //                    System.out.println("i came to node: " + a.getDest());
 //                    int dest = a.getNextDest();
