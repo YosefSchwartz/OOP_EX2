@@ -20,7 +20,7 @@ public class EX22 implements Runnable {
 //        lf.setVisible(true);
       //  EX22 ex2=new EX22();
        // ex2.setID(ID);
-        for (int i=13; i<14; i++)
+        for (int i=13; i<14; i+=2)
         {
             EX22 ex2=new EX22();
             ex2.setGameNumber(i);
@@ -71,12 +71,11 @@ public class EX22 implements Runnable {
             getGameData(game);
             graphAL.load(path);
             graphDS = graphAL.getGraph();
+         //   System.out.println("shortest path: "+graphAL.shortestPath(7,18));
             updatePokemonList(game);
             setPlaceOfAgents(game);
             _ar = new GameData();
             _ar.setGraph(graphDS);
-           // String poks = game.getPokemons();
-            System.out.println("pok list: "+pokemonList);
             _ar.setPokemons(pokemonList);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
@@ -85,12 +84,8 @@ public class EX22 implements Runnable {
             _win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
            // game.login(208449256);
             game.startGame();
-          //  _ar.setTimeToEnd(game.timeToEnd());
-            _win.setTitle("Ex2 - OOP");
+            _win.setTitle("Ex2 - OOP: " +GameNumber);
             setPokToEachAgent(game, min);
-            System.out.println("agent list: " +agentList);
-
-            // System.out.println("min2: "+min);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,28 +109,56 @@ public class EX22 implements Runnable {
             }
         }
     }
-
-    private static void insertNewPokemons(String pokemons) throws JSONException {
+    public static void updatePoks(String pokemons) throws JSONException {
+        List<Pokemon> newP=new LinkedList<>();
         JSONObject newPokemonsObj = new JSONObject(pokemons);
         JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
         for (int i = 0; i < pokemonsArr.length(); i++) {
-            Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
-            boolean ans = false;
-            for (Pokemon alreadyPok : pokemonList) {
-                if (alreadyPok.getPos().distance(newPok.getPos()) < EPS) {
-                    ans = true;
+            Pokemon pok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
+            boolean connectToAgent=false;
+            for (Agent a: agentList)
+            {
+                Pokemon p=a.getPokemon();
+                if(p!=null) {
+                    geo_location pokL=pok.getPos();
+                    geo_location PL=p.getPos();
+                    if(pokL.x()==PL.x() && pokL.y()==PL.y() && pokL.z()==PL.z()) {
+                        connectToAgent = true;
+                        break;
+                    }
                 }
             }
-            if (!ans) { //there is a new pokemon in the game that doesn't in the list
-                setSrcAndDest(newPok);
-                edgeData e = (edgeData) (graphDS.getEdge(newPok.src, newPok.dest));
-                edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(newPok.getPos(), e);
-                newPok.setEL(edgelocation);
-                pokemonList.add(newPok);
-                return;
+            if (connectToAgent==false) {
+                setSrcAndDest(pok);
+                edgeData e = (edgeData) (graphDS.getEdge(pok.src, pok.dest));
+                edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(pok.getPos(), e);
+                pok.setEL(edgelocation);
+                newP.add(pok);
             }
         }
+        pokemonList = newP;
     }
+//    private static void insertNewPokemons(String pokemons) throws JSONException {
+//        JSONObject newPokemonsObj = new JSONObject(pokemons);
+//        JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
+//        for (int i = 0; i < pokemonsArr.length(); i++) {
+//            Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
+//            boolean ans = false;
+//            for (Pokemon alreadyPok : pokemonList) {
+//                if (alreadyPok.getPos().distance(newPok.getPos()) < EPS) {
+//                    ans = true;
+//                }
+//            }
+//            if (!ans) { //there is a new pokemon in the game that doesn't in the list
+//                setSrcAndDest(newPok);
+//                edgeData e = (edgeData) (graphDS.getEdge(newPok.src, newPok.dest));
+//                edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(newPok.getPos(), e);
+//                newPok.setEL(edgelocation);
+//                pokemonList.add(newPok);
+//                return;
+//            }
+//        }
+//    }
 
     private void RunningTheGame(game_service game) throws JSONException, InterruptedException {
         int count = 0;
@@ -146,29 +169,33 @@ public class EX22 implements Runnable {
             count++;
             regfreshLocation(s);
             _ar.setAgents(agentList);
+            _win.repaint();
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
           //  _ar.setTimeToEnd(game.timeToEnd());
-            _win.repaint();
             for (Agent a : agentList) {
                 int dest = a.getDest();
                 if (dest == -1) {
                     if ((a.getSrc()==a.getPokemon().dest)
                          && !(a.getPokemon().has_been_eaten(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
-                        insertNewPokemons(game.getPokemons());
+                        //insertNewPokemons(game.getPokemons());
+                        updatePoks(game.getPokemons());
                         a.findClosestPokemon(graphAL, pokemonList);
                         a.setPath(graphAL);
+                      //  if(a.getId()==0)
+                            System.out.println(a.myPath);
                     }
                     dest = a.getNextDest();
                     game.chooseNextEdge(a.getId(), dest);
+                    //if(a.getId()==0)
                     System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
                 if (game.timeToEnd() < EPS)
                     System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
             }
         }
-        Thread.sleep(100);
+      //  Thread.sleep(100);
         _win.dispose();
-        System.out.println("the game is over");
+        System.out.println("the game is over : "+GameNumber);
        // System.out.println(game.toString());
 }
 
@@ -197,6 +224,7 @@ public class EX22 implements Runnable {
             }
             pokemonList = newP;
         }
+
         private static void setPlaceOfAgents (game_service game)
         {
             for (int i = 0; i < sumAgents; i++) {
@@ -225,7 +253,6 @@ public class EX22 implements Runnable {
                 Agent ag = new Agent(agentsArr.getJSONObject(i).getJSONObject("Agent"));
                 agentList.add(ag);
             }
-            System.out.println("agent positions: "+agentList);
         }
 
         private static void getGameData (game_service game) throws JSONException {
@@ -240,8 +267,6 @@ public class EX22 implements Runnable {
         for (node_data n : graphDS.getV()) {
             for (edge_data e : graphDS.getE(n.getKey())) {
                 if (isOnEdge(p, e)) {
-                    System.out.println("src: "+e.getSrc());
-                    System.out.println("dest: "+e.getDest());
                     p.setSrc(e.getSrc());
                     p.setDest(e.getDest());
                     return;

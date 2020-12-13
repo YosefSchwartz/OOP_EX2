@@ -82,11 +82,11 @@ public class Agent {
                 }
             }
         }
-
         closestPok.setAgent(this);
         this.setPokemon(closestPok);
-        poks.remove(closestPok);
-        //System.out.println("the pok is on egde "+closestPok.src+"->"+closestPok.getDest());
+       // poks.remove(closestPok);
+       // if(getId()==0)
+        System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){
@@ -183,7 +183,7 @@ public class Agent {
     public String toString()
     {
         return "id: "+id+", value: "+value+", src: "+src+", dest: "+dest+", speed: "+
-                speed+", pos: "+pos+", pokemon: "+pokemon;
+                speed+", pos: "+pos+", pokemon: "+pokemon+"\n--------\n";
     }
 
 //    public void getNextDest() {
@@ -196,6 +196,8 @@ public class Agent {
 //    }
 
     public int getNextDest() {
+        if(myPath.peek()==null)
+            System.out.println("the cause "+ getId());
             setDest(myPath.poll());
             return dest;
     }

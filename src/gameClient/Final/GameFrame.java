@@ -1,10 +1,7 @@
 package gameClient.Final;
 
 
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
+import api.*;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -93,12 +90,8 @@ public class GameFrame extends JFrame {
     }
     private void drawPokemons(Graphics g) {
         List<Pokemon> fs = _ar.getPokemons();
-        if(fs!=null) {
-            Iterator<Pokemon> itr = fs.iterator();
-
-            while(itr.hasNext()) {
-
-                Pokemon p = itr.next();
+        for (int i=0; i<fs.size();i++) {
+            Pokemon p = fs.get(i);
                 double x=p.getPos().x(), y=p.getPos().y(), z=p.getPos().z();
                 Point3D c = new Point3D(x,y,z);
                 int r=10;
@@ -115,7 +108,7 @@ public class GameFrame extends JFrame {
                 }
             }
         }
-    }
+
     private void drawAgants(Graphics g) {
         List<Agent> rs = _ar.getAgents();
         //	Iterator<OOP_Point3D> itr = rs.iterator();
@@ -143,6 +136,7 @@ public class GameFrame extends JFrame {
         g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
         g.setColor(Color.BLACK);
         g.drawString(""+n.getKey(), (int)fp.x()-3, (int)fp.y()+3);
+        g.setColor(Color.red);
     }
     private void drawEdge(edge_data e, Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
