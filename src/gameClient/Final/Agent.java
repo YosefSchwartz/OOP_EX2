@@ -42,19 +42,19 @@ public class Agent {
     }
 
     public Agent(JSONObject agObj)throws JSONException {
-            this.id = agObj.getInt("id");
-            this.value=agObj.getDouble("value");
-            this.src=agObj.getInt("src");
-            this.dest=agObj.getInt("dest");
-            this.speed = agObj.getDouble("speed");
-            String pos = agObj.getString("pos");
-            String[] locST = pos.split(",", 3);
-            Double[] geoL = new Double[3];
-            for (int j = 0; j < locST.length; j++)
-                geoL[j] = Double.parseDouble(locST[j]);
-            geo_location location = new NodeData.geoLocation(geoL[0], geoL[1], geoL[2]);
-            this.pos=location;
-            pokemon = null;
+        this.id = agObj.getInt("id");
+        this.value=agObj.getDouble("value");
+        this.src=agObj.getInt("src");
+        this.dest=agObj.getInt("dest");
+        this.speed = agObj.getDouble("speed");
+        String pos = agObj.getString("pos");
+        String[] locST = pos.split(",", 3);
+        Double[] geoL = new Double[3];
+        for (int j = 0; j < locST.length; j++)
+            geoL[j] = Double.parseDouble(locST[j]);
+        geo_location location = new NodeData.geoLocation(geoL[0], geoL[1], geoL[2]);
+        this.pos=location;
+        pokemon = null;
     }
 
     public void updateDest(int num){
@@ -74,10 +74,10 @@ public class Agent {
     public void findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
         Pokemon closestPok = null;
         double dist = Double.MAX_VALUE;
-      //  System.out.println("pokemon list: "+poks);
+        //  System.out.println("pokemon list: "+poks);
         for(Pokemon p:poks) {
             if(p.agent == null) {
-                   double shortestPath=ga.shortestPathDist(src, p.getSrc());
+                double shortestPath=ga.shortestPathDist(src, p.getSrc());
                 if (shortestPath< dist) {
                     closestPok = p;
                     dist = shortestPath;
@@ -86,15 +86,14 @@ public class Agent {
         }
         closestPok.setAgent(this);
         this.setPokemon(closestPok);
-//        poks.remove(closestPok);
-       // if(getId()==0)
-        System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
+
+       // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){
         List<node_data> shortestPath = ga.shortestPath(src,pokemon.getSrc());
         while (!myPath.isEmpty()) {
-           myPath.poll();
+            myPath.poll();
         }
         for(int i = 0;i<shortestPath.size();i++) {
             myPath.add(shortestPath.get(i).getKey());
@@ -146,7 +145,7 @@ public class Agent {
 
     public void setSrc(int src) {
         this.src = src;
-      //  System.out.println("*src: "+src);
+        //  System.out.println("*src: "+src);
     }
 
     public int getDest() {

@@ -44,7 +44,7 @@ public class GameFrame extends JFrame {
         _w2f = GameData.w2f(g,frame);
     }
 
-        public void paint(Graphics g) {
+    public void paint(Graphics g) {
         int w = this.getWidth();
         int h = this.getHeight();
         setSize(w,h);
@@ -59,7 +59,7 @@ public class GameFrame extends JFrame {
         drawAgants(buffer_graphics);
         drawInfo(buffer_graphics);
         g.drawImage(buffer_image, 0, 0, this);
-        }
+    }
 
     private void drawInfo(Graphics g) {
         java.util.List<String> str = _ar.get_info();
@@ -92,22 +92,22 @@ public class GameFrame extends JFrame {
         List<Pokemon> fs = _ar.getPokemons();
         for (int i=0; i<fs.size();i++) {
             Pokemon p = fs.get(i);
-                double x=p.getPos().x(), y=p.getPos().y(), z=p.getPos().z();
-                Point3D c = new Point3D(x,y,z);
-                int r=14;
-                g.setColor(Color.green);
-                if(p.getType()<0) {g.setColor(Color.orange);}
-                if(c!=null) {
+            double x=p.getPos().x(), y=p.getPos().y(), z=p.getPos().z();
+            Point3D c = new Point3D(x,y,z);
+            int r=14;
+            g.setColor(Color.green);
+            if(p.getType()<0) {g.setColor(Color.orange);}
+            if(c!=null) {
 
-                    geo_location fp = this._w2f.world2frame(c);
-                    pokemon=new ImageIcon("src//gameClient//files//pokemonBall.png");
-                    Image pokemon1 = pokemon.getImage();
-                    Image pokemon2 = pokemon1.getScaledInstance(2*r+4, 2*r,Image.SCALE_DEFAULT);
-                    pokemon=new ImageIcon(pokemon2);
-                    pokemon.paintIcon(this, g, (int)fp.x()-r-2,(int)fp.y()-r);
-                }
+                geo_location fp = this._w2f.world2frame(c);
+                pokemon=new ImageIcon("src//gameClient//files//pokemonBall.png");
+                Image pokemon1 = pokemon.getImage();
+                Image pokemon2 = pokemon1.getScaledInstance(2*r+4, 2*r,Image.SCALE_DEFAULT);
+                pokemon=new ImageIcon(pokemon2);
+                pokemon.paintIcon(this, g, (int)fp.x()-r-2,(int)fp.y()-r);
             }
         }
+    }
 
     private void drawAgants(Graphics g) {
         List<Agent> rs = _ar.getAgents();

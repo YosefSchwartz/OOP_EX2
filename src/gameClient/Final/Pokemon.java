@@ -90,7 +90,7 @@ public class Pokemon {
         agent=null;
     }
 
-    public boolean has_been_eaten(String poksInTheGame, Pokemon pok) throws JSONException {
+    public boolean is_in_the_game(String poksInTheGame, Pokemon pok) throws JSONException {
         JSONObject newPokemonsObj = new JSONObject(poksInTheGame);
         JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
         boolean ans = false;
@@ -120,12 +120,11 @@ public class Pokemon {
     }
     public String toString()
     {
-      String s;
-            s="<value: "+value+", type: "+type+", src: "+src+", dest: "+dest+" agent: ";
-      if (agent!=null)
-          return s+agent.getId()+" src: ("+agent.getSrc()+", "+agent.getDest()+") >\n";
-      else
-          return s+"non>\n";
+        String s;
+        s="<value: "+value+", type: "+type+", src: "+src+", dest: "+dest+" agent: ";
+        if (agent!=null)
+            return s+agent.getId()+" src: ("+agent.getSrc()+", "+agent.getDest()+") >\n";
+        else
+            return s+"non>\n";
     }
 }
-
