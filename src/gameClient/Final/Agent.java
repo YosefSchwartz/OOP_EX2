@@ -1,4 +1,4 @@
-package gameClient.Yosef;
+package gameClient.Final;
 
 import api.*;
 import org.json.JSONException;
@@ -69,10 +69,10 @@ public class Agent {
      * @param ga
      * @param poks
      */
-    public Pokemon findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
+    public void findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
         Pokemon closestPok = null;
         double dist = Double.MAX_VALUE;
-       // System.out.println("pokemon list: "+poks);
+      //  System.out.println("pokemon list: "+poks);
         for(Pokemon p:poks) {
             if(p.agent == null) {
                    double shortestPath=ga.shortestPathDist(src, p.getSrc());
@@ -82,9 +82,11 @@ public class Agent {
                 }
             }
         }
+
         closestPok.setAgent(this);
         this.setPokemon(closestPok);
-        return closestPok;
+        poks.remove(closestPok);
+        //System.out.println("the pok is on egde "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){

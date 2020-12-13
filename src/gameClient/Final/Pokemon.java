@@ -1,4 +1,4 @@
-package gameClient.Yosef;
+package gameClient.Final;
 
 import api.NodeData;
 import api.edgeData;
@@ -15,6 +15,7 @@ public class Pokemon {
     int dest;
     private edgeData.edgeLocation EL;
     Agent agent;
+    boolean isLogin;
 
     public Pokemon(double value, int type, geo_location pos)
     {
@@ -23,6 +24,7 @@ public class Pokemon {
         this.pos=pos;
         this.EL=null;
         agent=null;
+        isLogin=false;
     }
 
     public double getValue() {
@@ -88,7 +90,7 @@ public class Pokemon {
         agent=null;
     }
 
-    public static boolean has_been_eaten(String poksInTheGame, Pokemon pok) throws JSONException {
+    public boolean has_been_eaten(String poksInTheGame, Pokemon pok) throws JSONException {
         JSONObject newPokemonsObj = new JSONObject(poksInTheGame);
         JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
         boolean ans = false;
@@ -100,6 +102,15 @@ public class Pokemon {
         }
         return ans;
     }
+
+    public void setLogin(boolean b)
+    {
+        this.isLogin=b;
+    }
+    public boolean getLogin()
+    {
+        return isLogin;
+    }
     public void setAgent(Agent agent) {
         this.agent = agent;
     }
@@ -109,11 +120,12 @@ public class Pokemon {
     }
     public String toString()
     {
-      String s= "<value: "+value+", type: "+type+", src: "+src+", dest: "+dest+" my agent: ";
+      String s;
+            s="<value: "+value+", type: "+type+", src: "+src+", dest: "+dest+" agent: ";
       if (agent!=null)
-          return s+agent.getId()+" src: ("+agent.getSrc()+", "+agent.getDest()+") >";
+          return s+agent.getId()+" src: ("+agent.getSrc()+", "+agent.getDest()+") >\n";
       else
-          return s+"non>";
+          return s+"non>\n";
     }
 }
 

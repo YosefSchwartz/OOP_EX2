@@ -1,7 +1,5 @@
-package gameClient;
+package gameClient.Final;
 
-
-import gameClient.Yosef.EX22;
 
 import javax.sound.sampled.*;
 import javax.swing.*;

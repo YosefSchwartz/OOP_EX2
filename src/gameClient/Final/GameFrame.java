@@ -1,12 +1,10 @@
-package gameClient;
+package gameClient.Final;
 
 
 import api.directed_weighted_graph;
 import api.edge_data;
 import api.geo_location;
 import api.node_data;
-import gameClient.Yosef.Agent;
-import gameClient.Yosef.Pokemon;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
@@ -21,7 +19,7 @@ public class GameFrame extends JFrame {
     private GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
-    private JLabel TimeToEnd;
+    //private JLabel TimeToEnd;
     private gameClient.util.Range2Range _w2f;
 
 
@@ -29,10 +27,10 @@ public class GameFrame extends JFrame {
         super(a);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-        TimeToEnd = new JLabel();
-        TimeToEnd.setVisible(true);
-        this.add(TimeToEnd);
-        TimeToEnd.setText("Time to end: ");
+//        TimeToEnd = new JLabel();
+//        TimeToEnd.setVisible(true);
+//        this.add(TimeToEnd);
+//        TimeToEnd.setText("Time to end: ");
 
         int _ind = 0;
     }
@@ -44,7 +42,7 @@ public class GameFrame extends JFrame {
         Range rx = new Range(50,this.getWidth()-50);
         Range ry = new Range(this.getHeight()-50,100);
         Range2D frame = new Range2D(rx,ry);
-        TimeToEnd.setBounds(50, 100,50, 25);
+//        TimeToEnd.setBounds(50, 100,50, 25);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = GameData.w2f(g,frame);
     }

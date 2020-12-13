@@ -1,8 +1,7 @@
-package gameClient.Yosef;
+package gameClient.Final;
 
 import Server.Game_Server_Ex2;
 import api.*;
-import gameClient.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,9 +15,21 @@ import java.util.List;
 
 public class EX22 implements Runnable {
 
-    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        LoginFrame lf=new LoginFrame();
-        lf.setVisible(true);
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
+//        LoginFrame lf=new LoginFrame();
+//        lf.setVisible(true);
+      //  EX22 ex2=new EX22();
+       // ex2.setID(ID);
+        for (int i=13; i<14; i++)
+        {
+            EX22 ex2=new EX22();
+            ex2.setGameNumber(i);
+            Thread Game = new Thread(ex2);
+            Game.start();
+            Game.join();
+        }
+
+
     }
 
     private static final double EPS = 0.0001;
@@ -65,16 +76,20 @@ public class EX22 implements Runnable {
             _ar = new GameData();
             _ar.setGraph(graphDS);
            // String poks = game.getPokemons();
+            System.out.println("pok list: "+pokemonList);
             _ar.setPokemons(pokemonList);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
             _win.update(_ar);
             _win.setVisible(true);
             _win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           // game.login(208449256);
             game.startGame();
-            _ar.setTimeToEnd(game.timeToEnd());
-            _win.setTitle("Ex2 - OOP "+game.toString());
+          //  _ar.setTimeToEnd(game.timeToEnd());
+            _win.setTitle("Ex2 - OOP");
             setPokToEachAgent(game, min);
+            System.out.println("agent list: " +agentList);
+
             // System.out.println("min2: "+min);
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,8 +105,6 @@ public class EX22 implements Runnable {
             Agent a = new Agent(agent);
             for (Agent ag : agentList) {
                 if (ag.getId() == a.getId()) {
-//                    System.out.println("agent before: "+ag);
-//                    System.out.println("agent of the server: "+a);
                     ag.setPos(a.getPos());
                     ag.setDest(a.getDest());
                     ag.setSrc(a.getSrc());
@@ -113,7 +126,7 @@ public class EX22 implements Runnable {
                     ans = true;
                 }
             }
-            if (!ans) {
+            if (!ans) { //there is a new pokemon in the game that doesn't in the list
                 setSrcAndDest(newPok);
                 edgeData e = (edgeData) (graphDS.getEdge(newPok.src, newPok.dest));
                 edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(newPok.getPos(), e);
@@ -134,56 +147,41 @@ public class EX22 implements Runnable {
             regfreshLocation(s);
             _ar.setAgents(agentList);
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
-            _ar.setTimeToEnd(game.timeToEnd());
+          //  _ar.setTimeToEnd(game.timeToEnd());
             _win.repaint();
             for (Agent a : agentList) {
                 int dest = a.getDest();
                 if (dest == -1) {
-                    if (!(has_been_eaten(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
+                    if ((a.getSrc()==a.getPokemon().dest)
+                         && !(a.getPokemon().has_been_eaten(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
                         insertNewPokemons(game.getPokemons());
-                        Pokemon p = a.findClosestPokemon(graphAL, pokemonList);
+                        a.findClosestPokemon(graphAL, pokemonList);
                         a.setPath(graphAL);
-                        dest = a.getNextDest();
-                        game.chooseNextEdge(a.getId(), dest);
-                        System.out.println("Agent " + a.getId() + " move to -> " + dest);
-                    } else { //a still in the way to the pok
-                        dest = a.getNextDest();
-                        game.chooseNextEdge(a.getId(), dest);
-                        System.out.println("Agent " + a.getId() + " move to -> " + dest);
                     }
+                    dest = a.getNextDest();
+                    game.chooseNextEdge(a.getId(), dest);
+                    System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
                 if (game.timeToEnd() < EPS)
                     System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
             }
         }
-       // Thread.sleep(1);
+        Thread.sleep(100);
         _win.dispose();
         System.out.println("the game is over");
+       // System.out.println(game.toString());
 }
 
-public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONException {
-    JSONObject newPokemonsObj = new JSONObject(pokemons);
-    JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
-    List<Pokemon> p=new LinkedList<>();
-    for (int i = 0; i < pokemonsArr.length(); i++) {
-        Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
-        p.add(newPok);
-    }
-    return p;
-}
-        public static boolean has_been_eaten(String poksInTheGame, Pokemon pok) throws JSONException {
-            JSONObject newPokemonsObj = new JSONObject(poksInTheGame);
-            JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
-            boolean ans = false;
-            for (int i = 0; i < pokemonsArr.length(); i++) {
-                Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
-                if (pok.getPos().distance(newPok.getPos()) < EPS) {
-                    ans = true;
-                }
-            }
-            return ans;
+    public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONException {
+        JSONObject newPokemonsObj = new JSONObject(pokemons);
+        JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
+        List<Pokemon> p=new LinkedList<>();
+        for (int i = 0; i < pokemonsArr.length(); i++) {
+            Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
+            p.add(newPok);
         }
-
+        return p;
+    }
 
         private static void updatePokemonList (game_service game) throws JSONException {
             List<Pokemon> newP = new LinkedList<>();
@@ -212,20 +210,11 @@ public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONExcepti
             createAgentsList(game);
             double time;
             for (Agent a : agentList) {
-                Pokemon closestPokemon = a.findClosestPokemon(graphAL, pokemonList);
-                a.setPokemon(closestPokemon);
+               a.findClosestPokemon(graphAL, pokemonList);
                 a.setDest(a.getPokemon().getDest());
-//                if(a.getSrc()==a.getPokemon().src) {
-//                    time =a.TimetoPok(a.getPokemon(),graphDS);
-//                }
-//                else {
-//                    time = a.timeNodeToNode(graphDS);
-//                }
-//                if(time<min) {
-//                    setMin(time);
-//                }
                 game.chooseNextEdge(a.getId(), a.getPokemon().getDest());
-                System.out.println("1 - Agent " + a.getId() + " move to -> " + a.getDest());
+                //System.out.println("agent positions: "+agentList);
+                // System.out.println("1 - Agent " + a.getId() + " move to -> " + a.getDest());
             }
         }
 
@@ -236,6 +225,7 @@ public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONExcepti
                 Agent ag = new Agent(agentsArr.getJSONObject(i).getJSONObject("Agent"));
                 agentList.add(ag);
             }
+            System.out.println("agent positions: "+agentList);
         }
 
         private static void getGameData (game_service game) throws JSONException {
@@ -250,9 +240,10 @@ public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONExcepti
         for (node_data n : graphDS.getV()) {
             for (edge_data e : graphDS.getE(n.getKey())) {
                 if (isOnEdge(p, e)) {
+                    System.out.println("src: "+e.getSrc());
+                    System.out.println("dest: "+e.getDest());
                     p.setSrc(e.getSrc());
                     p.setDest(e.getDest());
-                    System.out.println("the pok is on egde "+p.src+"->"+p.getDest());
                     return;
                 }
             }

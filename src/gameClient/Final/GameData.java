@@ -1,10 +1,8 @@
-package gameClient;
+package gameClient.Final;
 
 import api.directed_weighted_graph;
 import api.geo_location;
 import api.node_data;
-import gameClient.Yosef.Agent;
-import gameClient.Yosef.Pokemon;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
