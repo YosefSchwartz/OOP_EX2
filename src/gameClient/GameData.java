@@ -1,4 +1,4 @@
-package gameClient.Final;
+package gameClient;
 
 import api.directed_weighted_graph;
 import api.geo_location;

@@ -1,4 +1,4 @@
-package gameClient.Final;
+package gameClient;
 
 import Server.Game_Server_Ex2;
 import api.*;
@@ -13,16 +13,16 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EX22 implements Runnable {
+public class Ex2 implements Runnable {
 
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 //        LoginFrame lf=new LoginFrame();
 //        lf.setVisible(true);
-        //  EX22 ex2=new EX22();
+        //  Ex2 ex2=new Ex2();
         // ex2.setID(ID);
-        for (int i=10; i<11; i++)
+        for (int i=21; i<23; i++)
         {
-            EX22 ex2=new EX22();
+            Ex2 ex2=new Ex2();
             ex2.setGameNumber(i);
             Thread Game = new Thread(ex2);
             Game.start();
@@ -46,7 +46,7 @@ public class EX22 implements Runnable {
     private static GameData _ar;
     private int GameNumber;
     private int ID;
-    public static EX22 ex2;
+    public static Ex2 ex2;
 
     @Override
     public void run() {
@@ -286,7 +286,7 @@ public class EX22 implements Runnable {
     public void setID(int id){
         ID=id;
     }
-    public static EX22 getEX22() {
+    public static Ex2 getEX22() {
         return ex2;
     }
 }

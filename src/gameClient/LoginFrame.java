@@ -1,4 +1,4 @@
-package gameClient.Final;
+package gameClient;
 
 
 import javax.sound.sampled.*;
@@ -171,7 +171,7 @@ public class LoginFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Let's start the game");
                 run();
                     // clip.stop();
-                //EX22.ex2.run();
+                //Ex2.ex2.run();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -205,7 +205,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     public void run() {
-     EX22 ex2=new EX22();
+     Ex2 ex2=new Ex2();
      ex2.setID(ID);
      ex2.setGameNumber(GameNumber);
      this.dispose();

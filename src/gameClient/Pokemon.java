@@ -1,4 +1,4 @@
-package gameClient.Final;
+package gameClient;
 
 import api.NodeData;
 import api.edgeData;
