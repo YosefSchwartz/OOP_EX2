@@ -71,7 +71,7 @@ public class EX22 implements Runnable {
             getGameData(game);
             graphAL.load(path);
             graphDS = graphAL.getGraph();
-         //   System.out.println("shortest path: "+graphAL.shortestPath(7,18));
+            System.out.println("shortest path: "+graphAL.shortestPath(7,18));
             updatePokemonList(game);
             setPlaceOfAgents(game);
             _ar = new GameData();
@@ -181,12 +181,12 @@ public class EX22 implements Runnable {
                         updatePoks(game.getPokemons());
                         a.findClosestPokemon(graphAL, pokemonList);
                         a.setPath(graphAL);
-                      //  if(a.getId()==0)
-                            System.out.println(a.myPath);
+//                        if(a.getId()==0)
+//                            System.out.println(a.myPath);
                     }
                     dest = a.getNextDest();
                     game.chooseNextEdge(a.getId(), dest);
-                    //if(a.getId()==0)
+                    if(a.getId()==0)
                     System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
                 if (game.timeToEnd() < EPS)

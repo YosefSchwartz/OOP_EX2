@@ -17,6 +17,7 @@ public class Agent {
     private double speed;
     private geo_location pos;
     Pokemon pokemon;
+    private int previesSRC;
 
     Queue<Integer> myPath = new LinkedList<>();
 
@@ -29,6 +30,7 @@ public class Agent {
         this.dest=dest;
         this.speed=speed;
         this.pos=pos;
+        previesSRC=-1;
     }
 
     public Pokemon getPokemon() {
@@ -85,16 +87,27 @@ public class Agent {
         closestPok.setAgent(this);
         this.setPokemon(closestPok);
        // poks.remove(closestPok);
-       // if(getId()==0)
+        if(getId()==0)
         System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){
         List<node_data> shortestPath = ga.shortestPath(src,pokemon.getSrc());
+//        if(!myPath.isEmpty()) {
+//            String s = "poll: ";
+//            while (!myPath.isEmpty()) {
+//                s+=myPath.poll()+", ";
+//            }
+//            System.out.println(s);
+//        }
         for(int i = 0;i<shortestPath.size();i++) {
             myPath.add(shortestPath.get(i).getKey());
         }
         myPath.add(pokemon.getDest());
+        if(getId()==0) {
+            System.out.println("shortest from: "+ src+" to: "+pokemon.getSrc()+":\n"+shortestPath);
+            System.out.println("my path :" + myPath);
+        }
     }
 
     public double timeNodeToNode(directed_weighted_graph g){
