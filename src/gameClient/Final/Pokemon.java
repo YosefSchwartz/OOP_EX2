@@ -96,7 +96,7 @@ public class Pokemon {
         boolean ans = false;
         for (int i = 0; i < pokemonsArr.length(); i++) {
             Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
-            if (pok.getPos().distance(newPok.getPos()) < 0.0001) {
+            if (pok.getPos().distance(newPok.getPos()) < 0.000001) {
                 ans = true;
             }
         }

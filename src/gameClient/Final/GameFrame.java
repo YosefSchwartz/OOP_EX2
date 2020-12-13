@@ -84,7 +84,7 @@ public class GameFrame extends JFrame {
         while(iter1.hasNext()) {
             node_data n = iter1.next();
             g.setColor(new Color(221,183, 63 ));
-            drawNode(n,14,g);
+            drawNode(n,12,g);
 
         }
     }
@@ -94,7 +94,7 @@ public class GameFrame extends JFrame {
             Pokemon p = fs.get(i);
                 double x=p.getPos().x(), y=p.getPos().y(), z=p.getPos().z();
                 Point3D c = new Point3D(x,y,z);
-                int r=10;
+                int r=14;
                 g.setColor(Color.green);
                 if(p.getType()<0) {g.setColor(Color.orange);}
                 if(c!=null) {
@@ -102,9 +102,9 @@ public class GameFrame extends JFrame {
                     geo_location fp = this._w2f.world2frame(c);
                     pokemon=new ImageIcon("src//gameClient//files//pokemonBall.png");
                     Image pokemon1 = pokemon.getImage();
-                    Image pokemon2 = pokemon1.getScaledInstance(4*r, 4*r,Image.SCALE_DEFAULT);
+                    Image pokemon2 = pokemon1.getScaledInstance(2*r+4, 2*r,Image.SCALE_DEFAULT);
                     pokemon=new ImageIcon(pokemon2);
-                    pokemon.paintIcon(this, g, (int)fp.x()-2*r,(int)fp.y()-2*r);
+                    pokemon.paintIcon(this, g, (int)fp.x()-r-2,(int)fp.y()-r);
                 }
             }
         }
@@ -135,7 +135,9 @@ public class GameFrame extends JFrame {
         geo_location fp = this._w2f.world2frame(pos);
         g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
         g.setColor(Color.BLACK);
-        g.drawString(""+n.getKey(), (int)fp.x()-3, (int)fp.y()+3);
+        Font f=new Font("SansSerif", Font.CENTER_BASELINE, 12);
+        g.setFont(f);
+        g.drawString(""+n.getKey(), (int)fp.x()-5, (int)fp.y()+4);
         g.setColor(Color.red);
     }
     private void drawEdge(edge_data e, Graphics g) {

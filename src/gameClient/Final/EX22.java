@@ -20,7 +20,7 @@ public class EX22 implements Runnable {
 //        lf.setVisible(true);
       //  EX22 ex2=new EX22();
        // ex2.setID(ID);
-        for (int i=13; i<14; i+=2)
+        for (int i=16; i<17; i+=2)
         {
             EX22 ex2=new EX22();
             ex2.setGameNumber(i);
@@ -31,8 +31,7 @@ public class EX22 implements Runnable {
 
 
     }
-
-    private static final double EPS = 0.0001;
+    private static final double EPS = 0.000001;
     static int sumPokemons;
     static boolean logged_in;
     static int sumAgents;
@@ -71,7 +70,6 @@ public class EX22 implements Runnable {
             getGameData(game);
             graphAL.load(path);
             graphDS = graphAL.getGraph();
-            System.out.println("shortest path: "+graphAL.shortestPath(7,18));
             updatePokemonList(game);
             setPlaceOfAgents(game);
             _ar = new GameData();
@@ -138,64 +136,44 @@ public class EX22 implements Runnable {
         }
         pokemonList = newP;
     }
-//    private static void insertNewPokemons(String pokemons) throws JSONException {
-//        JSONObject newPokemonsObj = new JSONObject(pokemons);
-//        JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
-//        for (int i = 0; i < pokemonsArr.length(); i++) {
-//            Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
-//            boolean ans = false;
-//            for (Pokemon alreadyPok : pokemonList) {
-//                if (alreadyPok.getPos().distance(newPok.getPos()) < EPS) {
-//                    ans = true;
-//                }
-//            }
-//            if (!ans) { //there is a new pokemon in the game that doesn't in the list
-//                setSrcAndDest(newPok);
-//                edgeData e = (edgeData) (graphDS.getEdge(newPok.src, newPok.dest));
-//                edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(newPok.getPos(), e);
-//                newPok.setEL(edgelocation);
-//                pokemonList.add(newPok);
-//                return;
-//            }
-//        }
-//    }
 
     private void RunningTheGame(game_service game) throws JSONException, InterruptedException {
         int count = 0;
+        int sum=0;
         String s;
         min = Double.MAX_VALUE;
         while (game.isRunning()) {
             s = game.move();
             count++;
+          //  updatePoks(game.getPokemons());
             regfreshLocation(s);
             _ar.setAgents(agentList);
-            _win.repaint();
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
-          //  _ar.setTimeToEnd(game.timeToEnd());
+            _win.repaint();
+
+            //  _ar.setTimeToEnd(game.timeToEnd());
             for (Agent a : agentList) {
                 int dest = a.getDest();
                 if (dest == -1) {
                     if ((a.getSrc()==a.getPokemon().dest)
                          && !(a.getPokemon().has_been_eaten(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
-                        //insertNewPokemons(game.getPokemons());
                         updatePoks(game.getPokemons());
                         a.findClosestPokemon(graphAL, pokemonList);
                         a.setPath(graphAL);
-//                        if(a.getId()==0)
-//                            System.out.println(a.myPath);
                     }
                     dest = a.getNextDest();
                     game.chooseNextEdge(a.getId(), dest);
-                    if(a.getId()==0)
                     System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
-                if (game.timeToEnd() < EPS)
+                if (game.timeToEnd() < EPS) {
                     System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
+                sum+= a.getValue();
+                }
             }
         }
-      //  Thread.sleep(100);
+      //Thread.sleep(100);
         _win.dispose();
-        System.out.println("the game is over : "+GameNumber);
+        System.out.println("the game is over : "+GameNumber+", total points: "+sum);
        // System.out.println(game.toString());
 }
 
