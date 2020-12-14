@@ -20,7 +20,7 @@ public class Ex2 implements Runnable {
 //        lf.setVisible(true);
         //  Ex2 ex2=new Ex2();
         // ex2.setID(ID);
-        for (int i=21; i<23; i++)
+        for (int i=23; i<24; i++)
         {
             Ex2 ex2=new Ex2();
             ex2.setGameNumber(i);
