@@ -145,7 +145,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         panel.add(LoginButton);
         panel.add(GameOpt);
         panel.add(SaveGrade);
-       // panel.add(Mute);
+        // panel.add(Mute);
         //panel.add(unMute);
         panel.add(back);
         panel.setSize(getWidth(), getHeight());
@@ -170,8 +170,8 @@ public class LoginFrame extends JFrame implements ActionListener {
                 System.out.println("game number: "+GameNumber);
                 JOptionPane.showMessageDialog(this, "Let's start the game");
                 run();
-                    // clip.stop();
-                //Ex2.ex2.run();
+                // clip.stop();
+                //EX22.ex2.run();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -205,11 +205,11 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     public void run() {
-     Ex2 ex2=new Ex2();
-     ex2.setID(ID);
-     ex2.setGameNumber(GameNumber);
-     this.dispose();
-     Thread Game = new Thread(ex2);
-     Game.start();
+        Ex2 ex2=new Ex2();
+        ex2.setID(ID);
+        ex2.setGameNumber(GameNumber);
+        this.dispose();
+        Thread Game = new Thread(ex2);
+        Game.start();
     }
 }

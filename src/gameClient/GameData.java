@@ -58,11 +58,11 @@ public class GameData {
 		while(iter.hasNext()) {
 			geo_location c = iter.next().getLocation();
 			if(MIN==null) {
-			x0 = c.x();
-			y0=c.y();
-			x1=x0;
-			y1=y0;
-			MIN = new Point3D(x0,y0);
+				x0 = c.x();
+				y0=c.y();
+				x1=x0;
+				y1=y0;
+				MIN = new Point3D(x0,y0);
 			}
 			if(c.x() < x0) {x0=c.x();}
 			if(c.y() < y0) {y0=c.y();}
@@ -72,12 +72,12 @@ public class GameData {
 		double dx = x1-x0, dy = y1-y0;
 		MIN = new Point3D(x0-dx/10,y0-dy/10);
 		MAX = new Point3D(x1+dx/10,y1+dy/10);
-		
+
 	}
 	public List<Agent> getAgents() {return agents;}
 	public List<Pokemon> getPokemons() {return pokemons;}
 
-	
+
 	public directed_weighted_graph getGraph() {
 		return this.g;
 	}
