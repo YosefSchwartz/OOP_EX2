@@ -101,25 +101,21 @@ public class Agent {
         myPath.add(pokemon.getDest());
     }
 
-    public double timeNodeToNode(directed_weighted_graph g){
+    public long timeNodeToNode(directed_weighted_graph g){
         node_data src = g.getNode(this.src);
         node_data dest = g.getNode(this.dest);
         double w = g.getEdge(this.src,this.dest).getWeight();
-        double distance = src.getLocation().distance(dest.getLocation());
-        double totalSpeed = w/speed;
-        return distance/totalSpeed;
+        double agentSpeed = speed;
+        long TotalSpeed = (long) ((w*1000) / agentSpeed);
+        return TotalSpeed;
     }
 
-    public double TimetoPok(Pokemon p, directed_weighted_graph gg) {
+    public long TimetoPok(Pokemon p, directed_weighted_graph gg) {
         double ratio = p.getEL().getRatio();
         double w = p.getEL().getEdge().getWeight();
         double agentSpeed = speed;
-        double TotalSpeed = w / agentSpeed;
-        node_data edgeSrc = gg.getNode(p.getEL().getEdge().getSrc());
-        node_data edgeDest = gg.getNode(p.getEL().getEdge().getDest());
-        double edgeLength = edgeSrc.getLocation().distance(edgeDest.getLocation());
-        double destToPok = edgeLength * ratio;
-        double timetopok = destToPok / TotalSpeed;
+        double TotalSpeed = (w*1000) / agentSpeed;
+        long timetopok = (long) (ratio*TotalSpeed);
         return timetopok;
     }
 
@@ -190,21 +186,7 @@ public class Agent {
                 speed+", pos: "+pos+", pokemon: "+pokemon+"\n--------\n";
     }
 
-//    public void getNextDest() {
-//        if(dest == -1)
-//        this.src = dest;
-//        if(myPath.peek()!=null)
-//            dest = myPath.poll();
-//        else
-//            dest = -1;
-//    }
-
     public int getNextDest() {
-        if(myPath.peek()==null) {
-            System.out.println("my pok: "+ getPokemon());
-            System.out.println("my src: "+src+" ,dest: "+dest);
-            System.out.println("the cause " + getId());
-        }
         setDest(myPath.poll());
         return dest;
     }

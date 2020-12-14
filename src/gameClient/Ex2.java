@@ -20,7 +20,7 @@ public class Ex2 implements Runnable {
 //        lf.setVisible(true);
         //  Ex2 ex2=new Ex2();
         // ex2.setID(ID);
-        for (int i=23; i<24; i++)
+        for (int i=1; i<2; i++)
         {
             Ex2 ex2=new Ex2();
             ex2.setGameNumber(i);
@@ -41,7 +41,7 @@ public class Ex2 implements Runnable {
     static List<Agent> agentList;
     static String path;
     private game_service game;
-    private double min;
+    private long min;
     private static GameFrame _win;
     private static GameData _ar;
     private int GameNumber;
@@ -61,7 +61,7 @@ public class Ex2 implements Runnable {
     }
 
     private void initTheGame(game_service game) {
-        min = Double.MAX_VALUE;
+        min = Long.MAX_VALUE;
         graphAL = new DWGraph_Algo();
         graphDS = new DWGraph_DS();
         pokemonList = new LinkedList<>();
@@ -141,8 +141,8 @@ public class Ex2 implements Runnable {
         int count = 0;
         int sum=0;
         String s;
-        min = Double.MAX_VALUE;
         while (game.isRunning()) {
+          //  min = Long.MAX_VALUE;
             s = game.move();
             count++;
             //  updatePoks(game.getPokemons());
@@ -150,32 +150,82 @@ public class Ex2 implements Runnable {
             _ar.setAgents(agentList);
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
             _win.repaint();
-
             //  _ar.setTimeToEnd(game.timeToEnd());
             for (Agent a : agentList) {
                 int dest = a.getDest();
                 if (dest == -1) {
+                    System.out.println("-1");
                     if (!(a.getPokemon().is_in_the_game(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
+                        if(a.getSrc()==a.getPokemon().getDest())
                         updatePoks(game.getPokemons());
                         a.findClosestPokemon(graphAL, pokemonList);
                         a.setPath(graphAL);
                     }
+                    min = (time(a)<min)?time(a):min;
                     dest = a.getNextDest();
                     game.chooseNextEdge(a.getId(), dest);
-                  //  System.out.println("Agent " + a.getId() + " move to -> " + dest);
+                    //  System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
+                else
+                    min = (time(a)<min)?time(a):min;
+
                 if (game.timeToEnd() < EPS) {
-                  //  System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
+                    //  System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
                     sum+= a.getValue();
                 }
             }
+            System.out.println("min: "+min);
+            Thread.sleep(min);
+
         }
-        //Thread.sleep(100);
         _win.dispose();
         System.out.println(GameNumber+": "+sum);
         // System.out.println(game.toString());
     }
 
+    public long calTime(geo_location src, geo_location dest, double w){
+        double dist = src.distance(dest);
+        return (long)((dist*1000.0)/w);
+    }
+
+    public long time(Agent a) throws JSONException {
+        geo_location srcPos, destPos;
+        double w;
+        //IF(AGENT ON NODE)
+        if (a.getDest() == -1) {
+            //IF(IS SRC==POK SRC) --> NEED TO CALC SRC->POK
+            if (a.getSrc() == a.getPokemon().getSrc()) {
+                srcPos = graphDS.getNode(a.getSrc()).getLocation();
+                destPos = a.getPokemon().getPos();
+                w = a.getPokemon().getEL().getEdge().getWeight();
+                //(IS SRC!=POK SRC) --> NEED TO CALC SRC->DEST
+            } else {
+                srcPos = graphDS.getNode(a.getSrc()).getLocation();
+                node_data destNode = graphDS.getNode(a.getMyPath().peek());
+                destPos = destNode.getLocation();
+                w = graphDS.getEdge(a.getSrc(), destNode.getKey()).getWeight();
+            }
+        }
+            //AGENT ON THE WAY
+        else {
+            //PATH IS NULL --> NOW WILL EAT THE POK!
+            srcPos = a.getPos();
+            if (a.getMyPath().peek() == null) {
+                //IF(YET NOT EAT HIS POK) --> NEED TO CALC AGENTS->POK
+                w = a.getPokemon().getEL().getEdge().getWeight();
+                if (a.getPokemon().is_in_the_game(game.getPokemons(), a.getPokemon()))
+                    destPos = a.getPokemon().getPos();
+                    //(ALREADY EAT HIS POK) --< NEED TO CALC HIS->POK.DEST      //THIS FNUC USED BEFORE HE GET NEW POK
+                else
+                    destPos = graphDS.getNode(a.getPokemon().getDest()).getLocation();
+                //ON HIS WAY TO ANOTHER NODE
+            } else{
+                destPos = graphDS.getNode(a.getDest()).getLocation();
+                w = graphDS.getEdge(a.getSrc(),a.getDest()).getWeight();
+            }
+        }
+        return calTime(srcPos,destPos,w);
+    }
     public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONException {
         JSONObject newPokemonsObj = new JSONObject(pokemons);
         JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
@@ -213,7 +263,7 @@ public class Ex2 implements Runnable {
     }
     public void setPokToEachAgent (game_service game, double min) throws JSONException {
         createAgentsList(game);
-        double time;
+        long time;
         for (Agent a : agentList) {
             a.findClosestPokemon(graphAL, pokemonList);
             a.setDest(a.getPokemon().getDest());
@@ -276,9 +326,6 @@ public class Ex2 implements Runnable {
             return true;
         }
         return false;
-    }
-    public void setMin(double Min) {
-        this.min = Min;
     }
     public void setGameNumber(int n){
         GameNumber=n;
