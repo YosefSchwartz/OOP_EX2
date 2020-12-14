@@ -87,7 +87,7 @@ public class Agent {
         closestPok.setAgent(this);
         this.setPokemon(closestPok);
 
-       // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
+        // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){

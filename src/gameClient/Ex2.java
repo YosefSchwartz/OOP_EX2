@@ -18,15 +18,17 @@ public class Ex2 implements Runnable {
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 //        LoginFrame lf=new LoginFrame();
 //        lf.setVisible(true);
-        //  Ex2 ex2=new Ex2();
+        //  EX22 ex2=new EX22();
         // ex2.setID(ID);
-        for (int i=21; i<23; i++)
+        for (int i=13; i<14; i++)
         {
-            Ex2 ex2=new Ex2();
+
+            Ex2 ex2 = new Ex2();
             ex2.setGameNumber(i);
             Thread Game = new Thread(ex2);
             Game.start();
             Game.join();
+
         }
 
 
@@ -80,7 +82,7 @@ public class Ex2 implements Runnable {
             _win.update(_ar);
             _win.setVisible(true);
             _win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            // game.login(208449256);
+            // game.login(313419483);
             game.startGame();
             _win.setTitle("Ex2 - OOP: " +GameNumber);
             setPokToEachAgent(game, min);
@@ -90,7 +92,7 @@ public class Ex2 implements Runnable {
     }
 
 
-    private static void regfreshLocation(String s) throws JSONException {
+    private static void refreshLocation(String s) throws JSONException {
         JSONObject obj = new JSONObject(s);
         JSONArray moveData = obj.getJSONArray("Agents");
         for (int i = 0; i < moveData.length(); i++) {
@@ -146,7 +148,7 @@ public class Ex2 implements Runnable {
             s = game.move();
             count++;
             //  updatePoks(game.getPokemons());
-            regfreshLocation(s);
+            refreshLocation(s);
             _ar.setAgents(agentList);
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
             _win.repaint();
@@ -162,10 +164,10 @@ public class Ex2 implements Runnable {
                     }
                     dest = a.getNextDest();
                     game.chooseNextEdge(a.getId(), dest);
-                  //  System.out.println("Agent " + a.getId() + " move to -> " + dest);
+                    //  System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
                 if (game.timeToEnd() < EPS) {
-                  //  System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
+                    //  System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
                     sum+= a.getValue();
                 }
             }
@@ -286,7 +288,7 @@ public class Ex2 implements Runnable {
     public void setID(int id){
         ID=id;
     }
-    public static Ex2 getEX22() {
+    public static Ex2 getEx2() {
         return ex2;
     }
 }
