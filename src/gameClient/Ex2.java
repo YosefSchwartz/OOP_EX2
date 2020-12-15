@@ -145,30 +145,22 @@ public class Ex2 implements Runnable {
             min = Long.MAX_VALUE;
             s = game.move();
             count++;
-            //  updatePoks(game.getPokemons());
             regfreshLocation(s);
             _ar.setAgents(agentList);
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
             _win.repaint();
             //  _ar.setTimeToEnd(game.timeToEnd());
             for (Agent a : agentList) {
-
-                int dest = a.getDest();
-                if (dest == -1) {
+                if (a.getDest() == -1) {
                     if (!(a.getPokemon().is_in_the_game(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
                         if(a.getSrc()==a.getPokemon().getDest())
                         updatePoks(game.getPokemons());
                         a.findClosestPokemon(graphAL, pokemonList);
                     }
-                    dest = a.getNextDest();
-                    game.chooseNextEdge(a.getId(), dest);
+                    game.chooseNextEdge(a.getId(), a.getNextDest());
                     //  System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
                 min = (time(a)<min)?time(a):min;
-                if (game.timeToEnd() < EPS) {
-                    //  System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
-                    sum+= a.getValue();
-                }
             }
             min = min*100;
             long minL = ((long) min);
@@ -176,8 +168,6 @@ public class Ex2 implements Runnable {
         }
         _win.dispose();
         System.out.println(game.toString());
-//        System.out.println(GameNumber+": "+sum);
-        // System.out.println(game.toString());
     }
 
     public double calTime(geo_location src, geo_location dest, double speed){

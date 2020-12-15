@@ -74,12 +74,16 @@ public class Agent {
     public void findClosestPokemon (dw_graph_algorithms ga, List<Pokemon> poks){
         Pokemon closestPok = null;
         double dist = Double.MAX_VALUE;
+        double val = Double.MIN_VALUE;
         //  System.out.println("pokemon list: "+poks);
         for(Pokemon p:poks) {
             if(p.agent == null) {
                 double shortestPath=ga.shortestPathDist(src, p.getSrc());
+//                double value = p.getValue()/shortestPath;
                 if (shortestPath< dist) {
+//                if(value>val){
                     closestPok = p;
+//                    val=value;
                     dist = shortestPath;
                 }
             }
