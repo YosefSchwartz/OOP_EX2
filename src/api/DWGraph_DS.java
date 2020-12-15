@@ -2,35 +2,54 @@ package api;
 
 import java.util.Collection;
 import java.util.HashMap;
-
+/**
+ * This class represents a directional weighted graph.
+ * It contain one map of nodes, and one map with inner map (at value field) of edges.
+ * support some function to get information about the graph
+ */
 public class DWGraph_DS implements directed_weighted_graph {
-    //eden
     HashMap<Integer, node_data> graph;
     HashMap<Integer, HashMap<Integer, edge_data>> edges;
     int MC, edgeNum;
 
+    /**
+     * constructor function
+     */
     public DWGraph_DS() {
         graph = new HashMap<>();
         edges = new HashMap<>();
         MC = 0;
         edgeNum = 0;
     }
-
+    /**
+     * returns the node_data by the node_id,
+     * @param key - the node_id
+     * @return the node_data by the node_id, null if none.
+     */
     @Override
     public node_data getNode(int key) {
         if (!(graph.containsKey(key)))
             return null;
         return graph.get(key);
     }
-
+    /**
+     * Returns the data of the edge (src,dest), null if none.
+     * @param src - id of source node
+     * @param dest - id of destination node
+     * @return
+     */
     @Override
     public edge_data getEdge(int src, int dest) {
+        //Check if both nodes are in the graph, and if this edge are exist
         if (!(graph.containsKey(src)) || !(graph.containsKey(dest)) ||
                 !(edges.get(src).containsKey(dest)))
             return null;
         return edges.get(src).get(dest);
     }
-
+    /**
+     * Adds a new node to the graph with the given node_data.
+     * @param n - new node_data to add
+     */
     @Override
     public void addNode(node_data n) {
         graph.put(n.getKey(), n);

@@ -86,6 +86,7 @@ public class Agent {
         }
         closestPok.setAgent(this);
         this.setPokemon(closestPok);
+        setPath(ga);
 
         // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
@@ -99,24 +100,6 @@ public class Agent {
             myPath.add(shortestPath.get(i).getKey());
         }
         myPath.add(pokemon.getDest());
-    }
-
-    public long timeNodeToNode(directed_weighted_graph g){
-        node_data src = g.getNode(this.src);
-        node_data dest = g.getNode(this.dest);
-        double w = g.getEdge(this.src,this.dest).getWeight();
-        double agentSpeed = speed;
-        long TotalSpeed = (long) ((w*1000) / agentSpeed);
-        return TotalSpeed;
-    }
-
-    public long TimetoPok(Pokemon p, directed_weighted_graph gg) {
-        double ratio = p.getEL().getRatio();
-        double w = p.getEL().getEdge().getWeight();
-        double agentSpeed = speed;
-        double TotalSpeed = (w*1000) / agentSpeed;
-        long timetopok = (long) (ratio*TotalSpeed);
-        return timetopok;
     }
 
     public int getId() {
@@ -141,7 +124,6 @@ public class Agent {
 
     public void setSrc(int src) {
         this.src = src;
-        //  System.out.println("*src: "+src);
     }
 
     public int getDest() {
@@ -150,7 +132,6 @@ public class Agent {
 
     public void setDest(int dest) {
         this.dest = dest;
-        //System.out.println("*dest: "+dest);
     }
 
     public double getSpeed() {
