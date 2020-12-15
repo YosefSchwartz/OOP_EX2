@@ -8,7 +8,6 @@ import gameClient.util.Range;
 import gameClient.util.Range2D;
 import gameClient.util.Range2Range;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -22,26 +21,14 @@ public class GameData {
 	private List<Agent> agents;
 	private List<Pokemon> pokemons;
 	private List<String> info;
-	private double TimeToEnd;
 	private static Point3D MIN = new Point3D(0, 100,0);
 	private static Point3D MAX = new Point3D(0, 100,0);
 
-	public GameData() {
-		info = new ArrayList<String>();
-	}
-	public GameData(directed_weighted_graph g, List<Agent> ag, List<Pokemon> p) {
-		TimeToEnd=0;
+	public GameData(directed_weighted_graph g, List<Agent> ag, List<Pokemon> p, List<String> info) {
+		this.info=info;
 		this.g = g;
 		this.setAgents(ag);
 		this.setPokemons(p);
-	}
-	public void setTimeToEnd(double t)
-	{
-		TimeToEnd=t;
-	}
-	public double getTimeToEnd()
-	{
-		return TimeToEnd;
 	}
 	public void setPokemons(List<Pokemon> poks) {
 		this.pokemons = poks;

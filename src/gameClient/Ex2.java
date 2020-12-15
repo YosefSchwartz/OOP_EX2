@@ -20,14 +20,14 @@ public class Ex2 implements Runnable {
 //        lf.setVisible(true);
         //  Ex2 ex2=new Ex2();
         // ex2.setID(ID);
-        for (int i=1; i<2; i++)
-        {
+//        for (int i=0; i<24; i++)
+//        {
             Ex2 ex2=new Ex2();
-            ex2.setGameNumber(i);
+            ex2.setGameNumber(16);
             Thread Game = new Thread(ex2);
             Game.start();
             Game.join();
-        }
+       // }
 
 
     }
@@ -39,9 +39,10 @@ public class Ex2 implements Runnable {
     static directed_weighted_graph graphDS;
     static List<Pokemon> pokemonList;
     static List<Agent> agentList;
+    static List<String> GameInfo;
     static String path;
     private game_service game;
-    private long min;
+    private double min;
     private static GameFrame _win;
     private static GameData _ar;
     private int GameNumber;
@@ -66,15 +67,18 @@ public class Ex2 implements Runnable {
         graphDS = new DWGraph_DS();
         pokemonList = new LinkedList<>();
         agentList = new LinkedList<>();
+        GameInfo=new LinkedList<>();
+        UpdateGameInfo(GameNumber, 0, 0);
         try {
             getGameData(game);
             graphAL.load(path);
             graphDS = graphAL.getGraph();
             updatePokemonList(game);
             setPlaceOfAgents(game);
-            _ar = new GameData();
-            _ar.setGraph(graphDS);
-            _ar.setPokemons(pokemonList);
+            _ar = new GameData(graphDS, agentList, pokemonList,GameInfo);
+//            _ar.set_info(GameInfo);
+//            _ar.setGraph(graphDS);
+//            _ar.setPokemons(pokemonList);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
             _win.update(_ar);
@@ -89,7 +93,14 @@ public class Ex2 implements Runnable {
         }
     }
 
-
+    public static void UpdateGameInfo(int level, long time, double value)
+    {
+        List<String> newList=new LinkedList<>();
+        newList.add(String.valueOf(level));
+        newList.add(String.valueOf(time/1000));
+        newList.add(String.valueOf(value));
+        GameInfo=newList;
+    }
     private static void regfreshLocation(String s) throws JSONException {
         JSONObject obj = new JSONObject(s);
         JSONArray moveData = obj.getJSONArray("Agents");
@@ -139,80 +150,72 @@ public class Ex2 implements Runnable {
 
     private void RunningTheGame(game_service game) throws JSONException, InterruptedException {
         int count = 0;
-        int sum=0;
+        double TotalValue=0;
         String s;
         while (game.isRunning()) {
-          //  min = Long.MAX_VALUE;
+            min = Long.MAX_VALUE;
             s = game.move();
             count++;
-            //  updatePoks(game.getPokemons());
             regfreshLocation(s);
             _ar.setAgents(agentList);
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
-            _win.repaint();
+            UpdateGameInfo(GameNumber, game.timeToEnd(), TotalValue);
+            _ar.set_info(GameInfo);            _win.repaint();
             //  _ar.setTimeToEnd(game.timeToEnd());
+            TotalValue = 0;
             for (Agent a : agentList) {
-                int dest = a.getDest();
-                if (dest == -1) {
-                    System.out.println("-1");
+                if (a.getDest() == -1) {
                     if (!(a.getPokemon().is_in_the_game(game.getPokemons(), a.getPokemon()))) { //a took the pokemon
                         if(a.getSrc()==a.getPokemon().getDest())
-                        updatePoks(game.getPokemons());
+                            updatePoks(game.getPokemons());
                         a.findClosestPokemon(graphAL, pokemonList);
-                        a.setPath(graphAL);
                     }
-                    min = (time(a)<min)?time(a):min;
-                    dest = a.getNextDest();
-                    game.chooseNextEdge(a.getId(), dest);
+                    game.chooseNextEdge(a.getId(), a.getNextDest());
                     //  System.out.println("Agent " + a.getId() + " move to -> " + dest);
                 }
-                else
-                    min = (time(a)<min)?time(a):min;
-
-                if (game.timeToEnd() < EPS) {
-                    //  System.out.println("speed: " + a.getSpeed() + "\nvalue: " + a.getValue() + "\ntimes of move: " + count);
-                    sum+= a.getValue();
-                }
+              //  min = (time(a)<min)?time(a):min;
+                TotalValue+=a.getValue();
             }
-            System.out.println("min: "+min);
-            Thread.sleep(min);
-
+//            min = min*100;
+//            long minL = ((long) min);
+//            Thread.sleep(minL);
         }
         _win.dispose();
-        System.out.println(GameNumber+": "+sum);
-        // System.out.println(game.toString());
+        System.out.println(game.toString()+"\nTotalValue: "+TotalValue);
     }
 
-    public long calTime(geo_location src, geo_location dest, double w){
+    public double calTime(geo_location src, geo_location dest, double speed){
         double dist = src.distance(dest);
-        return (long)((dist*1000.0)/w);
+        return (dist*1000)/speed;
     }
 
-    public long time(Agent a) throws JSONException {
+    public double time(Agent a) throws JSONException {
         geo_location srcPos, destPos;
-        double w;
+        double speed = a.getSpeed();
+//        double w;
         //IF(AGENT ON NODE)
         if (a.getDest() == -1) {
             //IF(IS SRC==POK SRC) --> NEED TO CALC SRC->POK
             if (a.getSrc() == a.getPokemon().getSrc()) {
                 srcPos = graphDS.getNode(a.getSrc()).getLocation();
                 destPos = a.getPokemon().getPos();
-                w = a.getPokemon().getEL().getEdge().getWeight();
+//                w = a.getPokemon().getEL().getEdge().getWeight();
                 //(IS SRC!=POK SRC) --> NEED TO CALC SRC->DEST
             } else {
                 srcPos = graphDS.getNode(a.getSrc()).getLocation();
+                System.out.println(a.getMyPath().peek());
                 node_data destNode = graphDS.getNode(a.getMyPath().peek());
                 destPos = destNode.getLocation();
-                w = graphDS.getEdge(a.getSrc(), destNode.getKey()).getWeight();
+//                w = graphDS.getEdge(a.getSrc(), destNode.getKey()).getWeight();
             }
         }
-            //AGENT ON THE WAY
+        //AGENT ON THE WAY
         else {
             //PATH IS NULL --> NOW WILL EAT THE POK!
             srcPos = a.getPos();
             if (a.getMyPath().peek() == null) {
                 //IF(YET NOT EAT HIS POK) --> NEED TO CALC AGENTS->POK
-                w = a.getPokemon().getEL().getEdge().getWeight();
+//                w = a.getPokemon().getEL().getEdge().getWeight();
                 if (a.getPokemon().is_in_the_game(game.getPokemons(), a.getPokemon()))
                     destPos = a.getPokemon().getPos();
                     //(ALREADY EAT HIS POK) --< NEED TO CALC HIS->POK.DEST      //THIS FNUC USED BEFORE HE GET NEW POK
@@ -221,10 +224,10 @@ public class Ex2 implements Runnable {
                 //ON HIS WAY TO ANOTHER NODE
             } else{
                 destPos = graphDS.getNode(a.getDest()).getLocation();
-                w = graphDS.getEdge(a.getSrc(),a.getDest()).getWeight();
+//                w = graphDS.getEdge(a.getSrc(),a.getDest()).getWeight();
             }
         }
-        return calTime(srcPos,destPos,w);
+        return calTime(srcPos,destPos,speed);
     }
     public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONException {
         JSONObject newPokemonsObj = new JSONObject(pokemons);
@@ -266,8 +269,8 @@ public class Ex2 implements Runnable {
         long time;
         for (Agent a : agentList) {
             a.findClosestPokemon(graphAL, pokemonList);
-            a.setDest(a.getPokemon().getDest());
-            game.chooseNextEdge(a.getId(), a.getPokemon().getDest());
+            //a.setDest(a.getPokemon().getDest());
+            game.chooseNextEdge(a.getId(), a.getNextDest());
             //System.out.println("agent positions: "+agentList);
             // System.out.println("1 - Agent " + a.getId() + " move to -> " + a.getDest());
         }

@@ -1,13 +1,17 @@
 package gameClient;
 
 
-import api.*;
+import api.directed_weighted_graph;
+import api.edge_data;
+import api.geo_location;
+import api.node_data;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +20,10 @@ public class GameFrame extends JFrame {
     private GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
+    private JPanel panel;
+    private JLabel TimeToEnd;
+    private JLabel TotalValue;
+    private JLabel GameLevel;
     //private JLabel TimeToEnd;
     private gameClient.util.Range2Range _w2f;
 
@@ -24,11 +32,11 @@ public class GameFrame extends JFrame {
         super(a);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-//        TimeToEnd = new JLabel();
-//        TimeToEnd.setVisible(true);
-//        this.add(TimeToEnd);
-//        TimeToEnd.setText("Time to end: ");
-
+        panel =new JPanel();
+        this.add(panel);
+//        TimeToEnd=new JLabel();
+//        TotalValue=new JLabel();
+//        GameLevel=new JLabel();
         int _ind = 0;
     }
     public void update(GameData ar) {
@@ -36,10 +44,10 @@ public class GameFrame extends JFrame {
         updateFrame();
     }
     private void updateFrame() {
-        Range rx = new Range(50,this.getWidth()-50);
-        Range ry = new Range(this.getHeight()-50,100);
+        double h=this.getHeight(), w=this.getWidth();
+        Range rx = new Range(0.06*w,w-0.06*w);
+        Range ry = new Range(h-0.08*h,0.30*h);
         Range2D frame = new Range2D(rx,ry);
-//        TimeToEnd.setBounds(50, 100,50, 25);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = GameData.w2f(g,frame);
     }
@@ -63,10 +71,37 @@ public class GameFrame extends JFrame {
 
     private void drawInfo(Graphics g) {
         List<String> str = _ar.get_info();
-        String dt = "none";
-        for(int i=0;i<str.size();i++) {
-            g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
+        double w=getWidth(), h=0.22*getHeight();
+        int size=(int)(w*0.03);
+        Font f=new Font("SansSerif", Font.BOLD, size);
+        g.setFont(f);
+        System.out.println("h: "+h);
+        g.setColor(Color.BLACK);
+        double[] s1=getSize("Level: "+str.get(0), g, f);
+        double[] s2=getSize("Time left: ",g,f);
+        g.fillRect(0,0,(int)(w), (int)(h));
+        g.setColor(new Color(221,183, 63 ));
+        g.fillRect(0,(int)(h)-2,(int)(w),4);
+        g.drawString("Level: "+str.get(0), (int)((w/2)-(s1[0]/2)),70);
+        g.drawString("Score: "+str.get(2), 296,137);
+        int time=Integer.parseInt(str.get(1));
+        if(time<6)
+        {
+            g.drawString("Time left: ",530 ,137);
+            g.setColor(Color.red);
+            g.drawString(str.get(1),670 ,137);
         }
+        else g.drawString("Time left: "+str.get(1),530 ,137);
+
+    }
+    private double[] getSize(String s, Graphics g, Font f)
+    {
+        g.setColor(Color.BLACK);
+        double[] size=new double[2];
+        Rectangle2D p=g.getFontMetrics(f).getStringBounds(s,g);
+        size[0]=p.getWidth();
+        size[1]=p.getHeight();
+        return size;
     }
     private void drawGraph(Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
@@ -117,7 +152,6 @@ public class GameFrame extends JFrame {
         while(rs!=null && i<rs.size()) {
             geo_location c = rs.get(i).getPos();
             int r=8;
-            i++;
             if(c!=null) {
 
                 geo_location fp = this._w2f.world2frame(c);
@@ -126,8 +160,17 @@ public class GameFrame extends JFrame {
                 Image agent1 = agent.getImage();
                 Image agent2 = agent1.getScaledInstance(10*r, 12*r,Image.SCALE_DEFAULT);
                 agent=new ImageIcon(agent2);
-                agent.paintIcon(this, g, (int)fp.x()-4*r,(int)fp.y()-6*r);
+                int x=(int)fp.x()-4*r, y=(int)fp.y()-6*r;
+                agent.paintIcon(this, g,x ,y);
+                Font f=new Font("SansSerif", Font.BOLD, 12);
+                g.setFont(f);
+                g.setColor(Color.BLACK);
+               // new Color(220, 36,36)
+                double Value= rs.get(i).getValue();
+                g.drawString("Value: "+Value, x-3, y-5);
+              //  g.drawString("Speed: "+rs.get(i).getSpeed(), x-, y-20);
             }
+            i++;
         }
     }
     private void drawNode(node_data n, int r, Graphics g) {
@@ -138,7 +181,6 @@ public class GameFrame extends JFrame {
         Font f=new Font("SansSerif", Font.CENTER_BASELINE, 12);
         g.setFont(f);
         g.drawString(""+n.getKey(), (int)fp.x()-5, (int)fp.y()+4);
-        g.setColor(Color.red);
     }
     private void drawEdge(edge_data e, Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
