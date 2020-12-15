@@ -2,6 +2,7 @@ package api;
 
 import java.util.Collection;
 import java.util.HashMap;
+
 /**
  * This class represents a directional weighted graph.
  * It contain one map of nodes, and one map with inner map (at value field) of edges.
@@ -21,8 +22,10 @@ public class DWGraph_DS implements directed_weighted_graph {
         MC = 0;
         edgeNum = 0;
     }
+
     /**
      * returns the node_data by the node_id,
+     *
      * @param key - the node_id
      * @return the node_data by the node_id, null if none.
      */
@@ -32,9 +35,11 @@ public class DWGraph_DS implements directed_weighted_graph {
             return null;
         return graph.get(key);
     }
+
     /**
      * Returns the data of the edge (src,dest), null if none.
-     * @param src - id of source node
+     *
+     * @param src  - id of source node
      * @param dest - id of destination node
      * @return
      */
@@ -46,8 +51,10 @@ public class DWGraph_DS implements directed_weighted_graph {
             return null;
         return edges.get(src).get(dest);
     }
+
     /**
      * Adds a new node to the graph with the given node_data.
+     *
      * @param n - new node_data to add
      */
     @Override
@@ -57,6 +64,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         MC++;
     }
 
+    /**
+     * Connects an edge with weight w between node src to node dest.
+     *
+     * @param src  - the source of the edge.
+     * @param dest - the destination of the edge.
+     * @param w    - positive weight representing the cost (aka time, price, etc) between src-->dest.
+     */
     @Override
     public void connect(int src, int dest, double w) {
         if (!(graph.containsKey(src)) || !(graph.containsKey(dest)) || getEdge(src, dest) != null)
@@ -67,11 +81,24 @@ public class DWGraph_DS implements directed_weighted_graph {
         MC++;
     }
 
+    /**
+     * This method returns a pointer (shallow copy) for the
+     * collection representing all the nodes in the graph.
+     *
+     * @return Collection<node_data>
+     */
     @Override
     public Collection<node_data> getV() {
         return graph.values();
     }
 
+    /**
+     * This method returns a pointer (shallow copy) for the
+     * collection representing all the edges getting out of
+     * the given node (all the edges starting (source) at the given node).
+     *
+     * @return Collection<edge_data>
+     */
     @Override
     public Collection<edge_data> getE(int node_id) {
         if (!(graph.containsKey(node_id)))
@@ -79,6 +106,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         return edges.get(node_id).values();
     }
 
+    /**
+     * Deletes the node (with the given ID) from the graph -
+     * and removes all edges which starts or ends at this node.
+     * This method should run in O(k), V.degree=k, as all the edges should be removed.
+     *
+     * @param key
+     */
     @Override
     public node_data removeNode(int key) {
         if (!(graph.containsKey(key)))
@@ -100,6 +134,13 @@ public class DWGraph_DS implements directed_weighted_graph {
         return tmp;
     }
 
+    /**
+     * Deletes the edge from the graph,
+     *
+     * @param src
+     * @param dest
+     * @return the data of the removed edge (null if none).
+     */
     @Override
     public edge_data removeEdge(int src, int dest) {
         edge_data e = getEdge(src, dest);
@@ -109,21 +150,39 @@ public class DWGraph_DS implements directed_weighted_graph {
         return e;
     }
 
+    /**
+     * Returns the number of vertices (nodes) in the graph.
+     *
+     * @return - size of nodes in graph
+     */
     @Override
     public int nodeSize() {
         return graph.size();
     }
 
+    /**
+     * Returns the number of edges (assume directional graph).
+     *
+     * @return - size of edges in graph
+     */
     @Override
     public int edgeSize() {
         return edgeNum;
     }
 
+    /**
+     * Returns the Mode Count - for testing changes in the graph.
+     * @return - size of act that performed on this graph.
+     */
     @Override
     public int getMC() {
         return MC;
     }
 
+    /**
+     * toString function
+     * @return  - main data of this graph
+     */
     public String toString() {
         String s = "";
         for (node_data n : getV()) {

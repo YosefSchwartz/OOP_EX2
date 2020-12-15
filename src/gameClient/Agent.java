@@ -19,6 +19,7 @@ public class Agent {
     Pokemon pokemon;
     private int previesSRC;
 
+
     Queue<Integer> myPath = new LinkedList<>();
 
 
@@ -57,12 +58,6 @@ public class Agent {
         pokemon = null;
     }
 
-    public void updateDest(int num){
-        if(myPath.peek()!=null)
-            this.dest = myPath.poll();
-        else
-            this.dest = -1;
-    }
 
     /**
      * serach for closest pokemon for this agents,
@@ -100,7 +95,7 @@ public class Agent {
         while (!myPath.isEmpty()) {
             myPath.poll();
         }
-        for(int i = 0;i<shortestPath.size();i++) {
+        for(int i = 1;i<shortestPath.size();i++) {
             myPath.add(shortestPath.get(i).getKey());
         }
         myPath.add(pokemon.getDest());
@@ -174,5 +169,58 @@ public class Agent {
     public int getNextDest() {
         setDest(myPath.poll());
         return dest;
+    }
+
+    public long time(directed_weighted_graph g, int tmp, String game) throws JSONException {
+        double w;
+        if(tmp == -1){
+            if(src == pokemon.src){
+               double ratio = pokemon.getEL().getRatio();
+                w = pokemon.getEL().getEdge().getWeight();
+               return (long)(ratio*w*1000/speed);
+            }else{
+                w = g.getEdge(src,dest).getWeight();
+                return (long)(w*1000/speed);
+            }
+        }else{
+            double edgeDist = g.getNode(src).getLocation().distance(g.getNode(dest).getLocation());
+            double partlyDist;
+            if(src!=pokemon.getSrc()) {
+                partlyDist= pos.distance(g.getNode(dest).getLocation());
+                double ratio = partlyDist / edgeDist;
+                w = g.getEdge(src, dest).getWeight();
+                return (long) (w * ratio * 1000 / speed);
+            }else{
+                w = pokemon.getEL().getEdge().getWeight();
+                if(pokemon.is_in_the_game(game.toString(),pokemon)){
+                    partlyDist = pos.distance(pokemon.getPos());
+                    double ratio = partlyDist/edgeDist;
+                    return (long)(w*1000*ratio/speed);
+                }else {
+                    partlyDist = pos.distance(g.getNode(dest).getLocation());
+                    double ratio = partlyDist/edgeDist;
+                    return (long)(ratio*w*1000/speed);
+
+                }
+            }
+        }
+    }
+
+    public long timeNodeToNode(directed_weighted_graph g){
+        double w = g.getEdge(this.src,this.dest).getWeight();
+        return (long)(w*1000.0/speed);
+    }
+
+    public double timetoPok(Pokemon p, directed_weighted_graph gg) {
+        double ratio = p.getEL().getRatio();
+        double w = p.getEL().getEdge().getWeight();
+        //w*ratio
+        double TotalSpeed = w*ratio*1000 / speed;
+        node_data edgeSrc = gg.getNode(p.getEL().getEdge().getSrc());
+        node_data edgeDest = gg.getNode(p.getEL().getEdge().getDest());
+        double edgeLength = edgeSrc.getLocation().distance(edgeDest.getLocation());
+        double destToPok = edgeLength * ratio;
+        double timetopok = destToPok / TotalSpeed;
+        return timetopok;
     }
 }

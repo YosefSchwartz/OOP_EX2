@@ -8,6 +8,7 @@ import api.node_data;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
+import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class GameFrame extends JFrame {
     private int _ind;
-    private GameData _ar;
+    public GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
     private JPanel panel;
@@ -201,5 +202,6 @@ public class GameFrame extends JFrame {
         g1.setStroke(new BasicStroke(2));
         g1.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
     }
+
 
 }

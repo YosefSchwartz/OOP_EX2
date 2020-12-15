@@ -2,28 +2,44 @@ package api;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
+/**
+ * This Class represents a Directed (positive) Weighted Graph Theory Algorithms,
+ * and two function to save graph to JSON file and read graph from JSON file.
+ * connectivity and shortest path base on Dijkstra's algorithm.
+ *
+ * you can read more here:
+ * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+ */
 public class DWGraph_Algo implements dw_graph_algorithms {
-
     directed_weighted_graph ga = new DWGraph_DS();
+    //This hashmap used by Dijkstra's algorithms,
     HashMap<Integer, node_data> re;
 
+    /**
+     * Init the graph on which this set of algorithms operates on.
+     * @param g - the graph to perform some algorithm on
+     */
     @Override
     public void init(directed_weighted_graph g) {
         this.ga = g;
     }
-
+    /**
+     * Return the underlying graph of which this class works.
+     * @return - pointer to the graph
+     */
     @Override
     public directed_weighted_graph getGraph() {
         return ga;
     }
-
+    /**
+     * Compute a deep copy of this weighted graph.
+     * @return - copy of this graph
+     */
     @Override
     public directed_weighted_graph copy() {
         directed_weighted_graph gaCopy = new DWGraph_DS();
@@ -33,73 +49,35 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             gaCopy.addNode(n);
         }
         //Add all edges
-        for (node_data tmpNode : ga.getV()) {
-            for (edge_data tmpEdge : ga.getE(tmpNode.getKey())) {
+        for (node_data tmpNode : ga.getV())
+            for (edge_data tmpEdge : ga.getE(tmpNode.getKey()))
                 gaCopy.connect(tmpEdge.getSrc(), tmpEdge.getDest(), tmpEdge.getWeight());
-            }
-        }
+
         return gaCopy;
     }
 
-    public directed_weighted_graph oppositeGraph(directed_weighted_graph g) {
-        directed_weighted_graph OppGraph = new DWGraph_DS();
-        for (node_data n : g.getV()) { //copy all nodes
-            node_data n1 = new NodeData(n.getKey(), n.getLocation());
-            OppGraph.addNode(n1);
-        }
-        for (node_data n : g.getV()) {//copy all edges - opposite direction
-            for (edge_data e : g.getE(n.getKey()))
-                OppGraph.connect(e.getDest(), e.getSrc(), e.getWeight());
-        }
-
-        return OppGraph;
-    }
-
-    //TODO
-    /*
-    rename BFS to correct name
+    /**
+     * Returns true if and only if (iff) there is a valid path from each node to each
+     * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
+     * @return - True iff this graph is one SCC (=Strongly Connectivity Component).
      */
-    private boolean BFS(directed_weighted_graph g, node_data node) {
-        resetTagTo0(); //O(v)
-        final int mark = 1;
-
-        Stack<node_data> t = new Stack<>();
-        t.push(node);
-        node.setTag(mark);
-
-        while (!t.isEmpty()) { //O(v)
-            node_data tmpNode = t.pop();
-            for (edge_data tmp : g.getE(tmpNode.getKey())) { //O(v-1) --> O(v^2)
-                node_data currNode = g.getNode(tmp.getDest());
-                if (currNode.getTag() != mark) {
-                    t.push(currNode);
-                    currNode.setTag(mark);
-                }
-            }
-        }
-        for (node_data n : g.getV()) //O(v)
-            if (n.getTag() != mark)
-                return false;
-        return true;
-    }
-
-    private void resetTagTo0() { //O(v)
-        for (node_data tmp : ga.getV())
-            tmp.setTag(0);
-    }
-
     @Override
     public boolean isConnected() {
         boolean ans;
+        // Null graph
         if (ga == null) return false;
-
+        //1 node is always SCC
         if (ga.nodeSize() <= 1) return true;
 
         node_data tmp = ga.getV().stream().findFirst().get();
+
+        //We need to check if random node s had path to all other nodes,
+        //and if in this graph transpose s is still connect to other nodes
+        //if both are true, the graph is one SCC.
         ans = BFS(ga, tmp);
         if (ans) {
-            directed_weighted_graph gaOpp = oppositeGraph(ga);
-            ans = BFS(gaOpp, tmp);
+            directed_weighted_graph gaTranspose = graphTranspose(ga);
+            ans = BFS(gaTranspose, tmp);
         }
         return ans;
     }
@@ -107,7 +85,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     private void Dijkstra(int src) {
         final int mark = 1;
         PriorityQueue<node_data> dist = new PriorityQueue<>();
-        re = new HashMap<Integer, node_data>(); //save the node that we came for to each key {sun, father}
+        re = new HashMap<>(); //save the node that we came for to each key {sun, father}
         resetTagTo0();
         for (node_data n : ga.getV()) // go over all the graph's nodes
         {
@@ -136,35 +114,59 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             tmp.setTag(mark);
         }
     }
-
+    /**
+     * returns the length of the shortest path between src to dest
+     * Note: if no such path --> returns -1
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return - total weight of this shortest path
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
-        if (ga == null)
-            if (ga.getNode(src) == null || ga.getNode(dest) == null) //if the ex1.ex1.src or the dest isn't at the graph return -1
-                return -1;
+        if (ga.getNode(src) == null || ga.getNode(dest) == null) //if the src or the dest isn't at the graph return -1
+            return -1;
 
         Dijkstra(src);
-        if (ga.getNode(dest).getWeight() == Double.MAX_VALUE) //if the dest's tag remain infinity- he has no path from the ex1.ex1.src
+        //if the dest tag remain infinity- he has no path from src to dest
+        if (ga.getNode(dest).getWeight() == Double.MAX_VALUE)
             return -1;
-        return ga.getNode(dest).getWeight();//return the dest's tag(his distance from the ex1.ex1.src)
+        //return the dest tag(his distance from the src)
+        return ga.getNode(dest).getWeight();
     }
-
+    /**
+     * returns the the shortest path between src to dest - as an ordered List of nodes:
+     * src--> n1-->n2-->...dest
+     * Note if no such path --> returns null;
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return - List<node_data> that contain the path from src to dest
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
         List<node_data> path = new ArrayList<>();
+        //If src=dest, the path is only this node
         if (src == dest) {
             path.add(ga.getNode(src));
             return path;
         }
+        //If shortest path is (-1), it mean that no path available
         if (shortestPathDist(src, dest) == -1) //if there is no nodes with ex1.ex1.src or dest key return null
             return null;
         path.add(ga.getNode(dest));
+        //AWARE! - special rule to this for loop!
         for (node_data n = re.get(dest); n != null; n = re.get(n.getKey())) //reconstruct the path from dest to ex1.ex1.src
             path.add(n);
-        Collections.reverse(path); //reverse the path so ex1.ex1.src to dest
+
+        //need to reverse the path, because it was from dest to src
+        Collections.reverse(path);
         return path;
     }
-
+    /**
+     * Saves this weighted (directed) graph to the given
+     * file name - in JSON format
+     * @param file - the file name (may include a relative path).
+     * @return true - iff the file was successfully saved
+     */
     @Override
     public boolean save(String file) {
         /*Pattern of our save
@@ -228,7 +230,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             return false;
         }
     }
-
+    /**
+     * This method load a graph to this graph algorithm.
+     * if the file was successfully loaded - the underlying graph
+     * of this class will be changed (to the loaded one), in case the
+     * graph was not loaded the original graph should remain "as is".
+     * @param file - file name of JSON file
+     * @return true - iff the graph was successfully loaded.
+     */
     @Override
     public boolean load(String file) {
         try {
@@ -281,9 +290,76 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
     }
 
+/**
+ * toString function
+ */
+    public String toString() { return ga.toString(); }
 
-    public String toString()
-    {
-        return ga.toString();
+//////////////////////////////////  Private functions //////////////////
+    /**
+     * get graph and return new graph with same nodes but opposite edges.
+     * will not affect on original graph.
+     * @param g - original graph
+     * @return - new graph transpose
+     */
+    private directed_weighted_graph graphTranspose(directed_weighted_graph g) {
+        directed_weighted_graph graphT = new DWGraph_DS();
+
+        for (node_data n : g.getV()) { //copy all nodes
+            node_data newNode = new NodeData(n.getKey(), n.getLocation());
+            graphT.addNode(newNode);
+        }
+        for (node_data n : g.getV()) //copy all edges - opposite direction
+            for (edge_data e : g.getE(n.getKey()))
+                graphT.connect(e.getDest(), e.getSrc(), e.getWeight());
+
+        return graphT;
+    }
+
+    /**
+     * based on BFS algorithm
+     * to more information:
+     * https://en.wikipedia.org/wiki/Breadth-first_search
+     *
+     * Note: name like grayNode and Black came from principle that unvisited node is white,
+     * in process is gray, and when we finish with the node is black
+     *
+     * @param g - graph
+     * @param startNode - start node
+     * @return - True iff exist path from start node to all other nodes in graph
+     */
+    private boolean BFS(directed_weighted_graph g, node_data startNode) {
+        resetTagTo0(); //O(v)
+        final int Black = 1;
+
+        Stack<node_data> grayNodes = new Stack<>();
+        grayNodes.push(startNode);
+        startNode.setTag(Black);
+
+        while (!grayNodes.isEmpty()) { //O(v) 
+            node_data tmpNode = grayNodes.pop();
+            for (edge_data tmp : g.getE(tmpNode.getKey())) {    //O(v-1)
+                node_data currNode = g.getNode(tmp.getDest());
+                if (currNode.getTag() != Black) {
+                    grayNodes.push(currNode);
+                    currNode.setTag(Black);                     //Total O(v^2)
+                }
+            }
+        }
+        //If there is node in graph that his tag is not black,
+        //mean that we start from startNode and don't visit in all nodes.
+        for (node_data n : g.getV())    //O(v)
+            if (n.getTag() != Black)
+                return false;
+
+        return true;
+    }
+
+    /**
+     * reset tag field in all nodes to 0
+     */
+    private void resetTagTo0() {    //O(v)
+        for (node_data n : ga.getV())
+            n.setTag(0);
     }
 }

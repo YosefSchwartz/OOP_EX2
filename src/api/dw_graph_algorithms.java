@@ -57,12 +57,7 @@ public interface dw_graph_algorithms {
      */
     public List<node_data> shortestPath(int src, int dest);
 
-    /**
-     * Saves this weighted (directed) graph to the given
-     * file name - in JSON format
-     * @param file - the file name (may include a relative path).
-     * @return true - iff the file was successfully saved
-     */
+
     public boolean save(String file);
 
     /**
