@@ -72,36 +72,45 @@ public class GameFrame extends JFrame {
     private void drawInfo(Graphics g) {
         List<String> str = _ar.get_info();
         double w=getWidth(), h=0.22*getHeight();
-        int size=(int)(w*0.03);
+        int size=(int)((0.07)*((w+h)/2));
+        if(w>700)
+            size=30;
         Font f=new Font("SansSerif", Font.BOLD, size);
         g.setFont(f);
-        System.out.println("h: "+h);
         g.setColor(Color.BLACK);
-        double[] s1=getSize("Level: "+str.get(0), g, f);
-        double[] s2=getSize("Time left: ",g,f);
+
+        double w1=getWidth("Level: "+str.get(0), g, f)[0];
+        double w2=getWidth("Score: ",g,f)[0];
+        double w3=getWidth("Time left: ",g,f)[0];
+        double w4=getWidth(str.get(1),g,f)[0];
+        double h1=getWidth("Level: "+str.get(0), g, f)[1];
         g.fillRect(0,0,(int)(w), (int)(h));
         g.setColor(new Color(221,183, 63 ));
         g.fillRect(0,(int)(h)-2,(int)(w),4);
-        g.drawString("Level: "+str.get(0), (int)((w/2)-(s1[0]/2)),70);
-        g.drawString("Score: "+str.get(2), 296,137);
+        g.drawString("Level: "+str.get(0), (int)(0.5*w-0.5*w1), (int)(h*0.49));
+        double x=(w-(2.5*w2+w3+w4))/2;
+        g.drawString("Score: "+str.get(2), (int)(x) ,(int)(0.58*h+h1));
         int time=Integer.parseInt(str.get(1));
-        if(time<6)
+        x+=2.5*w2;
+        g.drawString("Time left: ",(int)(x) ,(int)(0.58*h+h1));
+        x+=w3;
+        if(time<27)
         {
-            g.drawString("Time left: ",530 ,137);
             g.setColor(Color.red);
-            g.drawString(str.get(1),670 ,137);
+            g.drawString(str.get(1),(int)(x) ,(int)(0.58*h+h1));
         }
-        else g.drawString("Time left: "+str.get(1),530 ,137);
+        else g.drawString(str.get(1),(int)(x) ,(int)(0.58*h+h1));
 
     }
-    private double[] getSize(String s, Graphics g, Font f)
+
+    private double[] getWidth(String s, Graphics g, Font f)
     {
+        double[] arr=new double[2];//w,h
         g.setColor(Color.BLACK);
-        double[] size=new double[2];
         Rectangle2D p=g.getFontMetrics(f).getStringBounds(s,g);
-        size[0]=p.getWidth();
-        size[1]=p.getHeight();
-        return size;
+        arr[0]= p.getWidth();
+        arr[1]=p.getHeight();
+        return arr;
     }
     private void drawGraph(Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
