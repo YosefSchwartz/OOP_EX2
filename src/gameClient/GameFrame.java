@@ -8,7 +8,6 @@ import api.node_data;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
-import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,7 +78,6 @@ public class GameFrame extends JFrame {
         Font f=new Font("SansSerif", Font.BOLD, size);
         g.setFont(f);
         g.setColor(Color.BLACK);
-
         double w1=getWidth("Level: "+str.get(0), g, f)[0];
         double w2=getWidth("Score: ",g,f)[0];
         double w3=getWidth("Time left: ",g,f)[0];
@@ -95,7 +93,7 @@ public class GameFrame extends JFrame {
         x+=2.5*w2;
         g.drawString("Time left: ",(int)(x) ,(int)(0.58*h+h1));
         x+=w3;
-        if(time<27)
+        if(time<6)
         {
             g.setColor(Color.red);
             g.drawString(str.get(1),(int)(x) ,(int)(0.58*h+h1));
@@ -175,10 +173,10 @@ public class GameFrame extends JFrame {
                 Font f=new Font("SansSerif", Font.BOLD, 12);
                 g.setFont(f);
                 g.setColor(Color.BLACK);
-               // new Color(220, 36,36)
+                // new Color(220, 36,36)
                 double Value= rs.get(i).getValue();
                 g.drawString("Value: "+Value, x-3, y-5);
-              //  g.drawString("Speed: "+rs.get(i).getSpeed(), x-, y-20);
+                //  g.drawString("Speed: "+rs.get(i).getSpeed(), x-, y-20);
             }
             i++;
         }

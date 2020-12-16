@@ -20,8 +20,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     private JButton Mute;
     private JButton unMute;
     private JLabel text;
-    //JComboBox
-    private JRadioButton SaveGrade;
     private int Mark;
     private int countMark;
     private int ID;
@@ -108,17 +106,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         LoginButton.setBounds(225, 250, 100, 25);
         LoginButton.addActionListener(this);
 
-        //SaveGrade
-        SaveGrade=new JRadioButton();
-        SaveGrade.setBounds(175, 190, 160, 25);
-        Font f4 = new Font("SansSerif", Font.PLAIN, 12);
-        SaveGrade.setFont(f4);
-        SaveGrade.setBackground(new Color(193, 216, 250));
-        SaveGrade.setText("I want to save my score");
-        SaveGrade.addActionListener(this);
-
-//      SaveGrade.setBackground();
-
         //Mute
 //        ImageIcon M = new ImageIcon("src//gameClient//files//mute.jpg");
 //        try {
@@ -144,7 +131,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         panel.add(ID_Text);
         panel.add(LoginButton);
         panel.add(GameOpt);
-        panel.add(SaveGrade);
         // panel.add(Mute);
         //panel.add(unMute);
         panel.add(back);
@@ -178,12 +164,6 @@ public class LoginFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Invalid ID\nPlease enter again");
                 System.out.println("ERROR, enter again");
             }
-        }
-        if(e.getSource()==SaveGrade)
-        {
-            countMark++;
-            if((countMark%2)!=0) Mark=1;
-            else Mark=0;
         }
         if(e.getSource()==unMute) {
             unMute.setVisible(false);

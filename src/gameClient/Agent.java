@@ -87,7 +87,7 @@ public class Agent {
         this.setPokemon(closestPok);
         setPath(ga);
 
-        // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
+         System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){
@@ -177,9 +177,11 @@ public class Agent {
             if(src == pokemon.src){
                double ratio = pokemon.getEL().getRatio();
                 w = pokemon.getEL().getEdge().getWeight();
-               return (long)(ratio*w*1000/speed);
+               // System.out.println("time1: "+(long) (w * ratio * 1000 / speed));
+                return (long)(ratio*w*1000/speed);
             }else{
                 w = g.getEdge(src,dest).getWeight();
+                //System.out.println("time2: "+(long) (w*1000 / speed));
                 return (long)(w*1000/speed);
             }
         }else{
@@ -189,18 +191,20 @@ public class Agent {
                 partlyDist= pos.distance(g.getNode(dest).getLocation());
                 double ratio = partlyDist / edgeDist;
                 w = g.getEdge(src, dest).getWeight();
+                //System.out.println("time3: "+(long) (w * ratio * 1000 / speed));
                 return (long) (w * ratio * 1000 / speed);
             }else{
-                w = pokemon.getEL().getEdge().getWeight();
+                w = pokemon.getEL().getEdge().getWeight()-0.4;
                 if(pokemon.is_in_the_game(game.toString(),pokemon)){
                     partlyDist = pos.distance(pokemon.getPos());
                     double ratio = partlyDist/edgeDist;
+                    //System.out.println("4time: "+(long) (w * ratio * 1000 / speed));
                     return (long)(w*1000*ratio/speed);
                 }else {
                     partlyDist = pos.distance(g.getNode(dest).getLocation());
                     double ratio = partlyDist/edgeDist;
+                   // System.out.println("5time: "+(long) (w * ratio * 1000 / speed));
                     return (long)(ratio*w*1000/speed);
-
                 }
             }
         }
