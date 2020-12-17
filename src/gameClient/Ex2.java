@@ -22,7 +22,7 @@ public class Ex2 implements Runnable {
 //        for (int i=0; i<7; i++)
 //        {
             Ex2 ex2 = new Ex2();
-            ex2.setGameNumber(1);
+            ex2.setGameNumber(23);
             Thread game_thread = new Thread(ex2);
             game_thread.start();
             game_thread.join();
@@ -86,8 +86,9 @@ public class Ex2 implements Runnable {
             updatePokemonList(game);
             System.out.println("poks: "+pokemonList);
             _ar = new GameData(graphDS, agentList, pokemonList, GameInfo);
-            setPlaceOfAgents(game);
-//            setPlaceOfAgentsHighValue(game);
+            if(sumAgents==1 && pokemonList.size()>1)
+                setPlaceOfAgentsHighValue(game);
+            else setPlaceOfAgents(game);
             _ar = new GameData(graphDS, agentList, pokemonList,GameInfo);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
