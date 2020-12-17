@@ -20,6 +20,8 @@ public class Agent {
     List<Pokemon> MyPoks;
     Queue<Integer> myPath = new LinkedList<>();
 
+
+
     public Agent(int id,double value, int src, int dest, double speed, geo_location pos){
         this.id = id;
         this.value=value;
@@ -86,7 +88,7 @@ public class Agent {
         this.setPokemon(closestPok);
         setPath(ga);
 
-        // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
+         System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){

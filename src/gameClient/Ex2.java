@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class Ex2 implements Runnable {
 
@@ -29,10 +28,7 @@ public class Ex2 implements Runnable {
             game_thread.start();
             game_thread.join();
         }
-
-
     }
-
     private static final double EPS = 0.000001;
     static int sumPokemons;
     static boolean logged_in;
@@ -50,6 +46,19 @@ public class Ex2 implements Runnable {
     private int GameNumber;
     private int ID;
     public static Ex2 ex2;
+    // One more Data Structure min-heap for high value pokemons
+    // To set the agents next to high value pokemons in the start
+    private static PriorityQueue<Pokemon> highValuePokemon = new PriorityQueue<>(2, new Comparator<Pokemon>() {
+        @Override
+        public int compare(Pokemon o1, Pokemon o2) {
+            if(o1.getValue()>o2.getValue())
+                return 1;
+            else if(o1.getValue()<o2.getValue())
+                return  -1;
+            else
+                return 0;
+        }
+    });
 
     @Override
     public void run() {
@@ -78,6 +87,9 @@ public class Ex2 implements Runnable {
             updatePokemonList(game);
             setPlaceOfAgents(game);
             _ar = new GameData(graphDS, agentList, pokemonList, GameInfo);
+//            setPlaceOfAgents(game);
+            setPlaceOfAgentsHighValue(game);
+            _ar = new GameData(graphDS, agentList, pokemonList,GameInfo);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
             _win.update(_ar);
@@ -196,7 +208,6 @@ public class Ex2 implements Runnable {
             _ar.setPokemons(poks_in_the_game(game.getPokemons()));
             _ar.set_info(GameInfo);
             _win.repaint();
-            //  _ar.setTimeToEnd(game.timeToEnd());
             TotalValue = 0;
             for (Agent a : agentList) {
                 int tmp = a.getDest();
@@ -207,7 +218,6 @@ public class Ex2 implements Runnable {
                         a.findClosestPokemon(graphAL, pokemonList);
                     }
                     game.chooseNextEdge(a.getId(), a.getNextDest());
-
                 }
                 long time = a.time(graphDS, tmp, game.getPokemons());
                 min = (time < min && time != 0) ? time : min;
@@ -225,6 +235,7 @@ public class Ex2 implements Runnable {
         //System.out.println("moves: "+count);
         _win.dispose();
         System.out.println(game.toString());
+//        System.out.println(count);
     }
 
     public static List<Pokemon> poks_in_the_game(String pokemons) throws JSONException {
@@ -261,6 +272,21 @@ public class Ex2 implements Runnable {
                 game.addAgent(graphDS.getV().stream().findFirst().get().getKey());
         }
     }
+    private static void setThePQ() {
+        for(Pokemon p:pokemonList)
+            highValuePokemon.add(p);
+    }
+    private static void setPlaceOfAgentsHighValue (game_service game)
+    {
+        setThePQ();
+        for (int i = 0; i < sumAgents; i++) {
+            if (i < highValuePokemon.size()) {
+                game.addAgent(highValuePokemon.poll().src);
+            } else
+                game.addAgent(graphDS.getV().stream().findFirst().get().getKey());
+        }
+    }
+    public void setPokToEachAgent (game_service game) throws JSONException {
 
     public void setPokToEachAgent(game_service game) throws JSONException {
         createAgentsList(game);
@@ -287,7 +313,6 @@ public class Ex2 implements Runnable {
         logged_in = gameData.getBoolean("is_logged_in");
         path = gameData.getString("graph");
     }
-
     private static void setSrcAndDest(Pokemon p) {
         for (node_data n : graphDS.getV()) {
             for (edge_data e : graphDS.getE(n.getKey())) {
