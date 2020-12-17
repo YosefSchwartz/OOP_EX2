@@ -88,7 +88,7 @@ public class Agent {
         this.setPokemon(closestPok);
         setPath(ga);
 
-         System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
+         //System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){
@@ -185,15 +185,13 @@ public class Agent {
                     double ratio = pokemon.getEL().getRatio();
                     w = pokemon.getEL().getEdge().getWeight();
                     // System.out.println("time1: "+(long) (w * ratio * 1000 / speed));
-                    long t= (long) (ratio * w * 1000 / speed);
-                    if(t<time && t!=0) time=t;
-                    if(time==0) mark=1;
-                 } else {
+                    long t = (long) (ratio * w * 1000 / speed);
+                    if (t < time && t != 0) time = t;
+                } else {
                     w = g.getEdge(src, dest).getWeight();
                     //System.out.println("time2: "+(long) (w*1000 / speed));
                     long t = (long) (w * 1000 / speed);
-                    if(t<time && t!=0) time=t;
-                    if(time==0) mark=2;
+                    if (t < time && t != 0) time = t;
                 }
             } else {
                 double edgeDist = g.getNode(src).getLocation().distance(g.getNode(dest).getLocation());
@@ -203,31 +201,28 @@ public class Agent {
                     double ratio = partlyDist / edgeDist;
                     w = g.getEdge(src, dest).getWeight();
                     //System.out.println("time3: "+(long) (w * ratio * 1000 / speed));
-                    long t= (long) (w * ratio * 1000 / speed);
-                    if(t<time && t!=0) time=t;
-                    if(time==0) mark=3;
+                    long t = (long) (w * ratio * 1000 / speed);
+                    if (t < time && t != 0) time = t;
                 } else {
                     w = pokemon.getEL().getEdge().getWeight();
                     if (pokemon.is_in_the_game(game.toString(), pokemon)) {
                         partlyDist = pos.distance(pokemon.getPos());
                         double ratio = partlyDist / edgeDist;
                         //System.out.println("4time: "+(long) (w * ratio * 1000 / speed));
-                        long t= (long) (w * 1000 * ratio / speed);
-                        if(t<time && t!=0) time=t;
-                        if(time==0) mark=4;
+                        long t = (long) (w * 1000 * ratio / speed);
+                        if (t < time && t != 0) time = t;
                     } else {
                         partlyDist = pos.distance(g.getNode(dest).getLocation());
                         double ratio = partlyDist / edgeDist;
                         // System.out.println("5time: "+(long) (w * ratio * 1000 / speed));
-                        long t= (long) (ratio * w * 1000 / speed);
-                        if(t<time && t!=0) time=t;
-                        if(time==0) mark=5;
+                        long t = (long) (ratio * w * 1000 / speed);
+                        if (t < time && t != 0) time = t;
                     }
                 }
             }
-        }
 //        if(mark!=-1)
 //        System.out.println(mark);
+        }
         return time;
     }
 

@@ -225,7 +225,7 @@ public class Ex2 implements Runnable {
             // System.out.println(min);
 
             if (min == Long.MAX_VALUE) {
-                min = 0;
+                min = 1;
             }
 
             // System.out.println("min: "+min);
