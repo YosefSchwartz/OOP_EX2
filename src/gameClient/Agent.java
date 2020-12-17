@@ -17,12 +17,8 @@ public class Agent {
     private double speed;
     private geo_location pos;
     Pokemon pokemon;
-    private int previesSRC;
-
-
+    List<Pokemon> MyPoks;
     Queue<Integer> myPath = new LinkedList<>();
-
-
 
     public Agent(int id,double value, int src, int dest, double speed, geo_location pos){
         this.id = id;
@@ -31,7 +27,8 @@ public class Agent {
         this.dest=dest;
         this.speed=speed;
         this.pos=pos;
-        previesSRC=-1;
+        MyPoks=new LinkedList<>();
+
     }
 
     public Pokemon getPokemon() {
@@ -55,7 +52,8 @@ public class Agent {
             geoL[j] = Double.parseDouble(locST[j]);
         geo_location location = new NodeData.geoLocation(geoL[0], geoL[1], geoL[2]);
         this.pos=location;
-        pokemon = null;
+        MyPoks=null;
+        MyPoks=new LinkedList<>();
     }
 
 
@@ -84,10 +82,11 @@ public class Agent {
             }
         }
         closestPok.setAgent(this);
+        MyPoks.add(closestPok);
         this.setPokemon(closestPok);
         setPath(ga);
 
-         System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
+        // System.out.println("agent "+getId()+" go to pok "+closestPok.src+"->"+closestPok.getDest());
     }
 
     public void setPath(dw_graph_algorithms ga){
@@ -152,6 +151,9 @@ public class Agent {
     public Queue<Integer> getMyPath() {
         return myPath;
     }
+    public List<Pokemon> getMyPoks() {
+        return MyPoks;
+    }
 
     public void setMyPath(Queue<Integer> myPath) {
         this.myPath = myPath;
@@ -173,41 +175,58 @@ public class Agent {
 
     public long time(directed_weighted_graph g, int tmp, String game) throws JSONException {
         double w;
-        if(tmp == -1){
-            if(src == pokemon.src){
-               double ratio = pokemon.getEL().getRatio();
-                w = pokemon.getEL().getEdge().getWeight();
-               // System.out.println("time1: "+(long) (w * ratio * 1000 / speed));
-                return (long)(ratio*w*1000/speed);
-            }else{
-                w = g.getEdge(src,dest).getWeight();
-                //System.out.println("time2: "+(long) (w*1000 / speed));
-                return (long)(w*1000/speed);
-            }
-        }else{
-            double edgeDist = g.getNode(src).getLocation().distance(g.getNode(dest).getLocation());
-            double partlyDist;
-            if(src!=pokemon.getSrc()) {
-                partlyDist= pos.distance(g.getNode(dest).getLocation());
-                double ratio = partlyDist / edgeDist;
-                w = g.getEdge(src, dest).getWeight();
-                //System.out.println("time3: "+(long) (w * ratio * 1000 / speed));
-                return (long) (w * ratio * 1000 / speed);
-            }else{
-                w = pokemon.getEL().getEdge().getWeight()-0.4;
-                if(pokemon.is_in_the_game(game.toString(),pokemon)){
-                    partlyDist = pos.distance(pokemon.getPos());
-                    double ratio = partlyDist/edgeDist;
-                    //System.out.println("4time: "+(long) (w * ratio * 1000 / speed));
-                    return (long)(w*1000*ratio/speed);
-                }else {
+        int mark=-1;
+        Long time=Long.MAX_VALUE;
+        for (Pokemon p: MyPoks) {
+            if (tmp == -1) {
+                if (src == pokemon.src) {
+                    double ratio = pokemon.getEL().getRatio();
+                    w = pokemon.getEL().getEdge().getWeight();
+                    // System.out.println("time1: "+(long) (w * ratio * 1000 / speed));
+                    long t= (long) (ratio * w * 1000 / speed);
+                    if(t<time && t!=0) time=t;
+                    if(time==0) mark=1;
+                 } else {
+                    w = g.getEdge(src, dest).getWeight();
+                    //System.out.println("time2: "+(long) (w*1000 / speed));
+                    long t = (long) (w * 1000 / speed);
+                    if(t<time && t!=0) time=t;
+                    if(time==0) mark=2;
+                }
+            } else {
+                double edgeDist = g.getNode(src).getLocation().distance(g.getNode(dest).getLocation());
+                double partlyDist;
+                if (src != pokemon.getSrc()) {
                     partlyDist = pos.distance(g.getNode(dest).getLocation());
-                    double ratio = partlyDist/edgeDist;
-                   // System.out.println("5time: "+(long) (w * ratio * 1000 / speed));
-                    return (long)(ratio*w*1000/speed);
+                    double ratio = partlyDist / edgeDist;
+                    w = g.getEdge(src, dest).getWeight();
+                    //System.out.println("time3: "+(long) (w * ratio * 1000 / speed));
+                    long t= (long) (w * ratio * 1000 / speed);
+                    if(t<time && t!=0) time=t;
+                    if(time==0) mark=3;
+                } else {
+                    w = pokemon.getEL().getEdge().getWeight();
+                    if (pokemon.is_in_the_game(game.toString(), pokemon)) {
+                        partlyDist = pos.distance(pokemon.getPos());
+                        double ratio = partlyDist / edgeDist;
+                        //System.out.println("4time: "+(long) (w * ratio * 1000 / speed));
+                        long t= (long) (w * 1000 * ratio / speed);
+                        if(t<time && t!=0) time=t;
+                        if(time==0) mark=4;
+                    } else {
+                        partlyDist = pos.distance(g.getNode(dest).getLocation());
+                        double ratio = partlyDist / edgeDist;
+                        // System.out.println("5time: "+(long) (w * ratio * 1000 / speed));
+                        long t= (long) (ratio * w * 1000 / speed);
+                        if(t<time && t!=0) time=t;
+                        if(time==0) mark=5;
+                    }
                 }
             }
         }
+//        if(mark!=-1)
+//        System.out.println(mark);
+        return time;
     }
 
     public long timeNodeToNode(directed_weighted_graph g){
