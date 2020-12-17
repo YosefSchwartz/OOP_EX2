@@ -10,8 +10,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Ex2 implements Runnable {
 
@@ -20,14 +19,14 @@ public class Ex2 implements Runnable {
 //        lf.setVisible(true);
         //  Ex2 ex2=new Ex2();
         // ex2.setID(ID);
-        for (int i=0; i<7; i++)
-        {
-//            Ex2 ex2 = new Ex2();
-//            ex2.setGameNumber(0);
-            Thread game_thread = new Thread(new Ex2());
+//        for (int i=0; i<7; i++)
+//        {
+            Ex2 ex2 = new Ex2();
+            ex2.setGameNumber(1);
+            Thread game_thread = new Thread(ex2);
             game_thread.start();
             game_thread.join();
-        }
+       // }
     }
     private static final double EPS = 0.000001;
     static int sumPokemons;
@@ -51,9 +50,9 @@ public class Ex2 implements Runnable {
     private static PriorityQueue<Pokemon> highValuePokemon = new PriorityQueue<>(2, new Comparator<Pokemon>() {
         @Override
         public int compare(Pokemon o1, Pokemon o2) {
-            if(o1.getValue()>o2.getValue())
+            if(o1.getValue()<o2.getValue())
                 return 1;
-            else if(o1.getValue()<o2.getValue())
+            else if(o1.getValue()>o2.getValue())
                 return  -1;
             else
                 return 0;
@@ -85,10 +84,10 @@ public class Ex2 implements Runnable {
             graphAL.load(path);
             graphDS = graphAL.getGraph();
             updatePokemonList(game);
-            setPlaceOfAgents(game);
+            System.out.println("poks: "+pokemonList);
             _ar = new GameData(graphDS, agentList, pokemonList, GameInfo);
-//            setPlaceOfAgents(game);
-            setPlaceOfAgentsHighValue(game);
+            setPlaceOfAgents(game);
+//            setPlaceOfAgentsHighValue(game);
             _ar = new GameData(graphDS, agentList, pokemonList,GameInfo);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
@@ -286,13 +285,28 @@ public class Ex2 implements Runnable {
                 game.addAgent(graphDS.getV().stream().findFirst().get().getKey());
         }
     }
-    public void setPokToEachAgent (game_service game) throws JSONException {
 
-    public void setPokToEachAgent(game_service game) throws JSONException {
+//    public void setPokToEachAgent(game_service game) throws JSONException {
+//        createAgentsList(game);
+//        for (Agent a : agentList) {
+//            a.findClosestPokemon(graphAL, pokemonList);
+//            game.chooseNextEdge(a.getId(), a.getNextDest());
+//        }
+//    }
+
+    public void setPokToEachAgent (game_service game) throws JSONException {
         createAgentsList(game);
         for (Agent a : agentList) {
-            a.findClosestPokemon(graphAL, pokemonList);
-            game.chooseNextEdge(a.getId(), a.getNextDest());
+            for (Pokemon p : pokemonList) {
+                if ((p.getSrc() == a.getSrc()) && (p.getAgent() == null)) {
+                    a.setPokemon(p);
+                    a.getMyPoks().add(p);
+                    p.setAgent(a);
+                    a.setDest(a.getPokemon().getDest());
+                    game.chooseNextEdge(a.getId(), a.getPokemon().getDest());
+                    break;
+                }
+            }
         }
     }
 

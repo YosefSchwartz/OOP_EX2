@@ -127,4 +127,5 @@ public class Pokemon {
         else
             return s+"non>\n";
     }
+
 }
