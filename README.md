@@ -1,4 +1,4 @@
-# Weighted graphs  
+# Pokemon game 
 ***Authors:** Eden Shkuri & Yosef Schwartz* 
 
 In this project we implemented a Pokemon game whitch contains agents and Pokemons, and the purpose of the game is that the agens
@@ -69,5 +69,7 @@ based on LoginFrame - the login part with id and game number and the GameFrame -
 We have created 2 JUNIT test (using JUNIT 5 version) :  
 DWGraph_DSTest and DWGraph_AlgoTest.  
 
-#### An example for a graph this project work on:  
+#### An example for one level from the game:
+
+![gamepicc](https://user-images.githubusercontent.com/74586829/102613554-5df2c800-413b-11eb-8ddd-904b404e0030.png)
 
