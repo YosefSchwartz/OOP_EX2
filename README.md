@@ -1,9 +1,9 @@
 # Pokemon game 
 ***Authors:** Eden Shkuri & Yosef Schwartz* 
 
-In this project we implemented a Pokemon game whitch contains agents and Pokemons, and the purpose of the game is that the agens
+In this project we implemented a Pokemon game which contains agents and Pokemons, and the purpose of the game is that the agens
 will collect the highest score by eating Pokemon when each has a different value.
-The game was implemented by a directed weighted graph with graph's algorithms.
+The game was based by a directed weighted graph with graph's algorithms.
 
 ##### The game based of 2 parts -
 api - contains all the graph classes, e.g. edge data, node data, directed weighted graph, graph algorithms and so.  
@@ -13,7 +13,7 @@ gameClient - contains all the game planning and running, Pokemon and agent class
 
 ### Data Structures:  
 #### NodeData:  
-The NodeData class implements the node_data interface with an innew class- geoLocation implements the geo_location interface.  
+The NodeData class implements the node_data interface with an inner class- geoLocation that implements the geo_location interface.  
 This class represents a vertex in a directed weighted graph.  
 Each node has a unique id number (key), info and tag (that were used only during the algorithms).  
 The geoLocation represents a 3D point for the location of each node.  
