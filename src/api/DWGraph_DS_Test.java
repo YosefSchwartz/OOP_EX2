@@ -10,7 +10,15 @@
 //    static directed_weighted_graph graph;
 //    static Random rnd = new Random(330);
 //
-//
+//        while(graph.edgeSize()<20){
+//            int a = nextRnd(0,graph.nodeSize());
+//            int b = nextRnd(0,graph.nodeSize());
+//            Random r = new Random();
+//            double w = r.nextDouble()*20;
+//            graph.connect(nodes[a],nodes[b],w);
+//        }
+//        return graph;
+//    }
 //    private void AddNodesToGraph(int sumNodes) {
 //        for(int i=0;i<sumNodes;i++){
 //            node_data n = new NodeData();
@@ -121,6 +129,21 @@
 //        }
 //        return graph;
 //    }
+//    private int[] nodesToArray(directed_weighted_graph g){
+//        int [] nodes = new int[graph.nodeSize()];
+//        int i =0;
+//        for(node_data n: graph.getV()){
+//            nodes[i++]=n.getKey();
+//        }
+//        Arrays.sort(nodes);
+//        return nodes;
+//    }
+//    private directed_weighted_graph getGraph10V20E() {
+//        for(int i=0;i<10;i++){
+//            node_data n = new NodeData();
+//            graph.addNode(n);
+//        }
+//        int[] nodes = nodesToArray(graph);
 //
 //    private static int nextRnd(int min, int max) {
 //        double v = nextRnd(0.0+min, (double)max);
