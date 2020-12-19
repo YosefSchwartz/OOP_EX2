@@ -98,6 +98,7 @@ public class Pokemon {
             Pokemon newPok = new Pokemon(pokemonsArr.getJSONObject(i).getJSONObject("Pokemon"));
             if (pok.getPos().distance(newPok.getPos()) < 0.000001) {
                 ans = true;
+                break;
             }
         }
         return ans;

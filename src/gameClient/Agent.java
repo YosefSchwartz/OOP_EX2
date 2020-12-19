@@ -74,6 +74,7 @@ public class Agent {
         for(Pokemon p:poks) {
             if(p.agent == null) {
                 double shortestPath=ga.shortestPathDist(src, p.getSrc());
+                shortestPath+=p.getEL().getRatio()*p.getEL().getEdge().getWeight();
 //                double value = p.getValue()/shortestPath;
                 if (shortestPath< dist) {
 //                if(value>val){
@@ -175,54 +176,62 @@ public class Agent {
         return dest;
     }
 
-    public long time(directed_weighted_graph g, int tmp, String game) throws JSONException {
+    public long time(directed_weighted_graph g, int tmp, String game, List<Pokemon> poks) throws JSONException {
         double w;
         int mark=-1;
         Long time=Long.MAX_VALUE;
-        for (Pokemon p: MyPoks) {
+       // System.out.println("pokkkkss: "+poks);
+        for (Pokemon p: poks) {
             if (tmp == -1) {
-                if (src == pokemon.src) {
-                    double ratio = pokemon.getEL().getRatio();
-                    w = pokemon.getEL().getEdge().getWeight();
+                if (src == p.src) {
+                    double ratio = p.getEL().getRatio();
+                    w = p.getEL().getEdge().getWeight();
                     // System.out.println("time1: "+(long) (w * ratio * 1000 / speed));
                     long t = (long) (ratio * w * 1000 / speed);
                     if (t < time && t != 0) time = t;
+                    if(t>1000000) mark=1;
                 } else {
                     w = g.getEdge(src, dest).getWeight();
                     //System.out.println("time2: "+(long) (w*1000 / speed));
                     long t = (long) (w * 1000 / speed);
                     if (t < time && t != 0) time = t;
+                    if(t>1000000) mark=2;
+
                 }
             } else {
                 double edgeDist = g.getNode(src).getLocation().distance(g.getNode(dest).getLocation());
-                double partlyDist;
-                if (src != pokemon.getSrc()) {
-                    partlyDist = pos.distance(g.getNode(dest).getLocation());
+                if (src != p.getSrc()) {
+                    double partlyDist = pos.distance(g.getNode(dest).getLocation());
                     double ratio = partlyDist / edgeDist;
                     w = g.getEdge(src, dest).getWeight();
                     //System.out.println("time3: "+(long) (w * ratio * 1000 / speed));
                     long t = (long) (w * ratio * 1000 / speed);
                     if (t < time && t != 0) time = t;
+                    if(t>1000000) mark=3;
+
                 } else {
-                    w = pokemon.getEL().getEdge().getWeight();
-                    if (pokemon.is_in_the_game(game.toString(), pokemon)) {
-                        partlyDist = pos.distance(pokemon.getPos());
+                    w = p.getEL().getEdge().getWeight();
+                    if (p.is_in_the_game(game.toString(), p)) {
+                        double partlyDist = pos.distance(p.getPos());
                         double ratio = partlyDist / edgeDist;
                         //System.out.println("4time: "+(long) (w * ratio * 1000 / speed));
                         long t = (long) (w * 1000 * ratio / speed);
                         if (t < time && t != 0) time = t;
+                        if(t>1000000) mark=4;
                     } else {
-                        partlyDist = pos.distance(g.getNode(dest).getLocation());
+                        double partlyDist = pos.distance(g.getNode(dest).getLocation());
                         double ratio = partlyDist / edgeDist;
                         // System.out.println("5time: "+(long) (w * ratio * 1000 / speed));
                         long t = (long) (ratio * w * 1000 / speed);
                         if (t < time && t != 0) time = t;
+                        if(t>1000000) mark=6;
                     }
                 }
             }
-//        if(mark!=-1)
+//        if(mark!=-1 && time>1000000)
 //        System.out.println(mark);
         }
+        //System.out.println(time);
         return time;
     }
 

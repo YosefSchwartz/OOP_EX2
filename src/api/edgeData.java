@@ -106,6 +106,9 @@ public class edgeData implements edge_data {
         return dest;
     }
 
+    public String toString(){
+       return "(src: "+src+", dest: "+dest+", weight: "+weight+")";
+    }
 
     /**
      * This class represents a position on the graph

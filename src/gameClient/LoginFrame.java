@@ -1,12 +1,13 @@
 package gameClient;
 
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 public class LoginFrame extends JFrame implements ActionListener {
@@ -40,7 +41,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     public void init() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        Mark=0;
         countMark=0;
         w = getWidth();
         h = getHeight();
@@ -57,7 +57,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         setButtons();
         setPanel();
         this.add(panel);
-        playMusic();
+        //playMusic();
     }
 
     public void paint(Graphics g) {
@@ -105,24 +105,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         LoginButton.setFont(f3);
         LoginButton.setBounds(225, 250, 100, 25);
         LoginButton.addActionListener(this);
-
-        //Mute
-//        ImageIcon M = new ImageIcon("src//gameClient//files//mute.jpg");
-//        try {
-//            Mute = new JButton(M);
-//            Mute.setBounds(195, 220, 10, 10);
-//        }
-//        catch (Exception e){
-//        System.out.println(e);}
-//        Mute.addActionListener(this);
-
-        //unMute
-//        Image UM = new ImageIcon(("src//gameClient//files//unmute.jpg")).getImage();
-//        unMute = new JButton("");
-//        unMute.setIcon(new ImageIcon(UM));
-//        unMute.setVisible(true);
-//        unMute.setBounds(0, 0, 400, 350);
-        //unMute.addActionListener(this);
     }
 
     private void setPanel() {
@@ -176,13 +158,13 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
 
-    public void playMusic() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-        File musicPath = new File("src/gameClient/files/pokemon_song.wav");
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-        clip = AudioSystem.getClip();
-        clip.open(audioInput);
-        clip.start();
-    }
+//    public void playMusic() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+//        File musicPath = new File("src/gameClient/files/pokemon_song.wav");
+//        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+//        clip = AudioSystem.getClip();
+//        clip.open(audioInput);
+//        clip.start();
+//    }
 
     public void run() {
         Ex2 ex2=new Ex2();

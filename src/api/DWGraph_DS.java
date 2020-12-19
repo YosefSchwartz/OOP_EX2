@@ -123,6 +123,7 @@ public class DWGraph_DS implements directed_weighted_graph {
             if (edges.get(n.getKey()).containsKey(key)) {
                 edges.get(n.getKey()).remove(key);
                 edgeNum--;
+                MC++;
             }
         }
 
@@ -147,6 +148,8 @@ public class DWGraph_DS implements directed_weighted_graph {
         if (e == null)
             return null;
         edges.get(src).remove(dest);
+        MC++;
+        edgeNum--;
         return e;
     }
 
@@ -177,6 +180,47 @@ public class DWGraph_DS implements directed_weighted_graph {
     @Override
     public int getMC() {
         return MC;
+    }
+
+    /** return true if the graph is equal to the
+     * graph in the class.
+     * @param other
+     * @return
+     */
+    public boolean equals(Object other)
+    {
+        if(!(other instanceof directed_weighted_graph)) {
+            System.out.println("cause 1");
+            return false;
+        }
+        directed_weighted_graph g= (directed_weighted_graph)(other);
+        if(g.nodeSize()!=nodeSize() || g.edgeSize()!=edgeSize()) {
+//            System.out.println("g.nodesize: "+g.nodeSize()+", this.nodesize: "+nodeSize());
+//            System.out.println("g.edgeSize: "+g.edgeSize()+", this.edgeSize: "+edgeSize());
+//            System.out.println("cause 2");
+            return false;
+        }
+        for (node_data n: getV()) {
+            node_data gNode = g.getNode(n.getKey());
+            if (gNode == null) {
+                System.out.println("cause 3");
+                return false;
+            }
+            if(g.getE(n.getKey()).size()!=getE(n.getKey()).size()) {
+                System.out.println("cause 4");
+                return false;
+            }
+            for (edge_data e: getE(n.getKey())) {
+                edge_data e1=g.getEdge(e.getSrc(), e.getDest());
+               if(e1==null | e1.getWeight()!=e.getWeight()) {
+                   System.out.println("e: "+e);
+                   System.out.println("g.getE: "+g.getE(n.getKey()));
+                   System.out.println("cause 5");
+                   return false;
+               }
+            }
+        }
+        return true;
     }
 
     /**
