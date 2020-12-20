@@ -59,6 +59,7 @@ public class DWGraph_DS implements directed_weighted_graph {
      */
     @Override
     public void addNode(node_data n) {
+        if(n == null) return;
         graph.put(n.getKey(), n);
         edges.put(n.getKey(), new HashMap<>());
         MC++;
@@ -195,7 +196,7 @@ public class DWGraph_DS implements directed_weighted_graph {
         }
         directed_weighted_graph g= (directed_weighted_graph)(other);
         if(g.nodeSize()!=nodeSize() || g.edgeSize()!=edgeSize()) {
-//            System.out.println("g.nodesize: "+g.nodeSize()+", this.nodesize: "+nodeSize());
+//            System.out.println("g.nodeSize: "+g.nodeSize()+", this.nodeSize: "+nodeSize());
 //            System.out.println("g.edgeSize: "+g.edgeSize()+", this.edgeSize: "+edgeSize());
 //            System.out.println("cause 2");
             return false;
