@@ -41,7 +41,7 @@ public class Ex2 implements Runnable {
 //            LoginFrame login = new LoginFrame();
 //            login.setVisible(true);
             Ex2 ex2 = new Ex2();
-            ex2.setGameNumber(3);
+            ex2.setGameNumber(2);
             Thread game =new Thread(ex2);
             game.start();
         //}
@@ -183,15 +183,17 @@ public class Ex2 implements Runnable {
         String s;
         while (game.isRunning()) {
             min = Long.MAX_VALUE;
+            System.out.println(pokemonList);
             s = game.move();
             refreshLocation(s);
             UpdateGameInfo(GameNumber, game.timeToEnd(), TotalValue);
             _ar.setAgents(agentList);
-            _ar.setPokemons(PokemonsInTheGame(game.getPokemons()));
+            _ar.setPokemons(pokemonsInTheGame(game.getPokemons()));
             _ar.set_info(GameInfo);
             _win.repaint();
             TotalValue = 0;
             for (Agent a : agentList) {
+                System.out.println("a"+a.getId()+" status: "+a.getDest());
                 mark=false;
                 int tmp = a.getDest();
                 if (a.getDest() == -1 ) {
@@ -319,6 +321,7 @@ public class Ex2 implements Runnable {
                         geo_location PL = p.getPos();
                         if (pokL.x() == PL.x() && pokL.y() == PL.y() && pokL.z() == PL.z()) {
                             connectToAgent = true;
+                            newPokemonList.add(p);
                             break;
                         }
                     }
@@ -450,7 +453,7 @@ public class Ex2 implements Runnable {
      * @throws JSONException
      */
     private static void CreateFirstPokemonList(game_service game) throws JSONException {
-        List<Pokemon> firstPokemonList = PokemonsInTheGame(game.getPokemons());
+        List<Pokemon> firstPokemonList = pokemonsInTheGame(game.getPokemons());
         for (Pokemon p: firstPokemonList) {
             setSrcAndDest(p);
             edgeData e = (edgeData) (graphDS.getEdge(p.src, p.dest));
@@ -486,7 +489,7 @@ public class Ex2 implements Runnable {
      * @return - List of all pokemons in the game
      * @throws JSONException
      */
-    public static List<Pokemon> PokemonsInTheGame(String pokemons) throws JSONException {
+    public static List<Pokemon> pokemonsInTheGame(String pokemons) throws JSONException {
         JSONObject newPokemonsObj = new JSONObject(pokemons);
         JSONArray pokemonsArr = newPokemonsObj.getJSONArray("Pokemons");
         List<Pokemon> p = new LinkedList<>();
