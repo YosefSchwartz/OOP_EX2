@@ -12,6 +12,7 @@ import gameClient.util.Range2D;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,20 +29,32 @@ public class GameFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
-
+    /**
+     * updates the Game data to the given new Game data
+     * @param ar
+     */
     public void update(GameData ar) {
         this._ar = ar;
         updateFrame();
     }
+
+    /**
+     * update the frame size to the current size of the frame
+     */
     private void updateFrame() {
         double h=this.getHeight(), w=this.getWidth();
         Range rx = new Range(0.06*w,w-0.06*w);
-        Range ry = new Range(h-0.08*h,0.30*h);
+        Range ry = new Range(h-0.08*h,0.35*h);
         Range2D frame = new Range2D(rx,ry);
         directed_weighted_graph g = _ar.getGraph();
         _w2f = GameData.w2f(g,frame);
     }
 
+    /**
+     * paint all the details of the game:
+     * graph's nodes and edges, pokemons, agents and the info of the game
+     * @param g
+     */
     public void paint(Graphics g) {
         int w = this.getWidth();
         int h = this.getHeight();
@@ -59,6 +72,10 @@ public class GameFrame extends JFrame {
         g.drawImage(buffer_image, 0, 0, this);
     }
 
+    /**
+     * draw the info of the game (game number, time to end and the total score)
+     * @param g
+     */
     private void drawInfo(Graphics g) {
         List<String> str = _ar.get_info();
         double w=getWidth(), h=0.22*getHeight();
@@ -92,6 +109,11 @@ public class GameFrame extends JFrame {
 
     }
 
+    /**
+     * check the height and width for the given string.
+     * @param s,g,f.
+     * @return arr with height and width
+     */
     private double[] getWidth(String s, Graphics g, Font f)
     {
         double[] arr=new double[2];//w,h
@@ -101,6 +123,11 @@ public class GameFrame extends JFrame {
         arr[1]=p.getHeight();
         return arr;
     }
+
+    /**
+     * draw the details of the graph in this game (nodes and edges)
+     * @param g
+     */
     private void drawGraph(Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
         Iterator<node_data> iter = gg.getV().iterator();
@@ -121,6 +148,11 @@ public class GameFrame extends JFrame {
 
         }
     }
+
+    /**
+     * draw the present pokemons in the game
+     * @param g
+     */
     private void drawPokemons(Graphics g) {
         List<Pokemon> fs = _ar.getPokemons();
         for (int i=0; i<fs.size();i++) {
@@ -129,19 +161,28 @@ public class GameFrame extends JFrame {
             Point3D c = new Point3D(x,y,z);
             int r=14;
             g.setColor(Color.green);
-            if(p.getType()<0) {g.setColor(Color.orange);}
+            if(p.getType()<0) {g.setColor(Color.blue);}
             if(c!=null) {
-
                 geo_location fp = this._w2f.world2frame(c);
-                pokemon=new ImageIcon("data//images//pokemonBall.png");
-                Image pokemon1 = pokemon.getImage();
-                Image pokemon2 = pokemon1.getScaledInstance(2*r+4, 2*r,Image.SCALE_DEFAULT);
-                pokemon=new ImageIcon(pokemon2);
-                pokemon.paintIcon(this, g, (int)fp.x()-r-2,(int)fp.y()-r);
+                File file=new File("data//images//pokemonBall.png");
+                if(file.exists()) {
+                    pokemon = new ImageIcon("data//images//pokemonBall.png");
+                    Image pokemon1 = pokemon.getImage();
+                    Image pokemon2 = pokemon1.getScaledInstance(2 * r + 4, 2 * r, Image.SCALE_DEFAULT);
+                    pokemon = new ImageIcon(pokemon2);
+                    pokemon.paintIcon(this, g, (int) fp.x() - r - 2, (int) fp.y() - r);
+                }
+                else{
+                    r=7;
+                    g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);}
             }
         }
     }
 
+    /**
+     * draw the agents in the game at the current positions
+     * @param g
+     */
     private void drawAgants(Graphics g) {
         List<Agent> rs = _ar.getAgents();
         //	Iterator<OOP_Point3D> itr = rs.iterator();
@@ -153,23 +194,33 @@ public class GameFrame extends JFrame {
             if(c!=null) {
 
                 geo_location fp = this._w2f.world2frame(c);
-                agent=new ImageIcon("data//images//pikachu.png");
-                Image agent1 = agent.getImage();
-                Image agent2 = agent1.getScaledInstance(10*r, 12*r,Image.SCALE_DEFAULT);
-                agent=new ImageIcon(agent2);
-                int x=(int)fp.x()-4*r, y=(int)fp.y()-6*r;
-                agent.paintIcon(this, g,x ,y);
-                Font f=new Font("SansSerif", Font.BOLD, 12);
+                Font f = new Font("SansSerif", Font.BOLD, 12);
                 g.setFont(f);
                 g.setColor(Color.BLACK);
-                // new Color(220, 36,36)
-                double Value= rs.get(i).getValue();
-               g.drawString("Value: "+Value, x-3, y-5);
-                //  g.drawString("Speed: "+rs.get(i).getSpeed(), x-, y-20);
+                double Value = rs.get(i).getValue();
+                File file=new File("data//images//pikachu.png");
+                if(file.exists()) {
+                    agent = new ImageIcon("data//images//pikachu.png");
+                    Image agent1 = agent.getImage();
+                    Image agent2 = agent1.getScaledInstance(10 * r, 12 * r, Image.SCALE_DEFAULT);
+                    agent = new ImageIcon(agent2);
+                    int x = (int) fp.x() - 4 * r, y = (int) fp.y() - 6 * r;
+                    agent.paintIcon(this, g, x, y);
+
+                    g.drawString("Value: " + Value, x - 3, y - 5);
+                }
+                else {
+                    g.setColor(Color.red);
+                    g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
+                }
             }
             i++;
         }
     }
+    /**
+     * draw the nodes of the graph in this game
+     * @param n,r,g
+     */
     private void drawNode(node_data n, int r, Graphics g) {
         geo_location pos = n.getLocation();
         geo_location fp = this._w2f.world2frame(pos);
@@ -179,6 +230,11 @@ public class GameFrame extends JFrame {
         g.setFont(f);
         g.drawString(""+n.getKey(), (int)fp.x()-5, (int)fp.y()+4);
     }
+
+    /**
+     * draw the edges of the graph in this game
+     * @param e,g
+     */
     private void drawEdge(edge_data e, Graphics g) {
         directed_weighted_graph gg = _ar.getGraph();
         geo_location s = gg.getNode(e.getSrc()).getLocation();

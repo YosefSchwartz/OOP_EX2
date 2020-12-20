@@ -40,12 +40,12 @@ public class Ex2 implements Runnable {
 //            game_thread.start();
 //        }
 //        else {
-//            LoginFrame login = new LoginFrame();
-//            login.setVisible(true);
-            Ex2 ex2 = new Ex2();
-            ex2.setGameNumber(-1);
-            Thread game =new Thread(ex2);
-            game.start();
+            LoginFrame login = new LoginFrame();
+            login.setVisible(true);
+//            Ex2 ex2 = new Ex2();
+//            ex2.setGameNumber(2);
+//            Thread game =new Thread(ex2);
+//            game.start();
         //}
     }
     private static final double EPS = 0.000001;
@@ -375,7 +375,7 @@ public class Ex2 implements Runnable {
      * set the src and dest in Pokemon object
      * @param p - pokemon
      */
-    public static void setSrcAndDest(Pokemon p) {
+    private static void setSrcAndDest(Pokemon p) {
         for (node_data n : graphDS.getV())
             for (edge_data e : graphDS.getE(n.getKey()))
                 if (isOnEdge(p, e)) {

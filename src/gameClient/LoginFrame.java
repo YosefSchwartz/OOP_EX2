@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 public class LoginFrame extends JFrame implements ActionListener {
@@ -34,7 +35,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         this.revalidate();
         panel.revalidate();
     }
-
+    //init the login frame with all the labels and buttons
     public void init() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         w = getWidth();
         h = getHeight();
@@ -65,6 +66,9 @@ public class LoginFrame extends JFrame implements ActionListener {
         back.setBounds(0, 0, getWidth(), getHeight());
     }
 
+    /**
+     * set all the labels and the text place for the ID
+     */
     private void setID() {
         ID_Label = new JLabel("ID number");
         Font f1 = new Font("SansSerif", Font.BOLD, 15);
@@ -76,6 +80,9 @@ public class LoginFrame extends JFrame implements ActionListener {
         ID_Text.setBounds(175, 70, 200, 28);
     }
 
+    /**
+     * set all the labels and the text place for the Game number
+     */
     private void setGameNumber() {
         Font f1 = new Font("SansSerif", Font.BOLD, 15);
         Font f2 = new Font("SansSerif", Font.PLAIN, 12);
@@ -90,6 +97,9 @@ public class LoginFrame extends JFrame implements ActionListener {
         GameOpt.setBounds(175, 150, 200, 28);
     }
 
+    /**
+     * set the login button (the button that play the game in case the details are ok)
+     */
     private void setButtons() {
         //login button
         LoginButton = new JButton("login");
@@ -101,6 +111,9 @@ public class LoginFrame extends JFrame implements ActionListener {
         LoginButton.addActionListener(this);
     }
 
+    /**
+     * add all the labels and the buttons to the panel
+     */
     private void setPanel() {
         panel.add(GameNumber_Label);
         panel.add(ID_Label);
@@ -111,15 +124,22 @@ public class LoginFrame extends JFrame implements ActionListener {
         panel.setSize(getWidth(), getHeight());
     }
 
+    /**
+     * paint the background of the screen
+     */
     public void paintComponents(Graphics g) {
-        super.paintComponents(g);
-        pokemon = new ImageIcon("data//images//ash.jpg");
-        Image pokemon1 = pokemon.getImage();
-        Image pokemon2 = pokemon1.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT);
-        pokemon = new ImageIcon(pokemon2);
-        back.setIcon(pokemon);
+            super.paintComponents(g);
+            pokemon = new ImageIcon("data//images//ash.jpg");
+            Image pokemon1 = pokemon.getImage();
+            Image pokemon2 = pokemon1.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT);
+            pokemon = new ImageIcon(pokemon2);
+            back.setIcon(pokemon);
     }
 
+    /**
+     * check if the login button is clicked, if so, check if the
+     * id and the game number is valid and start the game.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if ((e.getSource())==LoginButton) {
@@ -148,6 +168,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 //        clip.start();
 //    }
 
+    /**
+     * create a new Ex2 (new game) and run it with the given id and game number
+     */
     public void run() {
         Ex2 ex2=new Ex2();
         ex2.setID(ID);
