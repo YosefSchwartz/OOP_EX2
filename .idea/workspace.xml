@@ -19,15 +19,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b7ac255-4ffc-41cb-a8f6-c81069915526" name="Default Changelist" comment="">
+    <list default="true" id="3b7ac255-4ffc-41cb-a8f6-c81069915526" name="Default Changelist" comment="adding test api">
       <change afterPath="$PROJECT_DIR$/.idea/libraries/OOP_EX2.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/OOP_EX22.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/libraries/lib2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/images/ash.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/images/pikachu.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/images/pokemonBall.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/annotations_13_0.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OOP_EX2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/OOP_EX2.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OOP_EX2/Ex2_Server_v0.13.jar/META-INF/MANIFEST.MF" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/OOP_EX2/Ex2_Server_v0.13.jar/Server/AgentG.class" beforeDir="false" />
@@ -772,11 +776,8 @@
       <change beforePath="$PROJECT_DIR$/src/gameClient/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gameClient/LoginFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameClient/files/FinalGui.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameClient/files/GUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gameClient/files/ash.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/images/ash.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameClient/files/back.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameClient/files/mute.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gameClient/files/pikachu.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/images/pikachu.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gameClient/files/pokemonBall.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/images/pokemonBall.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameClient/files/pokemon_song.wav" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gameClient/files/unmute.png" beforeDir="false" />
     </list>
@@ -837,6 +838,13 @@
       <option name="presentableId" value="Default" />
       <updated>1608405706208</updated>
     </task>
+    <task id="LOCAL‎00001" summary="adding test api">
+      <created>1608449665399</created>
+      <option name="number" value="LOCAL‎00001" />
+      <option name="presentableId" value="LOCAL‎00001" />
+      <updated>1608449665399</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -852,9 +860,14 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="adding test api" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding test api" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="93" y="93" width="1095" height="495" key="DiffContextDialog" timestamp="1608449698081">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="93" y="93" width="1095" height="495" key="DiffContextDialog/0.0.1280.680@0.0.1280.680" timestamp="1608449698081" />
     <state width="1237" height="80" key="GridCell.Tab.0.bottom" timestamp="1608448503478">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -871,13 +884,25 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state width="1237" height="80" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1608448503478" />
+    <state x="121" y="51" key="MergeDialog" timestamp="1608449449426">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="121" y="51" key="MergeDialog/0.0.1280.680@0.0.1280.680" timestamp="1608449449426" />
     <state x="407" y="43" key="RollbackChangesDialog" timestamp="1608447522238">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="407" y="43" key="RollbackChangesDialog/0.0.1280.680@0.0.1280.680" timestamp="1608447522238" />
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2" timestamp="1608449696481">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1608449696481" />
     <state x="376" y="233" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1608405765067">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="376" y="233" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1280.680@0.0.1280.680" timestamp="1608405765067" />
+    <state x="458" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1608449381461">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="458" y="255" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1608449381461" />
   </component>
 </project>
