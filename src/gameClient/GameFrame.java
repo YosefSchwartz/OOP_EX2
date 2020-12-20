@@ -143,7 +143,7 @@ public class GameFrame extends JFrame {
             if(c!=null) {
 
                 geo_location fp = this._w2f.world2frame(c);
-                pokemon=new ImageIcon("src//gameClient//files//pokemonBall.png");
+                pokemon=new ImageIcon("data//images//pokemonBall.png");
                 Image pokemon1 = pokemon.getImage();
                 Image pokemon2 = pokemon1.getScaledInstance(2*r+4, 2*r,Image.SCALE_DEFAULT);
                 pokemon=new ImageIcon(pokemon2);
@@ -163,8 +163,7 @@ public class GameFrame extends JFrame {
             if(c!=null) {
 
                 geo_location fp = this._w2f.world2frame(c);
-
-                agent=new ImageIcon("src//gameClient//files//pikachu.png");
+                agent=new ImageIcon("data//images//pikachu.png");
                 Image agent1 = agent.getImage();
                 Image agent2 = agent1.getScaledInstance(10*r, 12*r,Image.SCALE_DEFAULT);
                 agent=new ImageIcon(agent2);
@@ -175,7 +174,7 @@ public class GameFrame extends JFrame {
                 g.setColor(Color.BLACK);
                 // new Color(220, 36,36)
                 double Value= rs.get(i).getValue();
-                g.drawString("Value: "+Value, x-3, y-5);
+               g.drawString("Value: "+Value, x-3, y-5);
                 //  g.drawString("Speed: "+rs.get(i).getSpeed(), x-, y-20);
             }
             i++;

@@ -121,7 +121,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 
     public void paintComponents(Graphics g) {
         super.paintComponents(g);
-        pokemon = new ImageIcon("src//gameClient//files//ash.jpg");
+        pokemon = new ImageIcon("data//images//ash.jpg");
         Image pokemon1 = pokemon.getImage();
         Image pokemon2 = pokemon1.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT);
         pokemon = new ImageIcon(pokemon2);
@@ -139,7 +139,6 @@ public class LoginFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Let's start the game");
                 run();
                 // clip.stop();
-                //EX22.ex2.run();
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -156,7 +155,6 @@ public class LoginFrame extends JFrame implements ActionListener {
             Mute.setVisible(false);
         }
     }
-
 
 //    public void playMusic() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
 //        File musicPath = new File("src/gameClient/files/pokemon_song.wav");
