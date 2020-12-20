@@ -90,7 +90,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         GameNumber_Label.setFont(f1);
         GameNumber_Label.setBounds(175, 120, 200, 20);
         String[] s={"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-                "14", "15", "16", "17", "18", "19", "10", "21", "22", "23"};
+                "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
         GameOpt=new JComboBox(s);
         GameOpt.setBackground(Color.white);
         GameOpt.setFont(f2);

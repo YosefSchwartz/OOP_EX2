@@ -54,11 +54,6 @@ public class Ex2 implements Runnable {
             LoginFrame login = new LoginFrame();
             login.setVisible(true);
         }
-//            Ex2 ex2 = new Ex2();
-//            ex2.setGameNumber(2);
-//            Thread game =new Thread(ex2);
-//            game.start();
-        //}
     }
     private static final double EPS = 0.000001;
     static int sumPokemons;
@@ -94,7 +89,6 @@ public class Ex2 implements Runnable {
 
     @Override
     public void run() {
-        int level_number = 0;
         game = Game_Server_Ex2.getServer(GameNumber);
         initTheGame(game);
         try {
@@ -105,6 +99,11 @@ public class Ex2 implements Runnable {
         _win.close();
     }
 
+    /**
+     * all orders before the game will start, initial all game and frame wee need.
+     * Finally start the game and set to each agents the first pokemon.
+     * @param game - game
+     */
     private void initTheGame(game_service game) {
         min = Long.MAX_VALUE;
         graphAL = new DWGraph_Algo();
@@ -117,19 +116,15 @@ public class Ex2 implements Runnable {
             getGameData(game);
             graphAL.load(path);
             graphDS = graphAL.getGraph();
-            pokemonList = CreateFirstPokemonList(game, graphDS);
+            CreateFirstPokemonList(game);
             _ar = new GameData(graphDS, agentList, pokemonList, GameInfo);
-//            if(sumAgents==1 && pokemonList.size()>1)
-//                setPlaceOfAgentsHighValue(game);
-//            else setPlaceOfAgents(game);
-            setPlaceOfAgents(game);
+            setPlaceOfAgentsHighValue(game);
             _ar = new GameData(graphDS, agentList, pokemonList,GameInfo);
             _win = new GameFrame("test Ex2");
             _win.setSize(1000, 700);
             _win.update(_ar);
             _win.setVisible(true);
-            //_win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-           // game.login(ID);
+            game.login(ID);
             game.startGame();
             _win.setTitle("Ex2 - OOP: " + GameNumber);
             setPokToEachAgent(game);
@@ -138,67 +133,19 @@ public class Ex2 implements Runnable {
         }
     }
 
-
-//    private static boolean isOnTheWay(Pokemon p) {
-//        for (Agent agent : agentList) {
-//            if(agent.getMyPath().isEmpty())
-//                break;
-//            int stopSign = agent.getMyPath().poll();
-//            int[] arrayPath = new int[agent.getMyPath().size()];
-//            int n = stopSign;
-//            int index = 0;
-//            do {
-//                arrayPath[index] = n;
-//                index++;
-//                agent.getMyPath().add(n);
-//                n = agent.myPath.poll();
-//            }
-//            while (n != stopSign);
-//
-//            for (int i = 0; i < arrayPath.length - 1; i++) {
-//                if ((p.getSrc() == arrayPath[i]) && (p.getDest() == arrayPath[i + 1]))
-//                    return true;
-//            }
-//        }
-//        return false;
-//    }
-
-//    public static boolean is_in_the_way(Pokemon p) {
-//        boolean ans = false;
-//        for (Agent a : agentList) {
-//            if (a.getMyPath().size() < 2)
-//                break;
-//            Queue<Integer> path = new LinkedList<>();
-//            path = a.getMyPath();
-//
-//            int src = path.poll(), dest = path.poll();
-//            System.out.println("src: "+src);
-//            System.out.println("dest: "+dest);
-//            do {
-//                System.out.println("que: "+path);
-//                if (p.getSrc() == src && p.getDest() == dest) {
-//                    p.setAgent(a);
-//                    a.getMyPoks().add(p);
-//                    return true;
-//                } else {
-//                    src = dest;
-//                    dest = path.poll();
-//                }
-//            } while (!path.isEmpty());
-//        }
-//        return ans;
-//    }
-
-
-
-
+    /**
+     * The main loop of game, each iteration do a lot of algorithms to find the closest pokemon
+     * and set the path to him.
+     * @param game - game
+     * @throws JSONException
+     * @throws InterruptedException
+     */
     private void RunningTheGame(game_service game) throws JSONException, InterruptedException {
-        boolean mark;
         double TotalValue = 0;
-        String s;
         while (game.isRunning()) {
             min = Long.MAX_VALUE;
-            s = game.move();
+            String s = game.move();
+            updatePoks(game.getPokemons());
             refreshLocation(s);
             UpdateGameInfo(GameNumber, game.timeToEnd(), TotalValue);
             _ar.setAgents(agentList);
@@ -207,25 +154,13 @@ public class Ex2 implements Runnable {
             _win.repaint();
             TotalValue = 0;
             for (Agent a : agentList) {
-                mark=false;
                 int tmp = a.getDest();
                 if (a.getDest() == -1 ) {
-                    String poks= game.getPokemons();
-                    if (!a.pokemon.isInTheGame(poks,a.getPokemon())) {
-                        updatePoks(poks);
+                    String poks = game.getPokemons();
+                    if (!a.pokemon.isInTheGame(poks, a.getPokemon())) {
                         a.findClosestPokemon(graphAL, pokemonList);
                     }
                     game.chooseNextEdge(a.getId(), a.getNextDest());
-                } else{
-                    for (Pokemon p: a.getMyPoks()) {
-                     if(a.getPos().distance(p.getPos())<0.00001) {
-                         mark = true;
-                         break;
-                     }
-                    }
-                    if(mark) {
-                        updatePoks(game.getPokemons());
-                    }
                 }
                 long time = a.time(graphDS, tmp, game.getPokemons(), pokemonList);
                 min = (time < min && time != 0) ? time : min;
@@ -240,13 +175,6 @@ public class Ex2 implements Runnable {
         System.out.println(game.toString());
     }
 ///////////////////     PRIVATE FUNCTION
-//    public void setPokToEachAgent(game_service game) throws JSONException {
-//        createAgentsList(game);
-//        for (Agent a : agentList) {
-//            a.findClosestPokemon(graphAL, pokemonList);
-//            game.chooseNextEdge(a.getId(), a.getNextDest());
-//        }
-//    }
 
 //////////      GETTER AND SETTER FUNCTION
 
@@ -284,17 +212,6 @@ public class Ex2 implements Runnable {
      */
     public static String getPath() { return path; }
 
-    /**
-     * used by tests
-     * @return pokemons list
-     */
-    public static List<Pokemon> getPokemonList() {
-        return pokemonList;
-    }
-
-    public static List<Agent> getAgentList() {
-        return agentList;
-    }
     //////////  LOGICAL FUNCTION
 
     /**
@@ -370,7 +287,6 @@ public class Ex2 implements Runnable {
                 }
 
             }
-            //boolean ans = is_in_the_way(pok);
             if (!connectToAgent) {
                 setSrcAndDest(newPokemon);
                 edgeData e = (edgeData) (graphDS.getEdge(newPokemon.src, newPokemon.dest));
@@ -467,19 +383,18 @@ public class Ex2 implements Runnable {
     /**
      * Create the pokemon list from the server.
      * @param game - game
-     * @param g - directed weighted graph
      * @return - the pokemon list
      * @throws JSONException
      */
-    public static List<Pokemon> CreateFirstPokemonList(game_service game, directed_weighted_graph g) throws JSONException {
+    public static void CreateFirstPokemonList(game_service game) throws JSONException {
         List<Pokemon> firstPokemonList = pokemonsInTheGame(game.getPokemons());
         for (Pokemon p: firstPokemonList) {
             setSrcAndDest(p);
-            edgeData e = (edgeData) (g.getEdge(p.src, p.dest));
+            edgeData e = (edgeData) (graphDS.getEdge(p.src, p.dest));
             edgeData.edgeLocation edgelocation = new edgeData.edgeLocation(p.getPos(), e);
             p.setEL(edgelocation);
         }
-        return firstPokemonList;
+        pokemonList=  firstPokemonList;
     }
     /**
      * set to each agents the near pokemon, and set they first destination.
@@ -502,17 +417,6 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     * place the agents near to pokemons (random)
-     * @param game - game
-     */
-    public static void setPlaceOfAgents(game_service game) {
-        for (int i = 0; i < sumAgents; i++)
-            if (i < pokemonList.size())
-                game.addAgent(pokemonList.get(i).getSrc());
-            else
-                game.addAgent(graphDS.getV().stream().findFirst().get().getKey());
-    }
-    /**
      * place the agents near to pokemons by high value order
      * @param game - game
      */
@@ -520,12 +424,12 @@ public class Ex2 implements Runnable {
     {
         for(Pokemon p:pokemonList)
             highValuePokemon.add(p);
+       int n = highValuePokemon.size();
         for (int i = 0; i < sumAgents; i++) {
-            if (i < highValuePokemon.size()) {
+            if (i < n)
                 game.addAgent(highValuePokemon.poll().src);
-            } else
-                game.addAgent(graphDS.getV().stream().findFirst().get().getKey());
-        }
+             else
+                game.addAgent(graphDS.getV().stream().findFirst().get().getKey());            }
     }
 
     //////////      FRAME FUNCTION

@@ -4,6 +4,7 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Policy;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -82,14 +83,19 @@ public class Agent {
                 }
             }
         }
-        //TODO check if need to remove this pokemon from pokemon list at ex2
-        //Set the closest pokemon for this agent, add him to his pokemon list and set this agent on this pokemon
-        closestPok.setAgent(this);
-        MyPoks.add(closestPok);
-        this.setPokemon(closestPok);
-
+        if(closestPok!=null) {
+            //Set the closest pokemon for this agent, add him to his pokemon list and set this agent on this pokemon
+            closestPok.setAgent(this);
+            MyPoks.add(closestPok);
+            this.setPokemon(closestPok);
         //set the path to this pokemon
         setPath(ga);
+        }else{
+            directed_weighted_graph g = ga.getGraph();
+            int n = g.getE(src).stream().findAny().get().getDest();
+            if(myPath.isEmpty())
+                myPath.add(n);
+        }
     }
 
     /**
@@ -175,25 +181,9 @@ public class Agent {
     public void setPos(geo_location pos) { this.pos = pos; }
 
     /**
-     * @return the agent path
-     */
-    public Queue<Integer> getMyPath() { return myPath; }
-
-    /**
      * @return the list of pokemons that associated to this agent
      */
     public List<Pokemon> getMyPoks() { return MyPoks; }
-
-    /**
-     * set the path of this agent
-     * @param myPath - Queue<Pokemon> path
-     */
-    public void setMyPath(Queue<Integer> myPath) { this.myPath = myPath; }
-
-    /**
-     * @return true iff this agent have at least one more node in his path
-     */
-    public boolean hasNext() { return (this.myPath.peek() != null); }
 
     /**
      * toString function -
@@ -214,7 +204,7 @@ public class Agent {
 
     /**
      * complex function that calculate the time until the agent will be enough close to next node or pokemon.
-     * it calculat the time by multiple of his speed, weight of relevant edge, and ratio (if it may eat pokemon).
+     * it calculate the time by multiple of his speed, weight of relevant edge, and ratio (if it may eat pokemon).
      *
      * and maybe this move catch this an agent on middle of edge because other agent came to node or eat their pokemon.
      *
