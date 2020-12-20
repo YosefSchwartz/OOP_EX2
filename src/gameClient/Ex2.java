@@ -38,12 +38,12 @@ public class Ex2 implements Runnable {
 //            game_thread.start();
 //        }
 //        else {
-//            LoginFrame login = new LoginFrame();
-//            login.setVisible(true);
-            Ex2 ex2 = new Ex2();
-            ex2.setGameNumber(2);
-            Thread game =new Thread(ex2);
-            game.start();
+            LoginFrame login = new LoginFrame();
+            login.setVisible(true);
+//            Ex2 ex2 = new Ex2();
+//            ex2.setGameNumber(2);
+//            Thread game =new Thread(ex2);
+//            game.start();
         //}
     }
     private static final double EPS = 0.000001;
