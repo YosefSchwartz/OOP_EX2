@@ -145,9 +145,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         if ((e.getSource())==LoginButton) {
             try {
                 ID = Integer.parseInt(ID_Text.getText());
-                System.out.println("ID: "+ID);
                 GameNumber = GameOpt.getSelectedIndex();
-                System.out.println("game number: "+GameNumber);
                 JOptionPane.showMessageDialog(this, "Let's start the game");
                 run();
                 // clip.stop();

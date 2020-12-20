@@ -32,16 +32,28 @@ public class Ex2 implements Runnable {
      */
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 
-//        if(args[0]!=null && args[1]!=null) {
-//            Ex2 ex2 = new Ex2();
-//            ex2.setGameNumber(Integer.parseInt(args[1]));
-//            ex2.setID(Integer.parseInt(args[0]));
-//            Thread game_thread = new Thread(ex2);
-//            game_thread.start();
-//        }
-//        else {
+        if(args.length==2) {
+            Ex2 ex2 = new Ex2();
+            int gameNum = Integer.MIN_VALUE, ID = Integer.MIN_VALUE;
+            boolean ans = false;
+            try {
+                gameNum = Integer.parseInt(args[1]);
+                ID = Integer.parseInt(args[0]);
+                ans = true;
+            } catch (NumberFormatException e) {
+                System.out.println("ERROR, INVALID INPUT\nPlease try again");
+            }
+            if (ans) {
+                ex2.setGameNumber(gameNum);
+                ex2.setID(ID);
+                Thread game_thread = new Thread(ex2);
+                game_thread.start();
+            }
+        }
+        else {
             LoginFrame login = new LoginFrame();
             login.setVisible(true);
+        }
 //            Ex2 ex2 = new Ex2();
 //            ex2.setGameNumber(2);
 //            Thread game =new Thread(ex2);
@@ -116,7 +128,7 @@ public class Ex2 implements Runnable {
             _win.update(_ar);
             _win.setVisible(true);
             _win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            //game.login(20);
+            game.login(ID);
             game.startGame();
             _win.setTitle("Ex2 - OOP: " + GameNumber);
             setPokToEachAgent(game);
@@ -185,7 +197,6 @@ public class Ex2 implements Runnable {
         String s;
         while (game.isRunning()) {
             min = Long.MAX_VALUE;
-            System.out.println(pokemonList);
             s = game.move();
             refreshLocation(s);
             UpdateGameInfo(GameNumber, game.timeToEnd(), TotalValue);
@@ -195,7 +206,6 @@ public class Ex2 implements Runnable {
             _win.repaint();
             TotalValue = 0;
             for (Agent a : agentList) {
-                System.out.println("a"+a.getId()+" status: "+a.getDest());
                 mark=false;
                 int tmp = a.getDest();
                 if (a.getDest() == -1 ) {
