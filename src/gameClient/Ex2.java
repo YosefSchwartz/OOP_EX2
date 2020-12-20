@@ -102,6 +102,7 @@ public class Ex2 implements Runnable {
         } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
+        _win.close();
     }
 
     private void initTheGame(game_service game) {
@@ -127,8 +128,8 @@ public class Ex2 implements Runnable {
             _win.setSize(1000, 700);
             _win.update(_ar);
             _win.setVisible(true);
-            _win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            game.login(ID);
+            //_win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+           // game.login(ID);
             game.startGame();
             _win.setTitle("Ex2 - OOP: " + GameNumber);
             setPokToEachAgent(game);

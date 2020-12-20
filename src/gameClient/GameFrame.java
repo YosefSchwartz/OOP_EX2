@@ -11,6 +11,8 @@ import gameClient.util.Range2D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.Iterator;
@@ -20,6 +22,8 @@ public class GameFrame extends JFrame {
     public GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
+    JFrame EndFrame;
+
 
     private gameClient.util.Range2Range _w2f;
 
@@ -38,6 +42,10 @@ public class GameFrame extends JFrame {
         updateFrame();
     }
 
+    public void close()
+    {
+        JOptionPane.showMessageDialog(null, "your score is "+_ar.get_info().get(2));
+    }
     /**
      * update the frame size to the current size of the frame
      */
