@@ -166,9 +166,13 @@ public class Ex2 implements Runnable {
             }
             if (min == Long.MAX_VALUE)
                 min = 1;
-
             Thread.sleep(min);
         }
+        JSONObject endgame=new JSONObject(game.toString());
+        JSONObject total =endgame.getJSONObject("GameServer");
+        TotalValue= total.getDouble("grade");
+        UpdateGameInfo(GameNumber, game.timeToEnd(), TotalValue);
+        _ar.set_info(GameInfo);
         _win.dispose();
         System.out.println(game.toString());
     }
