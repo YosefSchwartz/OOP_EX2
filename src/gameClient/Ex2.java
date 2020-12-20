@@ -157,9 +157,8 @@ public class Ex2 implements Runnable {
                 int tmp = a.getDest();
                 if (a.getDest() == -1 ) {
                     String poks = game.getPokemons();
-                    if (!a.pokemon.isInTheGame(poks, a.getPokemon())) {
+                    if (!a.pokemon.isInTheGame(poks, a.getPokemon()))
                         a.findClosestPokemon(graphAL, pokemonList);
-                    }
                     game.chooseNextEdge(a.getId(), a.getNextDest());
                 }
                 long time = a.time(graphDS, tmp, game.getPokemons(), pokemonList);
