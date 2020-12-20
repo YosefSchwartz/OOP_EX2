@@ -1,6 +1,4 @@
 package gameClient;
-
-
 import api.directed_weighted_graph;
 import api.edge_data;
 import api.geo_location;
@@ -8,11 +6,8 @@ import api.node_data;
 import gameClient.util.Point3D;
 import gameClient.util.Range;
 import gameClient.util.Range2D;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.Iterator;
@@ -22,8 +17,6 @@ public class GameFrame extends JFrame {
     public GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
-    JFrame EndFrame;
-
 
     private gameClient.util.Range2Range _w2f;
 
@@ -256,3 +249,4 @@ public class GameFrame extends JFrame {
 
 
 }
+
