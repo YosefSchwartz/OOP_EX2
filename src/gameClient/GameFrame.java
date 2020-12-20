@@ -16,15 +16,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GameFrame extends JFrame {
-    private int _ind;
     public GameData _ar;
     private ImageIcon pokemon;
     private ImageIcon agent;
-    private JPanel panel;
-    private JLabel TimeToEnd;
-    private JLabel TotalValue;
-    private JLabel GameLevel;
-    //private JLabel TimeToEnd;
+
     private gameClient.util.Range2Range _w2f;
 
 
@@ -32,13 +27,8 @@ public class GameFrame extends JFrame {
         super(a);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-        panel =new JPanel();
-        this.add(panel);
-//        TimeToEnd=new JLabel();
-//        TotalValue=new JLabel();
-//        GameLevel=new JLabel();
-        int _ind = 0;
     }
+
     public void update(GameData ar) {
         this._ar = ar;
         updateFrame();

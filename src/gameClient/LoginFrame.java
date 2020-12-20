@@ -18,11 +18,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     private JPanel panel;
     private JComboBox GameOpt;
     private JButton LoginButton;
-    private JButton Mute;
-    private JButton unMute;
-    private JLabel text;
-    private int Mark;
-    private int countMark;
     private int ID;
     private int GameNumber;
     private int h = 350;
@@ -31,7 +26,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     private Image image;
     private Graphics gr;
     private JLabel back;
-    private Clip clip;
+    //private Clip clip;
 
     public LoginFrame() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         setSize(w, h);
@@ -41,7 +36,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     }
 
     public void init() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        countMark=0;
         w = getWidth();
         h = getHeight();
         this.setVisible(true);
@@ -113,8 +107,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         panel.add(ID_Text);
         panel.add(LoginButton);
         panel.add(GameOpt);
-        // panel.add(Mute);
-        //panel.add(unMute);
         panel.add(back);
         panel.setSize(getWidth(), getHeight());
     }
@@ -145,14 +137,6 @@ public class LoginFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Invalid ID\nPlease enter again");
                 System.out.println("ERROR, enter again");
             }
-        }
-        if(e.getSource()==unMute) {
-            unMute.setVisible(false);
-            Mute.setVisible(true);
-        }
-        if(e.getSource()==Mute) {
-            unMute.setVisible(true);
-            Mute.setVisible(false);
         }
     }
 
