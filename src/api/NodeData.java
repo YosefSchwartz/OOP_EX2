@@ -10,6 +10,7 @@ public class NodeData implements node_data, Comparable<Object> {
     double weight;
     String info;
     int tag;
+    int k;
 
     /**
      * constructor
@@ -21,6 +22,7 @@ public class NodeData implements node_data, Comparable<Object> {
         tag = 0;
         info = null;
         counter++;
+        k=0;
     }
 
     /**
@@ -34,6 +36,7 @@ public class NodeData implements node_data, Comparable<Object> {
         weight = 0;
         tag = 0;
         info = null;
+        k=0;
     }
     /**
      * @return the key (id) associated with this node.
@@ -106,6 +109,8 @@ public class NodeData implements node_data, Comparable<Object> {
     public void setTag(int t) {
         tag = t;
     }
+
+    public void setK(int k){ this.k = k; }
 
     public String toString()
     {

@@ -362,4 +362,35 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         for (node_data n : ga.getV())
             n.setTag(0);
     }
+    private void resetInfo() {    //O(v)
+        for (node_data n : ga.getV())
+            n.setInfo(null);
+    }
+    public List<Integer> connectedComponent (int id){
+        List<Integer> scc = new LinkedList<>();
+        if(this.ga == null)
+            return scc;
+        if(!ga.getV().contains(ga.getNode(id)))
+            return scc;
+        final String beHere = "We be here!";
+        for (node_data n : ga.getV()){
+            if(shortestPathDist(n.getKey(),id)!= -1 && shortestPathDist(id,n.getKey()) != -1){
+                scc.add(n.getKey());
+                n.setInfo(beHere);
+            }
+        }
+        return scc;
+    }
+
+    public List<List<Integer>> connectedComponents(){
+        List<List<Integer>> sccs = new LinkedList<>();
+        if(ga == null) return sccs;
+        resetInfo();
+        for(node_data n :ga.getV()){
+            if (n.getInfo() == null){
+                sccs.add(connectedComponent(n.getKey()));
+            }
+        }
+        return sccs;
+    }
 }
