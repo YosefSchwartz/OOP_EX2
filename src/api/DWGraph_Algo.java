@@ -362,35 +362,80 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         for (node_data n : ga.getV())
             n.setTag(0);
     }
-    private void resetInfo() {    //O(v)
-        for (node_data n : ga.getV())
-            n.setInfo(null);
-    }
+
     public List<Integer> connectedComponent (int id){
         List<Integer> scc = new LinkedList<>();
-        if(this.ga == null)
+        if(ga == null)
+            return  scc;
+        if(ga.getNode(id) == null)
             return scc;
-        if(!ga.getV().contains(ga.getNode(id)))
-            return scc;
-        final String beHere = "We be here!";
-        for (node_data n : ga.getV()){
-            if(shortestPathDist(n.getKey(),id)!= -1 && shortestPathDist(id,n.getKey()) != -1){
-                scc.add(n.getKey());
-                n.setInfo(beHere);
-            }
-        }
+        node_data n = ga.getNode(id);
+        resetTagTo0();
+        List<Integer> out = new LinkedList<>();
+        DFS(n, out);
+        directed_weighted_graph gTrans = graphTranspose(ga);
+        directed_weighted_graph gSave = ga;
+        this.init(gTrans);
+        resetTagTo0();
+        List<Integer> in = new LinkedList<>();
+        DFS(n, in);
+        this.init(gSave);
+        scc = new LinkedList<>(out);
+        scc.retainAll(in);
+        Collections.sort(scc);
         return scc;
     }
 
+    private void DFS(node_data n, List<Integer> s) {
+        Stack<node_data> q = new Stack<>();
+        q.push(n);
+        Queue<Integer> s2 = new LinkedList<>();
+        Stack<Integer> s1 = new Stack<>();
+        n.setTag(1);
+        while (!q.isEmpty()) {
+            n = q.pop();
+            int niSize = ga.getE(n.getKey()).size();
+            for (edge_data e : ga.getE(n.getKey())) {
+                node_data nodeV = ga.getNode(e.getDest());
+                if (nodeV.getTag() == 0) {
+                    q.push(nodeV);
+                    nodeV.setTag(1);
+                } else
+                    niSize--;
+            }
+            if (niSize == 0)
+                s2.add(n.getKey());
+            else
+                s1.push(n.getKey());
+        }
+        while(!s2.isEmpty())
+            s.add(s2.poll());
+        while(!s1.isEmpty())
+            s.add(s1.pop());
+    }
+
+
     public List<List<Integer>> connectedComponents(){
         List<List<Integer>> sccs = new LinkedList<>();
-        if(ga == null) return sccs;
-        resetInfo();
-        for(node_data n :ga.getV()){
-            if (n.getInfo() == null){
-                sccs.add(connectedComponent(n.getKey()));
+        Stack<Integer> s = new Stack<>();
+        resetTagTo0();
+        for (node_data n: ga.getV()){
+            if(n.getTag() == 0)
+                DFS(n,s);
+        }
+        directed_weighted_graph gTrans = graphTranspose(ga);
+        directed_weighted_graph gSave = ga;
+        this.init(gTrans);
+        resetTagTo0();
+        while(!s.isEmpty()){
+            node_data tmpN = ga.getNode(s.pop());
+            if(tmpN.getTag() == 0) {
+                List<Integer> p = new LinkedList<>();
+                DFS(tmpN, p);
+                sccs.add(p);
             }
         }
+        this.init(gSave);
         return sccs;
     }
 }
