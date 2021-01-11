@@ -59,8 +59,15 @@ public class forEX3 {
         long finishTimeSCC = System.currentTimeMillis();
         long SCCTime = finishTimeSCC-startTimeSCC;
 
+        long startTimeAllSCC = System.currentTimeMillis();
+        ga.connectedComponent(n);
+        long finishTimeAllSCC = System.currentTimeMillis();
+        long allSCCTime = finishTimeAllSCC-startTimeAllSCC;
+
         System.out.println("time to check shortest_path in Java -> " + shortestPathTime/1000.0 + " sec");
-        System.out.println("time to check connected_components in Java -> " + SCCTime/1000.0 + " sec");
+        System.out.println("time to check connected_component of node #" + n + " in Java -> " + SCCTime/1000.0 + " sec");
+        System.out.println("time to check all connected_components in Java -> " + allSCCTime/1000.0 + " sec");
+
     }
 
     public static void main(String[] args) {
