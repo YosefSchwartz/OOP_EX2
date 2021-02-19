@@ -92,7 +92,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             n.setWeight(Double.MAX_VALUE); //reset the weight to infinity
             re.put(n.getKey(), null); //reset all nodes to null (the "father")
         }
-
         node_data tmp = ga.getNode(src);
         tmp.setWeight(0.0); //set the tag-the distance of the ex1.ex1.src from the ex1.ex1.src to 0
         dist.add(tmp); //add him to the the queue of the distances
